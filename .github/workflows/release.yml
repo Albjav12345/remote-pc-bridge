@@ -1,0 +1,49 @@
+name: Release Windows build
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - uses: arduino/setup-arduino-cli@v2
+      - name: Install ESP32 board and ArduinoJson
+        shell: pwsh
+        run: |
+          $index = 'https://espressif.github.io/arduino-esp32/package_esp32_index.json'
+          arduino-cli core update-index --additional-urls $index
+          arduino-cli core install 'esp32:esp32@3.3.2' --additional-urls $index
+          arduino-cli lib install 'ArduinoJson@7.4.2'
+      - name: Build
+        shell: pwsh
+        run: ./build.ps1
+      - name: Self-test
+        shell: pwsh
+        run: |
+          $process = Start-Process -FilePath './dist/TorreRemota.exe' -ArgumentList '--self-test' -PassThru -Wait
+          Get-Content './dist/test-results.txt'
+          if ($process.ExitCode -ne 0) { throw 'Self-test failed.' }
+      - name: Prepare download
+        shell: pwsh
+        run: |
+          Copy-Item './dist/TorreRemota.exe' './dist/RemotePcBridge-Windows-x64.exe'
+          $digest = (Get-FileHash './dist/RemotePcBridge-Windows-x64.exe' -Algorithm SHA256).Hash.ToLowerInvariant()
+          Set-Content -Path './dist/SHA256.txt' -Value "$digest  RemotePcBridge-Windows-x64.exe" -NoNewline
+      - name: Create release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          $flags = if ($env:RELEASE_TAG -match '^v0\.') { @('--prerelease') } else { @() }
+          gh release create $env:RELEASE_TAG './dist/RemotePcBridge-Windows-x64.exe' './dist/SHA256.txt' --verify-tag --generate-notes @flags

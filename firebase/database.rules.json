@@ -1,0 +1,32 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "bridge": {
+      "command": {
+        ".read": "auth != null && (auth.uid === 'UID_PORTATIL' || auth.uid === 'UID_ESP32')",
+        ".write": "auth != null && auth.uid === 'UID_PORTATIL' && newData.exists() && (!data.exists() || data.child('createdAt').val() < now - 90000)",
+        ".validate": "newData.hasChildren(['id','action','createdAt','ttlSec'])",
+        "id": { ".validate": "newData.isString() && newData.val().matches(/^[a-f0-9]{32}$/)" },
+        "action": { ".validate": "newData.val() === 'wake'" },
+        "createdAt": { ".validate": "newData.isNumber() && newData.val() >= now - 5000 && newData.val() <= now + 5000" },
+        "ttlSec": { ".validate": "newData.val() === 90" },
+        "$other": { ".validate": false }
+      },
+      "status": {
+        ".read": "auth != null && (auth.uid === 'UID_PORTATIL' || auth.uid === 'UID_ESP32')",
+        ".write": "auth != null && auth.uid === 'UID_ESP32' && newData.exists()",
+        ".validate": "newData.hasChildren(['version','updatedAt','uptimeSec','rssi','lan']) && newData.child('updatedAt').isNumber() && newData.child('updatedAt').val() >= now - 5000 && newData.child('updatedAt').val() <= now + 5000"
+      },
+      "ack": {
+        ".read": "auth != null && (auth.uid === 'UID_PORTATIL' || auth.uid === 'UID_ESP32')",
+        ".write": "auth != null && auth.uid === 'UID_ESP32' && newData.exists()",
+        ".validate": "newData.hasChildren(['id','state','updatedAt'])",
+        "id": { ".validate": "newData.isString() && newData.val().matches(/^[a-f0-9]{32}$/)" },
+        "state": { ".validate": "newData.val() === 'sent' || newData.val() === 'udp_failed' || newData.val() === 'expired_or_invalid' || newData.val() === 'uncertain_after_restart' || newData.val() === 'storage_error'" },
+        "updatedAt": { ".validate": "newData.isNumber() && newData.val() >= now - 5000 && newData.val() <= now + 5000" },
+        "$other": { ".validate": false }
+      }
+    }
+  }
+}

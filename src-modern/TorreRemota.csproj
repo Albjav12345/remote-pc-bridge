@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultPageItems>false</EnableDefaultPageItems>
+    <AssemblyName>TorreRemota</AssemblyName>
+    <RootNamespace>TorreRemota</RootNamespace>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>false</SelfContained>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <ApplicationIcon>Resources\TorreRemota.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\src\Core.cs" Link="Core.cs" />
+    <Compile Include="..\src\Tests.cs" Link="Tests.cs" />
+    <Compile Include="App.xaml.cs" />
+    <Compile Include="MainWindow.xaml.cs" />
+    <Compile Include="MoonlightSession.cs" />
+    <Compile Include="Provisioning.cs" />
+    <Compile Include="Esp32Flasher.cs" />
+    <Page Include="MainWindow.xaml" />
+    <Content Include="Resources\TorreRemota.ico" CopyToOutputDirectory="Never" />
+    <EmbeddedResource Include="..\firebase\database.rules.json" LogicalName="TorreRemota.FirebaseRules" />
+    <EmbeddedResource Include="..\firmware\release\RemotePcBridge-esp32-4mb.bin" LogicalName="TorreRemota.Firmware.Esp32" />
+  </ItemGroup>
+  <ItemGroup><PackageReference Include="System.IO.Ports" Version="8.0.0" /></ItemGroup>
+</Project>
