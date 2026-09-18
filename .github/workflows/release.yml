@@ -45,5 +45,5 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
-          $flags = if ($env:RELEASE_TAG -match '^v0\.') { @('--prerelease') } else { @() }
+          [string[]]$flags = if ($env:RELEASE_TAG -match '^v0\.') { @('--prerelease') } else { @() }
           gh release create $env:RELEASE_TAG './dist/RemotePcBridge-Windows-x64.exe' './dist/SHA256.txt' --verify-tag --generate-notes @flags
