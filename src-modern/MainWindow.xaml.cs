@@ -18,7 +18,7 @@ public partial class ModernWindow : Window {
     public bool IsBusy { get { return running!=null; } }
     Settings cfg; Firebase firebase; Diagnostics diagnostics; CancellationTokenSource running;
     Localization localization; bool updatingLanguage;
-    readonly Brush ok=new SolidColorBrush(Color.FromRgb(77,213,149)), warn=new SolidColorBrush(Color.FromRgb(255,187,91)), bad=new SolidColorBrush(Color.FromRgb(244,111,123)), neutral=new SolidColorBrush(Color.FromRgb(165,180,196));
+    readonly SolidColorBrush ok=new SolidColorBrush(Color.FromRgb(77,213,149)), warn=new SolidColorBrush(Color.FromRgb(255,187,91)), bad=new SolidColorBrush(Color.FromRgb(244,111,123)), neutral=new SolidColorBrush(Color.FromRgb(165,180,196));
     readonly List<Button> actions=new List<Button>();
     string pendingId="",lastDigest="",logPath=""; bool closing;
     readonly DispatcherTimer moonlightTimer=new DispatcherTimer{Interval=TimeSpan.FromSeconds(2)};
@@ -39,9 +39,10 @@ public partial class ModernWindow : Window {
     public ModernWindow(bool demo=false,bool setupDemo=false,bool flashDemo=false,bool settingsDemo=false) {
         InitializeComponent();
         demoMode=demo;setupDemoMode=setupDemo;flashDemoMode=flashDemo;settingsDemoMode=settingsDemo;
-        try{var helper=new System.Windows.Interop.WindowInteropHelper(this);SourceInitialized+=delegate{int dark=1,mica=2,round=2;DwmSetWindowAttribute(helper.Handle,20,ref dark,sizeof(int));DwmSetWindowAttribute(helper.Handle,38,ref mica,sizeof(int));DwmSetWindowAttribute(helper.Handle,33,ref round,sizeof(int));};}catch{}
-        cfg=demo?new Settings{Database="https://demo-default-rtdb.europe-west1.firebasedatabase.app",Target="100.64.0.10",Language=Environment.GetCommandLineArgs().Contains("--demo-language-es")?"es":"en"}:Settings.Load();cfg.Legacy=false;
+        try{var helper=new System.Windows.Interop.WindowInteropHelper(this);SourceInitialized+=delegate{UpdateWindowTheme();int mica=2,round=2;DwmSetWindowAttribute(helper.Handle,38,ref mica,sizeof(int));DwmSetWindowAttribute(helper.Handle,33,ref round,sizeof(int));};}catch{}
+        cfg=demo?new Settings{Database="https://demo-default-rtdb.europe-west1.firebasedatabase.app",Target="100.64.0.10",Language=Environment.GetCommandLineArgs().Contains("--demo-language-es")?"es":"en",Theme=Environment.GetCommandLineArgs().Contains("--demo-theme-light")?"light":"dark"}:Settings.Load();cfg.Legacy=false;
         localization=new Localization(this,cfg.Language);
+        ApplyTheme();
         UpdateLanguageCombo();
         firebase=new Firebase(cfg);diagnostics=new Diagnostics(cfg,firebase);
         actions.AddRange(new[]{ConnectButton,WakeButton,DiagnoseButton});
@@ -67,18 +68,38 @@ public partial class ModernWindow : Window {
     }
     static bool HasUsableCredentials(Settings s){try{return !string.IsNullOrWhiteSpace(s.ApiKey)&&!string.IsNullOrWhiteSpace(s.Email)&&!string.IsNullOrWhiteSpace(s.Password);}catch{return false;}}
     void RefreshMode(){bool complete=HasUsableCredentials(cfg);SideMode.Text=complete?"Puente · conexión protegida":"Configuración pendiente";TopMode.Text=complete?"Sistema configurado":"Preparar sistema";SideAddress.Text=string.IsNullOrWhiteSpace(cfg.Target)?"Sin torre configurada":cfg.Target+"  ·  "+cfg.App;SideStatusDot.Fill=complete?neutral:warn;HeaderWifiIcon.Foreground=complete?neutral:warn;}
-    void ApplySettings(Settings next){firebase.Dispose();cfg=next;localization.SetLanguage(cfg.Language);UpdateLanguageCombo();firebase=new Firebase(cfg);diagnostics=new Diagnostics(cfg,firebase);pendingId="";FillSettings();FillSetup();RefreshMode();}
+    void ApplySettings(Settings next){firebase.Dispose();cfg=next;localization.SetLanguage(cfg.Language);UpdateLanguageCombo();ApplyTheme();firebase=new Firebase(cfg);diagnostics=new Diagnostics(cfg,firebase);pendingId="";FillSettings();FillSetup();RefreshMode();}
+    void UpdateWindowTheme(){try{var handle=new System.Windows.Interop.WindowInteropHelper(this).Handle;if(handle!=IntPtr.Zero){int dark=cfg?.Theme=="light"?0:1;DwmSetWindowAttribute(handle,20,ref dark,sizeof(int));}}catch{}}
+    void ApplyTheme(){
+        bool light=cfg?.Theme=="light";
+        ThemePalette.Apply(Resources,light);
+        Foreground=(Brush)Resources["Ink"];
+        ok.Color=light?Color.FromRgb(18,133,88):Color.FromRgb(77,213,149);
+        warn.Color=light?Color.FromRgb(162,101,0):Color.FromRgb(255,187,91);
+        bad.Color=light?Color.FromRgb(195,49,66):Color.FromRgb(244,111,123);
+        neutral.Color=light?Color.FromRgb(105,123,144):Color.FromRgb(165,180,196);
+        ThemeIcon.Text=light?"\uE708":"\uE706";
+        ThemeLabel.Text=localization.Convert(light?"Tema oscuro":"Tema claro");
+        ThemeButton.ToolTip=ThemeLabel.Text;
+        UpdateWindowTheme();
+        if(NavDashboard!=null){var active=SettingsView.Visibility==Visibility.Visible?NavSettings:SetupView.Visibility==Visibility.Visible?NavSetup:GuideView.Visibility==Visibility.Visible?NavGuide:NavDashboard;SelectPage(active==NavSettings?SettingsView:active==NavSetup?SetupView:active==NavGuide?GuideView:DashboardView,active);}
+    }
+    void ToggleThemeClick(object sender,RoutedEventArgs e){
+        var previous=cfg.Theme;cfg.Theme=previous=="light"?"dark":"light";
+        try{if(!demoMode)cfg.Save();ApplyTheme();Log(cfg.Theme=="light"?"Tema claro activado.":"Tema oscuro activado.");}
+        catch(Exception ex){cfg.Theme=previous;ApplyTheme();MessageBox.Show(this,ex.Message,localization.Convert("No se pudo guardar el tema"),MessageBoxButton.OK,MessageBoxImage.Warning);}
+    }
     void UpdateLanguageCombo(){updatingLanguage=true;LanguageCombo.SelectedIndex=cfg.Language=="es"?1:0;updatingLanguage=false;}
     void LanguageChanged(object sender,SelectionChangedEventArgs e){
         if(updatingLanguage||cfg==null||localization==null)return;
         string language=LanguageCombo.SelectedIndex==1?"es":"en";
         if(cfg.Language==language)return;
-        try{cfg.Language=language;if(!demoMode)cfg.Save();localization.SetLanguage(language);FillSettings();FillSetup();RefreshMode();Log(language=="es"?"Idioma cambiado a español.":"Language changed to English.");}
+        try{cfg.Language=language;if(!demoMode)cfg.Save();localization.SetLanguage(language);ApplyTheme();FillSettings();FillSetup();RefreshMode();Log(language=="es"?"Idioma cambiado a español.":"Language changed to English.");}
         catch(Exception ex){MessageBox.Show(this,ex.Message,"Could not save language",MessageBoxButton.OK,MessageBoxImage.Warning);}
     }
     void ReloadSettings(){var latest=Settings.Load();latest.Legacy=false;if(Json.Encode(latest)==Json.Encode(cfg))return;ApplySettings(latest);Log("Se han recargado los ajustes guardados.");}
     void FillSettings(){DatabaseBox.Text=cfg.Database;TargetBox.Text=cfg.Target;AppBox.Text=cfg.App;MoonlightBox.Text=cfg.Moonlight;TailscaleBox.Text=cfg.Tailscale;PortBox.Text=cfg.BasePort.ToString();WaitBox.Text=cfg.WaitSeconds.ToString();ApiKeyBox.Text=cfg.ApiKey;EmailBox.Text=cfg.Email;PasswordBox.Password="";CredentialStatus.Text=HasUsableCredentials(cfg)?"Credenciales guardadas. Deja la contraseña vacía para conservarla.":"Faltan credenciales o la contraseña guardada no se puede descifrar.";CredentialStatus.Foreground=HasUsableCredentials(cfg)?ok:warn;}
-    void SelectPage(FrameworkElement page,Button nav){DashboardView.Visibility=page==DashboardView?Visibility.Visible:Visibility.Collapsed;SetupView.Visibility=page==SetupView?Visibility.Visible:Visibility.Collapsed;SettingsView.Visibility=page==SettingsView?Visibility.Visible:Visibility.Collapsed;GuideView.Visibility=page==GuideView?Visibility.Visible:Visibility.Collapsed;foreach(var b in new[]{NavDashboard,NavSetup,NavSettings,NavGuide}){b.Background=(Brush)new BrushConverter().ConvertFromString(b==nav?"#183650":"#00000000");b.Foreground=(Brush)new BrushConverter().ConvertFromString(b==nav?"#77C4FF":"#AFC1D7");}}
+    void SelectPage(FrameworkElement page,Button nav){DashboardView.Visibility=page==DashboardView?Visibility.Visible:Visibility.Collapsed;SetupView.Visibility=page==SetupView?Visibility.Visible:Visibility.Collapsed;SettingsView.Visibility=page==SettingsView?Visibility.Visible:Visibility.Collapsed;GuideView.Visibility=page==GuideView?Visibility.Visible:Visibility.Collapsed;bool light=cfg?.Theme=="light";foreach(var b in new[]{NavDashboard,NavSetup,NavSettings,NavGuide}){b.Background=b==nav?new SolidColorBrush(light?Color.FromRgb(221,235,250):Color.FromRgb(24,54,80)):Brushes.Transparent;b.Foreground=new SolidColorBrush(b==nav?(light?Color.FromRgb(22,105,188):Color.FromRgb(119,196,255)):(light?Color.FromRgb(65,93,120):Color.FromRgb(175,193,215)));}}
     void ShowDashboard(object sender,RoutedEventArgs e){SelectPage(DashboardView,NavDashboard);}
     void ShowSetup(object sender,RoutedEventArgs e){FillSetup();RefreshPorts();SelectPage(SetupView,NavSetup);}
     void ShowSettings(object sender,RoutedEventArgs e){FillSettings();SelectPage(SettingsView,NavSettings);}

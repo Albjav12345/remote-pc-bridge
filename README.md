@@ -4,7 +4,9 @@
 
 **Wake a home Windows PC remotely, see where the connection fails, and launch Moonlight.** A Windows app writes an authenticated command to Firebase Realtime Database. An ESP32 on your home Wi-Fi reads that command and sends a Wake-on-LAN packet on the local network. The dashboard separately reports Firebase, ESP32 heartbeat, local Sunshine ports, Tailscale, remote ports, and Moonlight video.
 
-![Dark dashboard with sample data](docs/images/dashboard.png)
+| Dark theme (default) | Light theme |
+|---|---|
+| ![Dashboard in dark mode with sample data](docs/images/dashboard.png) | ![Dashboard in light mode with sample data](docs/images/dashboard.light.png) |
 
 This project targets **Windows 10/11 and an ESP32-WROOM-32 Dev Module with 4 MB flash**. The application passes automated tests and the firmware compiles. The USB flashing assistant has not yet been verified on a second physical board. The app starts in English; choose **Settings → App language → Español** to switch the interface.
 
@@ -35,9 +37,11 @@ The [detailed setup guide](docs/SETUP.md) covers each step, including how to fin
 
 ## Language
 
-English is the default. In **Settings → App language**, choose **Español** to switch immediately; the selection is saved for your Windows account. Choose **English** there to switch back.
+English is the default. In **Settings → App language**, choose **Español** to switch immediately; the selection is saved for your Windows account. Choose **English** there to switch back. **Settings** is at the bottom of the sidebar; the **Light theme / Dark theme** button directly below it switches appearance instantly and saves the choice. Dark is the default.
 
-![Language selector in the Windows app](docs/images/settings.png)
+| Settings in dark mode | Settings in light mode |
+|---|---|
+| ![English settings in dark mode](docs/images/settings.png) | ![English settings in light mode](docs/images/settings.light.png) |
 
 ## Daily use
 

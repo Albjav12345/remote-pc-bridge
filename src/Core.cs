@@ -51,6 +51,7 @@ public static class Json {
 }
 public class Settings {
     public string Language = "en";
+    public string Theme = "dark";
     public string Database = "";
     public string Target = "";
     public string App = "Desktop";

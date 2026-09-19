@@ -9,68 +9,194 @@
     <SolidColorBrush x:Key="Muted" Color="#B0C3DA"/>
     <SolidColorBrush x:Key="Accent" Color="#74BDFF"/>
     <SolidColorBrush x:Key="Line" Color="#435D7D"/>
+    <Color x:Key="ThemeColor00">#050C19</Color>
+    <SolidColorBrush x:Key="ThemeBrush00" Color="#050C19"/>
+    <Color x:Key="ThemeColor01">#075BD3</Color>
+    <SolidColorBrush x:Key="ThemeBrush01" Color="#075BD3"/>
+    <Color x:Key="ThemeColor02">#111A27</Color>
+    <SolidColorBrush x:Key="ThemeBrush02" Color="#111A27"/>
+    <Color x:Key="ThemeColor03">#172130</Color>
+    <SolidColorBrush x:Key="ThemeBrush03" Color="#172130"/>
+    <Color x:Key="ThemeColor04">#1762BB</Color>
+    <SolidColorBrush x:Key="ThemeBrush04" Color="#1762BB"/>
+    <Color x:Key="ThemeColor05">#1979E5</Color>
+    <SolidColorBrush x:Key="ThemeBrush05" Color="#1979E5"/>
+    <Color x:Key="ThemeColor06">#1B2533</Color>
+    <SolidColorBrush x:Key="ThemeBrush06" Color="#1B2533"/>
+    <Color x:Key="ThemeColor07">#244464</Color>
+    <SolidColorBrush x:Key="ThemeBrush07" Color="#244464"/>
+    <Color x:Key="ThemeColor08">#245184</Color>
+    <SolidColorBrush x:Key="ThemeBrush08" Color="#245184"/>
+    <Color x:Key="ThemeColor09">#2D496B</Color>
+    <SolidColorBrush x:Key="ThemeBrush09" Color="#2D496B"/>
+    <Color x:Key="ThemeColor10">#3046A2FA</Color>
+    <SolidColorBrush x:Key="ThemeBrush10" Color="#3046A2FA"/>
+    <Color x:Key="ThemeColor11">#3299F5</Color>
+    <SolidColorBrush x:Key="ThemeBrush11" Color="#3299F5"/>
+    <Color x:Key="ThemeColor12">#35A8FF</Color>
+    <SolidColorBrush x:Key="ThemeBrush12" Color="#35A8FF"/>
+    <Color x:Key="ThemeColor13">#405269</Color>
+    <SolidColorBrush x:Key="ThemeBrush13" Color="#405269"/>
+    <Color x:Key="ThemeColor14">#405B7C</Color>
+    <SolidColorBrush x:Key="ThemeBrush14" Color="#405B7C"/>
+    <Color x:Key="ThemeColor15">#45162743</Color>
+    <SolidColorBrush x:Key="ThemeBrush15" Color="#45162743"/>
+    <Color x:Key="ThemeColor16">#455C7C</Color>
+    <SolidColorBrush x:Key="ThemeBrush16" Color="#455C7C"/>
+    <Color x:Key="ThemeColor17">#456484</Color>
+    <SolidColorBrush x:Key="ThemeBrush17" Color="#456484"/>
+    <Color x:Key="ThemeColor18">#46523A43</Color>
+    <SolidColorBrush x:Key="ThemeBrush18" Color="#46523A43"/>
+    <Color x:Key="ThemeColor19">#46586D</Color>
+    <SolidColorBrush x:Key="ThemeBrush19" Color="#46586D"/>
+    <Color x:Key="ThemeColor20">#49617F</Color>
+    <SolidColorBrush x:Key="ThemeBrush20" Color="#49617F"/>
+    <Color x:Key="ThemeColor21">#4974AC</Color>
+    <SolidColorBrush x:Key="ThemeBrush21" Color="#4974AC"/>
+    <Color x:Key="ThemeColor22">#4B6280</Color>
+    <SolidColorBrush x:Key="ThemeBrush22" Color="#4B6280"/>
+    <Color x:Key="ThemeColor23">#4B688A</Color>
+    <SolidColorBrush x:Key="ThemeBrush23" Color="#4B688A"/>
+    <Color x:Key="ThemeColor24">#536980</Color>
+    <SolidColorBrush x:Key="ThemeBrush24" Color="#536980"/>
+    <Color x:Key="ThemeColor25">#5A53325A</Color>
+    <SolidColorBrush x:Key="ThemeBrush25" Color="#5A53325A"/>
+    <Color x:Key="ThemeColor26">#5A7391</Color>
+    <SolidColorBrush x:Key="ThemeBrush26" Color="#5A7391"/>
+    <Color x:Key="ThemeColor27">#5A789B</Color>
+    <SolidColorBrush x:Key="ThemeBrush27" Color="#5A789B"/>
+    <Color x:Key="ThemeColor28">#60B2F8</Color>
+    <SolidColorBrush x:Key="ThemeBrush28" Color="#60B2F8"/>
+    <Color x:Key="ThemeColor29">#66334C68</Color>
+    <SolidColorBrush x:Key="ThemeBrush29" Color="#66334C68"/>
+    <Color x:Key="ThemeColor30">#8DCCFF</Color>
+    <SolidColorBrush x:Key="ThemeBrush30" Color="#8DCCFF"/>
+    <Color x:Key="ThemeColor31">#93C9FF</Color>
+    <SolidColorBrush x:Key="ThemeBrush31" Color="#93C9FF"/>
+    <Color x:Key="ThemeColor32">#99111E30</Color>
+    <SolidColorBrush x:Key="ThemeBrush32" Color="#99111E30"/>
+    <Color x:Key="ThemeColor33">#99304965</Color>
+    <SolidColorBrush x:Key="ThemeBrush33" Color="#99304965"/>
+    <Color x:Key="ThemeColor34">#9FB7D2</Color>
+    <SolidColorBrush x:Key="ThemeBrush34" Color="#9FB7D2"/>
+    <Color x:Key="ThemeColor35">#A31C3654</Color>
+    <SolidColorBrush x:Key="ThemeBrush35" Color="#A31C3654"/>
+    <Color x:Key="ThemeColor36">#A5B4C4</Color>
+    <SolidColorBrush x:Key="ThemeBrush36" Color="#A5B4C4"/>
+    <Color x:Key="ThemeColor37">#A9C6E6</Color>
+    <SolidColorBrush x:Key="ThemeBrush37" Color="#A9C6E6"/>
+    <Color x:Key="ThemeColor38">#AFC1D7</Color>
+    <SolidColorBrush x:Key="ThemeBrush38" Color="#AFC1D7"/>
+    <Color x:Key="ThemeColor39">#AFD6FF</Color>
+    <SolidColorBrush x:Key="ThemeBrush39" Color="#AFD6FF"/>
+    <Color x:Key="ThemeColor40">#B2213854</Color>
+    <SolidColorBrush x:Key="ThemeBrush40" Color="#B2213854"/>
+    <Color x:Key="ThemeColor41">#B3C8E1</Color>
+    <SolidColorBrush x:Key="ThemeBrush41" Color="#B3C8E1"/>
+    <Color x:Key="ThemeColor42">#B8132439</Color>
+    <SolidColorBrush x:Key="ThemeBrush42" Color="#B8132439"/>
+    <Color x:Key="ThemeColor43">#B8D2EE</Color>
+    <SolidColorBrush x:Key="ThemeBrush43" Color="#B8D2EE"/>
+    <Color x:Key="ThemeColor44">#B9DAFF</Color>
+    <SolidColorBrush x:Key="ThemeBrush44" Color="#B9DAFF"/>
+    <Color x:Key="ThemeColor45">#BDD0E5</Color>
+    <SolidColorBrush x:Key="ThemeBrush45" Color="#BDD0E5"/>
+    <Color x:Key="ThemeColor46">#C0D2EA</Color>
+    <SolidColorBrush x:Key="ThemeBrush46" Color="#C0D2EA"/>
+    <Color x:Key="ThemeColor47">#C7D9EE</Color>
+    <SolidColorBrush x:Key="ThemeBrush47" Color="#C7D9EE"/>
+    <Color x:Key="ThemeColor48">#C8DEFF</Color>
+    <SolidColorBrush x:Key="ThemeBrush48" Color="#C8DEFF"/>
+    <Color x:Key="ThemeColor49">#CC1B2C43</Color>
+    <SolidColorBrush x:Key="ThemeBrush49" Color="#CC1B2C43"/>
+    <Color x:Key="ThemeColor50">#D0142943</Color>
+    <SolidColorBrush x:Key="ThemeBrush50" Color="#D0142943"/>
+    <Color x:Key="ThemeColor51">#D4E1EF</Color>
+    <SolidColorBrush x:Key="ThemeBrush51" Color="#D4E1EF"/>
+    <Color x:Key="ThemeColor52">#D91B3D68</Color>
+    <SolidColorBrush x:Key="ThemeBrush52" Color="#D91B3D68"/>
+    <Color x:Key="ThemeColor53">#E519304E</Color>
+    <SolidColorBrush x:Key="ThemeBrush53" Color="#E519304E"/>
+    <Color x:Key="ThemeColor54">#E7F1FC</Color>
+    <SolidColorBrush x:Key="ThemeBrush54" Color="#E7F1FC"/>
+    <Color x:Key="ThemeColor55">#E9152F53</Color>
+    <SolidColorBrush x:Key="ThemeBrush55" Color="#E9152F53"/>
+    <Color x:Key="ThemeColor56">#E9F0F8</Color>
+    <SolidColorBrush x:Key="ThemeBrush56" Color="#E9F0F8"/>
+    <Color x:Key="ThemeColor57">#F00C1A2B</Color>
+    <SolidColorBrush x:Key="ThemeBrush57" Color="#F00C1A2B"/>
+    <Color x:Key="ThemeColor58">#F00D1827</Color>
+    <SolidColorBrush x:Key="ThemeBrush58" Color="#F00D1827"/>
+    <Color x:Key="ThemeColor59">#F2F7FE</Color>
+    <SolidColorBrush x:Key="ThemeBrush59" Color="#F2F7FE"/>
+    <Color x:Key="ThemeColor60">#F5F9FF</Color>
+    <SolidColorBrush x:Key="ThemeBrush60" Color="#F5F9FF"/>
+    <Color x:Key="ThemeColor61">#FFBB59</Color>
+    <SolidColorBrush x:Key="ThemeBrush61" Color="#FFBB59"/>
+    <Color x:Key="ThemeColor62">#FFC45E</Color>
+    <SolidColorBrush x:Key="ThemeBrush62" Color="#FFC45E"/>
     <Style x:Key="Card" TargetType="Border">
-      <Setter Property="Background" Value="#CC1B2C43"/><Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+      <Setter Property="Background" Value="{DynamicResource ThemeBrush49}"/><Setter Property="BorderBrush" Value="{DynamicResource Line}"/>
       <Setter Property="BorderThickness" Value="1"/><Setter Property="CornerRadius" Value="17"/>
-      <Setter Property="Effect"><Setter.Value><DropShadowEffect BlurRadius="16" ShadowDepth="5" Color="#050C19" Opacity="0.15"/></Setter.Value></Setter>
+      <Setter Property="Effect"><Setter.Value><DropShadowEffect BlurRadius="16" ShadowDepth="5" Color="{DynamicResource ThemeColor00}" Opacity="0.15"/></Setter.Value></Setter>
     </Style>
-    <Style x:Key="IconTile" TargetType="Border"><Setter Property="Width" Value="46"/><Setter Property="Height" Value="46"/><Setter Property="CornerRadius" Value="12"/><Setter Property="Background" Value="#244464"/><Setter Property="VerticalAlignment" Value="Center"/></Style>
+    <Style x:Key="IconTile" TargetType="Border"><Setter Property="Width" Value="46"/><Setter Property="Height" Value="46"/><Setter Property="CornerRadius" Value="12"/><Setter Property="Background" Value="{DynamicResource ThemeBrush07}"/><Setter Property="VerticalAlignment" Value="Center"/></Style>
     <Style x:Key="PrimaryButton" TargetType="Button">
-      <Setter Property="Background" Value="#1979E5"/><Setter Property="Foreground" Value="White"/>
+      <Setter Property="Background" Value="{DynamicResource ThemeBrush05}"/><Setter Property="Foreground" Value="White"/>
       <Setter Property="FontWeight" Value="SemiBold"/><Setter Property="FontSize" Value="13"/>
       <Setter Property="Padding" Value="21,13"/><Setter Property="Cursor" Value="Hand"/>
       <Setter Property="Template">
-        <Setter.Value><ControlTemplate TargetType="Button"><Border x:Name="B" Background="{TemplateBinding Background}" CornerRadius="11" BorderThickness="1" BorderBrush="#60B2F8"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/></Border><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="B" Property="Background" Value="#3299F5"/></Trigger><Trigger Property="IsPressed" Value="True"><Setter TargetName="B" Property="Background" Value="#1762BB"/></Trigger><Trigger Property="IsEnabled" Value="False"><Setter TargetName="B" Property="Background" Value="#46586D"/><Setter TargetName="B" Property="BorderBrush" Value="#46586D"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value>
+        <Setter.Value><ControlTemplate TargetType="Button"><Border x:Name="B" Background="{TemplateBinding Background}" CornerRadius="11" BorderThickness="1" BorderBrush="{DynamicResource ThemeBrush28}"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/></Border><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="B" Property="Background" Value="{DynamicResource ThemeBrush11}"/></Trigger><Trigger Property="IsPressed" Value="True"><Setter TargetName="B" Property="Background" Value="{DynamicResource ThemeBrush04}"/></Trigger><Trigger Property="IsEnabled" Value="False"><Setter TargetName="B" Property="Background" Value="{DynamicResource ThemeBrush19}"/><Setter TargetName="B" Property="BorderBrush" Value="{DynamicResource ThemeBrush19}"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value>
       </Setter>
     </Style>
     <Style x:Key="SecondaryButton" TargetType="Button">
-      <Setter Property="Background" Value="#99304965"/><Setter Property="Foreground" Value="#E7F1FC"/>
+      <Setter Property="Background" Value="{DynamicResource ThemeBrush33}"/><Setter Property="Foreground" Value="{DynamicResource ThemeBrush54}"/>
       <Setter Property="FontWeight" Value="SemiBold"/><Setter Property="FontSize" Value="13"/>
       <Setter Property="Padding" Value="17,12"/><Setter Property="Cursor" Value="Hand"/>
-      <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button"><Border x:Name="B" Background="{TemplateBinding Background}" BorderBrush="#5A7391" BorderThickness="1" CornerRadius="11"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/></Border><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="B" Property="Background" Value="#456484"/></Trigger><Trigger Property="IsEnabled" Value="False"><Setter TargetName="B" Property="Opacity" Value="0.45"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter>
+      <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button"><Border x:Name="B" Background="{TemplateBinding Background}" BorderBrush="{DynamicResource ThemeBrush26}" BorderThickness="1" CornerRadius="11"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/></Border><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="B" Property="Background" Value="{DynamicResource ThemeBrush17}"/></Trigger><Trigger Property="IsEnabled" Value="False"><Setter TargetName="B" Property="Opacity" Value="0.45"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter>
     </Style>
     <Style x:Key="NavButton" TargetType="Button" BasedOn="{StaticResource SecondaryButton}">
-      <Setter Property="Background" Value="Transparent"/><Setter Property="Foreground" Value="#BDD0E5"/>
+      <Setter Property="Background" Value="Transparent"/><Setter Property="Foreground" Value="{DynamicResource ThemeBrush45}"/>
       <Setter Property="Padding" Value="14,13"/><Setter Property="HorizontalContentAlignment" Value="Left"/>
-      <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button"><Border x:Name="B" Background="{TemplateBinding Background}" CornerRadius="11" BorderBrush="#4974AC" BorderThickness="0"><ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/></Border><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="B" Property="Background" Value="#2D496B"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter>
+      <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button"><Border x:Name="B" Background="{TemplateBinding Background}" CornerRadius="11" BorderBrush="{DynamicResource ThemeBrush21}" BorderThickness="0"><ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/></Border><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="B" Property="Background" Value="{DynamicResource ThemeBrush09}"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter>
     </Style>
     <Style x:Key="Input" TargetType="TextBox">
       <Setter Property="Height" Value="38"/><Setter Property="Padding" Value="10,8"/>
-      <Setter Property="FontSize" Value="13"/><Setter Property="Foreground" Value="{StaticResource Ink}"/>
-      <Setter Property="Background" Value="#111A27"/><Setter Property="BorderBrush" Value="#405269"/>
+      <Setter Property="FontSize" Value="13"/><Setter Property="Foreground" Value="{DynamicResource Ink}"/>
+      <Setter Property="Background" Value="{DynamicResource ThemeBrush02}"/><Setter Property="BorderBrush" Value="{DynamicResource ThemeBrush13}"/>
       <Setter Property="BorderThickness" Value="1"/><Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
     <Style x:Key="DarkPortCombo" TargetType="ComboBox">
-      <Setter Property="Foreground" Value="{StaticResource Ink}"/><Setter Property="Background" Value="#111A27"/>
+      <Setter Property="Foreground" Value="{DynamicResource Ink}"/><Setter Property="Background" Value="{DynamicResource ThemeBrush02}"/>
       <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ComboBox">
-        <Grid><Border Background="#111A27" BorderBrush="#405269" BorderThickness="1" CornerRadius="7"/>
-          <TextBlock Text="{Binding SelectionBoxItem,RelativeSource={RelativeSource TemplatedParent}}" Foreground="#E9F0F8" VerticalAlignment="Center" Margin="11,0,27,0" TextTrimming="CharacterEllipsis"/>
-          <TextBlock Text="⌄" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="#AFC1D7" FontSize="16"/>
+        <Grid><Border Background="{DynamicResource ThemeBrush02}" BorderBrush="{DynamicResource ThemeBrush13}" BorderThickness="1" CornerRadius="7"/>
+          <TextBlock Text="{Binding SelectionBoxItem,RelativeSource={RelativeSource TemplatedParent}}" Foreground="{DynamicResource ThemeBrush56}" VerticalAlignment="Center" Margin="11,0,27,0" TextTrimming="CharacterEllipsis"/>
+          <TextBlock Text="⌄" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="{DynamicResource ThemeBrush38}" FontSize="16"/>
           <ToggleButton IsChecked="{Binding IsDropDownOpen,RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}" Focusable="False">
             <ToggleButton.Template><ControlTemplate TargetType="ToggleButton"><Border Background="Transparent"/></ControlTemplate></ToggleButton.Template>
           </ToggleButton>
           <Popup IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom" AllowsTransparency="True" Focusable="False" PopupAnimation="Fade">
-            <Border Background="#1B2533" BorderBrush="#405269" BorderThickness="1" MinWidth="150" MaxHeight="220"><ScrollViewer><ItemsPresenter/></ScrollViewer></Border>
+            <Border Background="{DynamicResource ThemeBrush06}" BorderBrush="{DynamicResource ThemeBrush13}" BorderThickness="1" MinWidth="150" MaxHeight="220"><ScrollViewer><ItemsPresenter/></ScrollViewer></Border>
           </Popup>
         </Grid>
       </ControlTemplate></Setter.Value></Setter>
     </Style>
-    <Style TargetType="ComboBoxItem"><Setter Property="Foreground" Value="{StaticResource Ink}"/><Setter Property="Background" Value="#1B2533"/><Setter Property="Padding" Value="9,7"/></Style>
+    <Style TargetType="ComboBoxItem"><Setter Property="Foreground" Value="{DynamicResource Ink}"/><Setter Property="Background" Value="{DynamicResource ThemeBrush06}"/><Setter Property="Padding" Value="9,7"/></Style>
     <Style x:Key="FieldLabel" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="{StaticResource Muted}"/><Setter Property="FontSize" Value="12"/>
+      <Setter Property="Foreground" Value="{DynamicResource Muted}"/><Setter Property="FontSize" Value="12"/>
       <Setter Property="FontWeight" Value="SemiBold"/><Setter Property="Margin" Value="0,0,0,6"/>
     </Style>
-    <Style x:Key="CardTitle" TargetType="TextBlock"><Setter Property="Foreground" Value="{StaticResource Muted}"/><Setter Property="FontSize" Value="12"/><Setter Property="FontWeight" Value="SemiBold"/></Style>
-    <Style x:Key="CardValue" TargetType="TextBlock"><Setter Property="FontSize" Value="17"/><Setter Property="FontWeight" Value="SemiBold"/><Setter Property="Foreground" Value="{StaticResource Ink}"/><Setter Property="Margin" Value="0,9,0,5"/></Style>
-    <Style x:Key="CardDetail" TargetType="TextBlock"><Setter Property="Foreground" Value="{StaticResource Muted}"/><Setter Property="FontSize" Value="11.5"/><Setter Property="TextWrapping" Value="Wrap"/></Style>
-    <Style TargetType="TextBlock"><Setter Property="Foreground" Value="{StaticResource Ink}"/></Style>
-    <Style TargetType="CheckBox"><Setter Property="Foreground" Value="{StaticResource Ink}"/></Style>
+    <Style x:Key="CardTitle" TargetType="TextBlock"><Setter Property="Foreground" Value="{DynamicResource Muted}"/><Setter Property="FontSize" Value="12"/><Setter Property="FontWeight" Value="SemiBold"/></Style>
+    <Style x:Key="CardValue" TargetType="TextBlock"><Setter Property="FontSize" Value="17"/><Setter Property="FontWeight" Value="SemiBold"/><Setter Property="Foreground" Value="{DynamicResource Ink}"/><Setter Property="Margin" Value="0,9,0,5"/></Style>
+    <Style x:Key="CardDetail" TargetType="TextBlock"><Setter Property="Foreground" Value="{DynamicResource Muted}"/><Setter Property="FontSize" Value="11.5"/><Setter Property="TextWrapping" Value="Wrap"/></Style>
+    <Style TargetType="TextBlock"><Setter Property="Foreground" Value="{DynamicResource Ink}"/></Style>
+    <Style TargetType="CheckBox"><Setter Property="Foreground" Value="{DynamicResource Ink}"/></Style>
     <Style TargetType="ScrollBar">
-      <Setter Property="Width" Value="10"/><Setter Property="Background" Value="#172130"/>
+      <Setter Property="Width" Value="10"/><Setter Property="Background" Value="{DynamicResource ThemeBrush03}"/>
       <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ScrollBar">
         <Border Background="{TemplateBinding Background}"><Track x:Name="PART_Track" IsDirectionReversed="True">
           <Track.DecreaseRepeatButton><RepeatButton Command="ScrollBar.PageUpCommand" Opacity="0"/></Track.DecreaseRepeatButton>
-          <Track.Thumb><Thumb><Thumb.Template><ControlTemplate TargetType="Thumb"><Border Background="#536980" CornerRadius="5" Margin="2,2"/></ControlTemplate></Thumb.Template></Thumb></Track.Thumb>
+          <Track.Thumb><Thumb><Thumb.Template><ControlTemplate TargetType="Thumb"><Border Background="{DynamicResource ThemeBrush24}" CornerRadius="5" Margin="2,2"/></ControlTemplate></Thumb.Template></Thumb></Track.Thumb>
           <Track.IncreaseRepeatButton><RepeatButton Command="ScrollBar.PageDownCommand" Opacity="0"/></Track.IncreaseRepeatButton>
         </Track></Border>
       </ControlTemplate></Setter.Value></Setter>
@@ -78,54 +204,57 @@
   </Window.Resources>
 
   <Grid>
-    <Grid.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#F00C1A2B" Offset="0"/><GradientStop Color="#E9152F53" Offset="0.57"/><GradientStop Color="#F00D1827" Offset="1"/></LinearGradientBrush></Grid.Background>
+    <Grid.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="{DynamicResource ThemeColor57}" Offset="0"/><GradientStop Color="{DynamicResource ThemeColor55}" Offset="0.57"/><GradientStop Color="{DynamicResource ThemeColor58}" Offset="1"/></LinearGradientBrush></Grid.Background>
     <Grid.ColumnDefinitions><ColumnDefinition Width="246"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-    <Border Background="#B8132439" BorderBrush="#49617F" BorderThickness="0,0,1,0">
+    <Border Background="{DynamicResource ThemeBrush42}" BorderBrush="{DynamicResource ThemeBrush20}" BorderThickness="0,0,1,0">
       <Grid Margin="18,26,18,20"><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="26"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Margin="2,0"><Border Width="42" Height="42" CornerRadius="12"><Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#35A8FF" Offset="0"/><GradientStop Color="#075BD3" Offset="1"/></LinearGradientBrush></Border.Background><TextBlock Text="&#xE7F4;" FontFamily="Segoe MDL2 Assets" Foreground="White" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><StackPanel Margin="11,0,0,0" VerticalAlignment="Center"><TextBlock Text="Torre Remota" FontSize="15" FontWeight="SemiBold"/><TextBlock Text="REMOTE PC BRIDGE" Foreground="{StaticResource Muted}" FontSize="9" FontWeight="SemiBold"/></StackPanel></StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="2,0"><Border Width="42" Height="42" CornerRadius="12"><Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="{DynamicResource ThemeColor12}" Offset="0"/><GradientStop Color="{DynamicResource ThemeColor01}" Offset="1"/></LinearGradientBrush></Border.Background><TextBlock Text="&#xE7F4;" FontFamily="Segoe MDL2 Assets" Foreground="White" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><StackPanel Margin="11,0,0,0" VerticalAlignment="Center"><TextBlock Text="Torre Remota" FontSize="15" FontWeight="SemiBold"/><TextBlock Text="REMOTE PC BRIDGE" Foreground="{DynamicResource Muted}" FontSize="9" FontWeight="SemiBold"/></StackPanel></StackPanel>
         <StackPanel Grid.Row="2">
-          <Button x:Name="NavDashboard" Style="{StaticResource NavButton}" Click="ShowDashboard" Background="#245184" Foreground="#8DCCFF" Margin="0,0,0,5"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE10F;" FontFamily="Segoe MDL2 Assets" FontSize="17" Width="29"/><TextBlock Text="Panel de control" FontSize="13"/></StackPanel></Button>
+          <Button x:Name="NavDashboard" Style="{StaticResource NavButton}" Click="ShowDashboard" Background="{DynamicResource ThemeBrush08}" Foreground="{DynamicResource ThemeBrush30}" Margin="0,0,0,5"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE10F;" FontFamily="Segoe MDL2 Assets" FontSize="17" Width="29"/><TextBlock Text="Panel de control" FontSize="13"/></StackPanel></Button>
           <Button x:Name="NavSetup" Style="{StaticResource NavButton}" Click="ShowSetup" Margin="0,0,0,5"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE950;" FontFamily="Segoe MDL2 Assets" FontSize="17" Width="29"/><TextBlock Text="Preparar ESP32" FontSize="13"/></StackPanel></Button>
-          <Button x:Name="NavSettings" Style="{StaticResource NavButton}" Click="ShowSettings" Margin="0,0,0,5"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="17" Width="29"/><TextBlock Text="Configuración" FontSize="13"/></StackPanel></Button>
           <Button x:Name="NavGuide" Style="{StaticResource NavButton}" Click="ShowGuide"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE946;" FontFamily="Segoe MDL2 Assets" FontSize="17" Width="29"/><TextBlock Text="Ayuda y LED" FontSize="13"/></StackPanel></Button>
         </StackPanel>
-        <Border Grid.Row="4" Style="{StaticResource Card}" Padding="14"><StackPanel><StackPanel Orientation="Horizontal"><Ellipse x:Name="SideStatusDot" Width="9" Height="9" Fill="#A5B4C4" Margin="0,1,8,0"/><TextBlock Text="ESTADO DEL SISTEMA" FontSize="10" FontWeight="Bold" Foreground="{StaticResource Muted}"/></StackPanel><TextBlock x:Name="SideMode" Text="Leyendo configuración…" Margin="0,9,0,3" FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap"/><TextBlock x:Name="SideAddress" Text="Configura tu equipo" FontSize="11" Foreground="{StaticResource Muted}"/></StackPanel></Border>
+        <StackPanel Grid.Row="4">
+          <Border Style="{StaticResource Card}" Padding="14" Margin="0,0,0,15"><StackPanel><StackPanel Orientation="Horizontal"><Ellipse x:Name="SideStatusDot" Width="9" Height="9" Fill="{DynamicResource ThemeBrush36}" Margin="0,1,8,0"/><TextBlock Text="ESTADO DEL SISTEMA" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource Muted}"/></StackPanel><TextBlock x:Name="SideMode" Text="Leyendo configuración…" Margin="0,9,0,3" FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap"/><TextBlock x:Name="SideAddress" Text="Configura tu equipo" FontSize="11" Foreground="{DynamicResource Muted}"/></StackPanel></Border>
+          <Button x:Name="NavSettings" Style="{StaticResource NavButton}" Click="ShowSettings" Margin="0,0,0,5"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="17" Width="29"/><TextBlock Text="Configuración" FontSize="13"/></StackPanel></Button>
+          <Button x:Name="ThemeButton" Style="{StaticResource NavButton}" Click="ToggleThemeClick"><StackPanel Orientation="Horizontal"><TextBlock x:Name="ThemeIcon" Text="&#xE708;" FontFamily="Segoe MDL2 Assets" FontSize="17" Width="29"/><TextBlock x:Name="ThemeLabel" Text="Tema claro" FontSize="13"/></StackPanel></Button>
+        </StackPanel>
       </Grid>
     </Border>
 
     <Grid Grid.Column="1"><Grid.RowDefinitions><RowDefinition Height="112"/><RowDefinition Height="*"/></Grid.RowDefinitions>
-      <Border Background="#45162743" BorderBrush="#4B6280" BorderThickness="0,0,0,1" Padding="29,0"><DockPanel LastChildFill="True"><Border DockPanel.Dock="Right" Background="#A31C3654" BorderBrush="#4B688A" BorderThickness="1" CornerRadius="13" Padding="16,11" VerticalAlignment="Center" MinWidth="190"><StackPanel Orientation="Horizontal"><TextBlock x:Name="HeaderWifiIcon" Text="&#xE701;" FontFamily="Segoe MDL2 Assets" Foreground="#A5B4C4" FontSize="23" VerticalAlignment="Center" Margin="0,0,12,0"/><StackPanel><TextBlock x:Name="TopMode" Text="ESP32 v2" Foreground="#F2F7FE" FontSize="12" FontWeight="SemiBold"/><TextBlock Text="REMOTE PC BRIDGE" Foreground="{StaticResource Muted}" FontSize="9" Margin="0,2,0,0"/></StackPanel></StackPanel></Border><StackPanel VerticalAlignment="Center"><TextBlock Text="REMOTE PC BRIDGE" FontSize="10" Foreground="#A9C6E6" FontWeight="SemiBold"/><TextBlock Text="Conexión a casa" FontSize="27" FontWeight="SemiBold" Margin="0,2,0,0"/><TextBlock Text="Enciende, comprueba y conecta desde un solo lugar" FontSize="12" Foreground="{StaticResource Muted}"/></StackPanel></DockPanel></Border>
+      <Border Background="{DynamicResource ThemeBrush15}" BorderBrush="{DynamicResource ThemeBrush22}" BorderThickness="0,0,0,1" Padding="29,0"><DockPanel LastChildFill="True"><Border DockPanel.Dock="Right" Background="{DynamicResource ThemeBrush35}" BorderBrush="{DynamicResource ThemeBrush23}" BorderThickness="1" CornerRadius="13" Padding="16,11" VerticalAlignment="Center" MinWidth="190"><StackPanel Orientation="Horizontal"><TextBlock x:Name="HeaderWifiIcon" Text="&#xE701;" FontFamily="Segoe MDL2 Assets" Foreground="{DynamicResource ThemeBrush36}" FontSize="23" VerticalAlignment="Center" Margin="0,0,12,0"/><StackPanel><TextBlock x:Name="TopMode" Text="ESP32 v2" Foreground="{DynamicResource ThemeBrush59}" FontSize="12" FontWeight="SemiBold"/><TextBlock Text="REMOTE PC BRIDGE" Foreground="{DynamicResource Muted}" FontSize="9" Margin="0,2,0,0"/></StackPanel></StackPanel></Border><StackPanel VerticalAlignment="Center"><TextBlock Text="REMOTE PC BRIDGE" FontSize="10" Foreground="{DynamicResource ThemeBrush37}" FontWeight="SemiBold"/><TextBlock Text="Conexión a casa" FontSize="27" FontWeight="SemiBold" Margin="0,2,0,0"/><TextBlock Text="Enciende, comprueba y conecta desde un solo lugar" FontSize="12" Foreground="{DynamicResource Muted}"/></StackPanel></DockPanel></Border>
 
       <Grid Grid.Row="1">
         <ScrollViewer x:Name="DashboardView" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
   <StackPanel Margin="28,24,28,28">
-    <Border Height="348" CornerRadius="19" BorderBrush="#5A789B" BorderThickness="1" Padding="22,18">
-      <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#E519304E" Offset="0"/><GradientStop Color="#D91B3D68" Offset="0.6"/><GradientStop Color="#D0142943" Offset="1"/></LinearGradientBrush></Border.Background>
+    <Border Height="348" CornerRadius="19" BorderBrush="{DynamicResource ThemeBrush27}" BorderThickness="1" Padding="22,18">
+      <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="{DynamicResource ThemeColor53}" Offset="0"/><GradientStop Color="{DynamicResource ThemeColor52}" Offset="0.6"/><GradientStop Color="{DynamicResource ThemeColor50}" Offset="1"/></LinearGradientBrush></Border.Background>
       <Grid>
         <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
         <Grid Grid.Row="0">
           <Grid.ColumnDefinitions><ColumnDefinition Width="1.08*"/><ColumnDefinition Width="0.92*"/></Grid.ColumnDefinitions>
           <StackPanel VerticalAlignment="Center" Margin="4,2,0,4">
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,8"><Ellipse x:Name="HeroStatusDot" Width="10" Height="10" Fill="#A5B4C4" Margin="0,0,10,0" VerticalAlignment="Center"/><TextBlock Text="ESTADO DE TU TORRE" Foreground="#B8D2EE" FontSize="10" FontWeight="SemiBold"/></StackPanel>
-            <TextBlock x:Name="Headline" Text="Comprobando tu conexión…" FontSize="28" FontWeight="SemiBold" Foreground="#F5F9FF"/>
-            <TextBlock x:Name="Advice" Text="Separaremos el estado del ESP32, la torre y la conexión remota." TextWrapping="Wrap" Foreground="#C7D9EE" FontSize="13" MaxWidth="570" Margin="0,7,0,7" HorizontalAlignment="Left"/>
-            <TextBlock x:Name="MoonlightStatusText" Text="Moonlight · Sin sesión iniciada en esta ventana" Foreground="#B3C8E1" FontSize="11" Margin="0,0,0,4"/>
-            <TextBlock x:Name="StatusFreshnessText" Text="Última comprobación: pendiente · actualización automática cada 30 s" Foreground="#9FB7D2" FontSize="10"/>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,8"><Ellipse x:Name="HeroStatusDot" Width="10" Height="10" Fill="{DynamicResource ThemeBrush36}" Margin="0,0,10,0" VerticalAlignment="Center"/><TextBlock Text="ESTADO DE TU TORRE" Foreground="{DynamicResource ThemeBrush43}" FontSize="10" FontWeight="SemiBold"/></StackPanel>
+            <TextBlock x:Name="Headline" Text="Comprobando tu conexión…" FontSize="28" FontWeight="SemiBold" Foreground="{DynamicResource ThemeBrush60}"/>
+            <TextBlock x:Name="Advice" Text="Separaremos el estado del ESP32, la torre y la conexión remota." TextWrapping="Wrap" Foreground="{DynamicResource ThemeBrush47}" FontSize="13" MaxWidth="570" Margin="0,7,0,7" HorizontalAlignment="Left"/>
+            <TextBlock x:Name="MoonlightStatusText" Text="Moonlight · Sin sesión iniciada en esta ventana" Foreground="{DynamicResource ThemeBrush41}" FontSize="11" Margin="0,0,0,4"/>
+            <TextBlock x:Name="StatusFreshnessText" Text="Última comprobación: pendiente · actualización automática cada 30 s" Foreground="{DynamicResource ThemeBrush34}" FontSize="10"/>
           </StackPanel>
           <Grid Grid.Column="1" IsHitTestVisible="False" Margin="-24,-24,-18,-31">
-            <Ellipse Width="370" Height="160" HorizontalAlignment="Center" VerticalAlignment="Bottom" Fill="#3046A2FA"><Ellipse.Effect><BlurEffect Radius="48"/></Ellipse.Effect></Ellipse>
+            <Ellipse Width="370" Height="160" HorizontalAlignment="Center" VerticalAlignment="Bottom" Fill="{DynamicResource ThemeBrush10}"><Ellipse.Effect><BlurEffect Radius="48"/></Ellipse.Effect></Ellipse>
             <Image Source="Resources/hero-pc.png" Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Center" MaxWidth="420" Height="245" Opacity="0.94"/>
           </Grid>
         </Grid>
         <UniformGrid Grid.Row="1" Columns="5" Margin="0,0,0,16">
-          <Border x:Name="StageCloud" Background="#B2213854" BorderBrush="#455C7C" BorderThickness="1" CornerRadius="10" Padding="10,8" Margin="0,0,7,0"><StackPanel><TextBlock Text="01 · FIREBASE" FontSize="10" Foreground="#C0D2EA"/><TextBlock x:Name="StageCloudText" Text="Pendiente" FontSize="11" FontWeight="SemiBold" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"/></StackPanel></Border>
-          <Border x:Name="StageEsp" Background="#B2213854" BorderBrush="#455C7C" BorderThickness="1" CornerRadius="10" Padding="10,8" Margin="0,0,7,0"><StackPanel><TextBlock Text="02 · ESP32" FontSize="10" Foreground="#C0D2EA"/><TextBlock x:Name="StageEspText" Text="Pendiente" FontSize="11" FontWeight="SemiBold" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"/></StackPanel></Border>
-          <Border x:Name="StageLan" Background="#B2213854" BorderBrush="#455C7C" BorderThickness="1" CornerRadius="10" Padding="10,8" Margin="0,0,7,0"><StackPanel><TextBlock Text="03 · TORRE" FontSize="10" Foreground="#C0D2EA"/><TextBlock x:Name="StageLanText" Text="Pendiente" FontSize="11" FontWeight="SemiBold" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"/></StackPanel></Border>
-          <Border x:Name="StageRemote" Background="#B2213854" BorderBrush="#455C7C" BorderThickness="1" CornerRadius="10" Padding="10,8" Margin="0,0,7,0"><StackPanel><TextBlock Text="04 · REMOTO" FontSize="10" Foreground="#C0D2EA"/><TextBlock x:Name="StageRemoteText" Text="Pendiente" FontSize="11" FontWeight="SemiBold" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"/></StackPanel></Border>
-          <Border x:Name="StageVideo" Background="#B2213854" BorderBrush="#455C7C" BorderThickness="1" CornerRadius="10" Padding="10,8"><StackPanel><TextBlock Text="05 · VÍDEO" FontSize="10" Foreground="#C0D2EA"/><TextBlock x:Name="StageVideoText" Text="Sin iniciar" FontSize="11" FontWeight="SemiBold" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"/></StackPanel></Border>
+          <Border x:Name="StageCloud" Background="{DynamicResource ThemeBrush40}" BorderBrush="{DynamicResource ThemeBrush16}" BorderThickness="1" CornerRadius="10" Padding="10,8" Margin="0,0,7,0"><StackPanel><TextBlock Text="01 · FIREBASE" FontSize="10" Foreground="{DynamicResource ThemeBrush46}"/><TextBlock x:Name="StageCloudText" Text="Pendiente" FontSize="11" FontWeight="SemiBold" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"/></StackPanel></Border>
+          <Border x:Name="StageEsp" Background="{DynamicResource ThemeBrush40}" BorderBrush="{DynamicResource ThemeBrush16}" BorderThickness="1" CornerRadius="10" Padding="10,8" Margin="0,0,7,0"><StackPanel><TextBlock Text="02 · ESP32" FontSize="10" Foreground="{DynamicResource ThemeBrush46}"/><TextBlock x:Name="StageEspText" Text="Pendiente" FontSize="11" FontWeight="SemiBold" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"/></StackPanel></Border>
+          <Border x:Name="StageLan" Background="{DynamicResource ThemeBrush40}" BorderBrush="{DynamicResource ThemeBrush16}" BorderThickness="1" CornerRadius="10" Padding="10,8" Margin="0,0,7,0"><StackPanel><TextBlock Text="03 · TORRE" FontSize="10" Foreground="{DynamicResource ThemeBrush46}"/><TextBlock x:Name="StageLanText" Text="Pendiente" FontSize="11" FontWeight="SemiBold" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"/></StackPanel></Border>
+          <Border x:Name="StageRemote" Background="{DynamicResource ThemeBrush40}" BorderBrush="{DynamicResource ThemeBrush16}" BorderThickness="1" CornerRadius="10" Padding="10,8" Margin="0,0,7,0"><StackPanel><TextBlock Text="04 · REMOTO" FontSize="10" Foreground="{DynamicResource ThemeBrush46}"/><TextBlock x:Name="StageRemoteText" Text="Pendiente" FontSize="11" FontWeight="SemiBold" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"/></StackPanel></Border>
+          <Border x:Name="StageVideo" Background="{DynamicResource ThemeBrush40}" BorderBrush="{DynamicResource ThemeBrush16}" BorderThickness="1" CornerRadius="10" Padding="10,8"><StackPanel><TextBlock Text="05 · VÍDEO" FontSize="10" Foreground="{DynamicResource ThemeBrush46}"/><TextBlock x:Name="StageVideoText" Text="Sin iniciar" FontSize="11" FontWeight="SemiBold" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"/></StackPanel></Border>
         </UniformGrid>
         <WrapPanel Grid.Row="2">
-          <Button x:Name="ConnectButton" Style="{StaticResource PrimaryButton}" Click="ConnectClick" Margin="0,0,9,0"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE768;" FontFamily="Segoe MDL2 Assets" FontSize="17" Margin="0,0,10,0"/><TextBlock Text="Encender y conectar"/></StackPanel></Button>
+          <Button x:Name="ConnectButton" Style="{StaticResource PrimaryButton}" Click="ConnectClick" Margin="0,0,9,0"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE768;" FontFamily="Segoe MDL2 Assets" Foreground="White" FontSize="17" Margin="0,0,10,0"/><TextBlock Text="Encender y conectar" Foreground="White"/></StackPanel></Button>
           <Button x:Name="WakeButton" Style="{StaticResource SecondaryButton}" Click="WakeClick" Margin="0,0,9,0"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" FontSize="17" Margin="0,0,9,0"/><TextBlock Text="Solo encender"/></StackPanel></Button>
           <Button x:Name="DiagnoseButton" Style="{StaticResource SecondaryButton}" Click="DiagnoseClick" Margin="0,0,9,0"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" FontSize="17" Margin="0,0,9,0"/><TextBlock Text="Diagnosticar"/></StackPanel></Button>
           <Button x:Name="CancelButton" Style="{StaticResource SecondaryButton}" Click="CancelClick" IsEnabled="False"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="15" Margin="0,0,8,0"/><TextBlock Text="Cancelar espera"/></StackPanel></Button>
@@ -133,31 +262,31 @@
       </Grid>
     </Border>
 
-    <DockPanel Margin="0,22,0,12"><TextBlock Text="Estado de la conexión" FontSize="17" FontWeight="SemiBold"/><TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="Pruebas independientes, con resultados recientes" Foreground="{StaticResource Muted}" FontSize="11" VerticalAlignment="Center"/></DockPanel>
+    <DockPanel Margin="0,22,0,12"><TextBlock Text="Estado de la conexión" FontSize="17" FontWeight="SemiBold"/><TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="Pruebas independientes, con resultados recientes" Foreground="{DynamicResource Muted}" FontSize="11" VerticalAlignment="Center"/></DockPanel>
     <UniformGrid Columns="4" Margin="0,0,0,17">
-      <Border Style="{StaticResource Card}" Margin="0,0,10,0" Padding="14"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="47"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Border Style="{StaticResource IconTile}" Background="#5A53325A"><Path Data="M12,0 C15,6 18,8 18,13 C20,11 21,9 21,7 C27,17 24,27 17,30 C11,33 4,29 3,22 C2,17 5,12 8,9 C7,16 10,18 12,19 C15,15 12,9 12,0 Z" Fill="#FFC45E" Width="26" Height="30" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><StackPanel Grid.Column="1" Margin="10,0,0,0"><DockPanel><Ellipse x:Name="FirebaseDot" Width="8" Height="8" Fill="#A5B4C4" DockPanel.Dock="Right" VerticalAlignment="Center"/><TextBlock Text="FIREBASE" Style="{StaticResource CardTitle}" FontSize="10"/></DockPanel><TextBlock x:Name="FirebaseValue" Text="Sin comprobar" Style="{StaticResource CardValue}" FontSize="14" Margin="0,5,0,3"/><TextBlock x:Name="FirebaseDetail" Text="Órdenes y autenticación" Style="{StaticResource CardDetail}" TextTrimming="CharacterEllipsis" MaxHeight="38"/></StackPanel></Grid></Border>
-      <Border Style="{StaticResource Card}" Margin="0,0,10,0" Padding="14"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="47"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Border Style="{StaticResource IconTile}"><TextBlock Text="&#xE950;" FontFamily="Segoe MDL2 Assets" Foreground="#B9DAFF" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><StackPanel Grid.Column="1" Margin="10,0,0,0"><DockPanel><Ellipse x:Name="EspDot" Width="8" Height="8" Fill="#A5B4C4" DockPanel.Dock="Right" VerticalAlignment="Center"/><TextBlock Text="ESP32 EN CASA" Style="{StaticResource CardTitle}" FontSize="10"/></DockPanel><TextBlock x:Name="EspValue" Text="Sin comprobar" Style="{StaticResource CardValue}" FontSize="14" Margin="0,5,0,3"/><TextBlock x:Name="EspDetail" Text="Última señal y Wi-Fi" Style="{StaticResource CardDetail}" TextTrimming="CharacterEllipsis" MaxHeight="38"/></StackPanel></Grid></Border>
-      <Border Style="{StaticResource Card}" Margin="0,0,10,0" Padding="14"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="47"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Border Style="{StaticResource IconTile}"><TextBlock Text="&#xE7F4;" FontFamily="Segoe MDL2 Assets" Foreground="#B9DAFF" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><StackPanel Grid.Column="1" Margin="10,0,0,0"><DockPanel><Ellipse x:Name="LanDot" Width="8" Height="8" Fill="#A5B4C4" DockPanel.Dock="Right" VerticalAlignment="Center"/><TextBlock Text="TORRE EN CASA" Style="{StaticResource CardTitle}" FontSize="10"/></DockPanel><TextBlock x:Name="LanValue" Text="Sin comprobar" Style="{StaticResource CardValue}" FontSize="14" Margin="0,5,0,3"/><TextBlock x:Name="LanDetail" Text="Pruebas desde el ESP32" Style="{StaticResource CardDetail}" TextTrimming="CharacterEllipsis" MaxHeight="38"/></StackPanel></Grid></Border>
-      <Border Style="{StaticResource Card}" Padding="14"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="47"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Border Style="{StaticResource IconTile}" Background="#46523A43"><TextBlock Text="☼" Foreground="#FFBB59" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><StackPanel Grid.Column="1" Margin="10,0,0,0"><DockPanel><Ellipse x:Name="SunDot" Width="8" Height="8" Fill="#A5B4C4" DockPanel.Dock="Right" VerticalAlignment="Center"/><TextBlock Text="SUNSHINE" Style="{StaticResource CardTitle}" FontSize="10"/></DockPanel><TextBlock x:Name="SunValue" Text="Sin comprobar" Style="{StaticResource CardValue}" FontSize="14" Margin="0,5,0,3"/><TextBlock x:Name="SunDetail" Text="Puertos TCP desde el Yoga" Style="{StaticResource CardDetail}" TextTrimming="CharacterEllipsis" MaxHeight="38"/></StackPanel></Grid></Border>
+      <Border Style="{StaticResource Card}" Margin="0,0,10,0" Padding="14"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="47"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Border Style="{StaticResource IconTile}" Background="{DynamicResource ThemeBrush25}"><Path Data="M12,0 C15,6 18,8 18,13 C20,11 21,9 21,7 C27,17 24,27 17,30 C11,33 4,29 3,22 C2,17 5,12 8,9 C7,16 10,18 12,19 C15,15 12,9 12,0 Z" Fill="{DynamicResource ThemeBrush62}" Width="26" Height="30" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><StackPanel Grid.Column="1" Margin="10,0,0,0"><DockPanel><Ellipse x:Name="FirebaseDot" Width="8" Height="8" Fill="{DynamicResource ThemeBrush36}" DockPanel.Dock="Right" VerticalAlignment="Center"/><TextBlock Text="FIREBASE" Style="{StaticResource CardTitle}" FontSize="10"/></DockPanel><TextBlock x:Name="FirebaseValue" Text="Sin comprobar" Style="{StaticResource CardValue}" FontSize="14" Margin="0,5,0,3"/><TextBlock x:Name="FirebaseDetail" Text="Órdenes y autenticación" Style="{StaticResource CardDetail}" TextTrimming="CharacterEllipsis" MaxHeight="38"/></StackPanel></Grid></Border>
+      <Border Style="{StaticResource Card}" Margin="0,0,10,0" Padding="14"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="47"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Border Style="{StaticResource IconTile}"><TextBlock Text="&#xE950;" FontFamily="Segoe MDL2 Assets" Foreground="{DynamicResource ThemeBrush44}" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><StackPanel Grid.Column="1" Margin="10,0,0,0"><DockPanel><Ellipse x:Name="EspDot" Width="8" Height="8" Fill="{DynamicResource ThemeBrush36}" DockPanel.Dock="Right" VerticalAlignment="Center"/><TextBlock Text="ESP32 EN CASA" Style="{StaticResource CardTitle}" FontSize="10"/></DockPanel><TextBlock x:Name="EspValue" Text="Sin comprobar" Style="{StaticResource CardValue}" FontSize="14" Margin="0,5,0,3"/><TextBlock x:Name="EspDetail" Text="Última señal y Wi-Fi" Style="{StaticResource CardDetail}" TextTrimming="CharacterEllipsis" MaxHeight="38"/></StackPanel></Grid></Border>
+      <Border Style="{StaticResource Card}" Margin="0,0,10,0" Padding="14"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="47"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Border Style="{StaticResource IconTile}"><TextBlock Text="&#xE7F4;" FontFamily="Segoe MDL2 Assets" Foreground="{DynamicResource ThemeBrush44}" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><StackPanel Grid.Column="1" Margin="10,0,0,0"><DockPanel><Ellipse x:Name="LanDot" Width="8" Height="8" Fill="{DynamicResource ThemeBrush36}" DockPanel.Dock="Right" VerticalAlignment="Center"/><TextBlock Text="TORRE EN CASA" Style="{StaticResource CardTitle}" FontSize="10"/></DockPanel><TextBlock x:Name="LanValue" Text="Sin comprobar" Style="{StaticResource CardValue}" FontSize="14" Margin="0,5,0,3"/><TextBlock x:Name="LanDetail" Text="Pruebas desde el ESP32" Style="{StaticResource CardDetail}" TextTrimming="CharacterEllipsis" MaxHeight="38"/></StackPanel></Grid></Border>
+      <Border Style="{StaticResource Card}" Padding="14"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="47"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Border Style="{StaticResource IconTile}" Background="{DynamicResource ThemeBrush18}"><TextBlock Text="☼" Foreground="{DynamicResource ThemeBrush61}" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><StackPanel Grid.Column="1" Margin="10,0,0,0"><DockPanel><Ellipse x:Name="SunDot" Width="8" Height="8" Fill="{DynamicResource ThemeBrush36}" DockPanel.Dock="Right" VerticalAlignment="Center"/><TextBlock Text="SUNSHINE" Style="{StaticResource CardTitle}" FontSize="10"/></DockPanel><TextBlock x:Name="SunValue" Text="Sin comprobar" Style="{StaticResource CardValue}" FontSize="14" Margin="0,5,0,3"/><TextBlock x:Name="SunDetail" Text="Puertos TCP desde el Yoga" Style="{StaticResource CardDetail}" TextTrimming="CharacterEllipsis" MaxHeight="38"/></StackPanel></Grid></Border>
     </UniformGrid>
 
     <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="1.3*"/><ColumnDefinition Width="0.7*"/></Grid.ColumnDefinitions>
       <Border Grid.Column="0" Style="{StaticResource Card}" Padding="17" Margin="0,0,11,0"><StackPanel><TextBlock Text="Actividad y diagnóstico" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,12"/><Grid Margin="0,0,0,12"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
-        <Border Background="#66334C68" CornerRadius="10" Padding="11" Margin="0,0,6,0"><StackPanel><DockPanel><Ellipse x:Name="TailDot" Width="8" Height="8" Fill="#A5B4C4" DockPanel.Dock="Right" VerticalAlignment="Center"/><TextBlock Text="TAILSCALE" Style="{StaticResource CardTitle}" FontSize="10"/></DockPanel><TextBlock x:Name="TailValue" Text="Sin comprobar" FontSize="13" FontWeight="SemiBold" Margin="0,4,0,2"/><TextBlock x:Name="TailDetail" Text="Estado desde el Yoga" Style="{StaticResource CardDetail}" TextTrimming="CharacterEllipsis" MaxHeight="29"/></StackPanel></Border>
-        <Border Grid.Column="1" Background="#66334C68" CornerRadius="10" Padding="11" Margin="6,0,0,0"><StackPanel><DockPanel><Ellipse x:Name="OrderDot" Width="8" Height="8" Fill="#A5B4C4" DockPanel.Dock="Right" VerticalAlignment="Center"/><TextBlock Text="ÚLTIMA ORDEN" Style="{StaticResource CardTitle}" FontSize="10"/></DockPanel><TextBlock x:Name="OrderValue" Text="Ninguna" FontSize="13" FontWeight="SemiBold" Margin="0,4,0,2"/><TextBlock x:Name="OrderDetail" Text="Sin órdenes en esta sesión" Style="{StaticResource CardDetail}" TextTrimming="CharacterEllipsis" MaxHeight="29"/></StackPanel></Border>
-      </Grid><TextBox x:Name="ActivityLog" Height="135" FontFamily="Consolas" FontSize="10" Background="#99111E30" Foreground="#D4E1EF" BorderBrush="#405B7C" BorderThickness="1" Padding="10" IsReadOnly="True" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/></StackPanel></Border>
-      <Border Grid.Column="1" Style="{StaticResource Card}" Padding="17"><StackPanel><TextBlock Text="Acciones rápidas" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8"/><TextBlock Text="Herramientas para comprobar y acceder" Foreground="{StaticResource Muted}" FontSize="11" Margin="0,0,0,13"/><UniformGrid Columns="3">
-        <Button Style="{StaticResource SecondaryButton}" Click="RouteClick" Margin="0,0,6,0" Padding="8,13"><StackPanel HorizontalAlignment="Center"><TextBlock Text="&#xE8A7;" FontFamily="Segoe MDL2 Assets" Foreground="#93C9FF" FontSize="25" HorizontalAlignment="Center" Margin="0,0,0,12"/><TextBlock Text="Probar ruta" FontSize="11" TextAlignment="Center"/></StackPanel></Button>
-        <Button Style="{StaticResource SecondaryButton}" Click="OpenMoonlightClick" Margin="3,0,3,0" Padding="8,13"><StackPanel HorizontalAlignment="Center"><TextBlock Text="☾" Foreground="#C8DEFF" FontSize="28" HorizontalAlignment="Center" Margin="0,0,0,7"/><TextBlock Text="Abrir Moonlight" FontSize="11" TextAlignment="Center"/></StackPanel></Button>
-        <Button Style="{StaticResource SecondaryButton}" Click="ExportClick" Margin="6,0,0,0" Padding="8,13"><StackPanel HorizontalAlignment="Center"><TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" Foreground="#AFD6FF" FontSize="25" HorizontalAlignment="Center" Margin="0,0,0,12"/><TextBlock Text="Exportar" FontSize="11" TextAlignment="Center"/></StackPanel></Button>
+        <Border Background="{DynamicResource ThemeBrush29}" CornerRadius="10" Padding="11" Margin="0,0,6,0"><StackPanel><DockPanel><Ellipse x:Name="TailDot" Width="8" Height="8" Fill="{DynamicResource ThemeBrush36}" DockPanel.Dock="Right" VerticalAlignment="Center"/><TextBlock Text="TAILSCALE" Style="{StaticResource CardTitle}" FontSize="10"/></DockPanel><TextBlock x:Name="TailValue" Text="Sin comprobar" FontSize="13" FontWeight="SemiBold" Margin="0,4,0,2"/><TextBlock x:Name="TailDetail" Text="Estado desde el Yoga" Style="{StaticResource CardDetail}" TextTrimming="CharacterEllipsis" MaxHeight="29"/></StackPanel></Border>
+        <Border Grid.Column="1" Background="{DynamicResource ThemeBrush29}" CornerRadius="10" Padding="11" Margin="6,0,0,0"><StackPanel><DockPanel><Ellipse x:Name="OrderDot" Width="8" Height="8" Fill="{DynamicResource ThemeBrush36}" DockPanel.Dock="Right" VerticalAlignment="Center"/><TextBlock Text="ÚLTIMA ORDEN" Style="{StaticResource CardTitle}" FontSize="10"/></DockPanel><TextBlock x:Name="OrderValue" Text="Ninguna" FontSize="13" FontWeight="SemiBold" Margin="0,4,0,2"/><TextBlock x:Name="OrderDetail" Text="Sin órdenes en esta sesión" Style="{StaticResource CardDetail}" TextTrimming="CharacterEllipsis" MaxHeight="29"/></StackPanel></Border>
+      </Grid><TextBox x:Name="ActivityLog" Height="135" FontFamily="Consolas" FontSize="10" Background="{DynamicResource ThemeBrush32}" Foreground="{DynamicResource ThemeBrush51}" BorderBrush="{DynamicResource ThemeBrush14}" BorderThickness="1" Padding="10" IsReadOnly="True" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/></StackPanel></Border>
+      <Border Grid.Column="1" Style="{StaticResource Card}" Padding="17"><StackPanel><TextBlock Text="Acciones rápidas" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8"/><TextBlock Text="Herramientas para comprobar y acceder" Foreground="{DynamicResource Muted}" FontSize="11" Margin="0,0,0,13"/><UniformGrid Columns="3">
+        <Button Style="{StaticResource SecondaryButton}" Click="RouteClick" Margin="0,0,6,0" Padding="8,13"><StackPanel HorizontalAlignment="Center"><TextBlock Text="&#xE8A7;" FontFamily="Segoe MDL2 Assets" Foreground="{DynamicResource ThemeBrush31}" FontSize="25" HorizontalAlignment="Center" Margin="0,0,0,12"/><TextBlock Text="Probar ruta" FontSize="11" TextAlignment="Center"/></StackPanel></Button>
+        <Button Style="{StaticResource SecondaryButton}" Click="OpenMoonlightClick" Margin="3,0,3,0" Padding="8,13"><StackPanel HorizontalAlignment="Center"><TextBlock Text="☾" Foreground="{DynamicResource ThemeBrush48}" FontSize="28" HorizontalAlignment="Center" Margin="0,0,0,7"/><TextBlock Text="Abrir Moonlight" FontSize="11" TextAlignment="Center"/></StackPanel></Button>
+        <Button Style="{StaticResource SecondaryButton}" Click="ExportClick" Margin="6,0,0,0" Padding="8,13"><StackPanel HorizontalAlignment="Center"><TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" Foreground="{DynamicResource ThemeBrush39}" FontSize="25" HorizontalAlignment="Center" Margin="0,0,0,12"/><TextBlock Text="Exportar" FontSize="11" TextAlignment="Center"/></StackPanel></Button>
       </UniformGrid></StackPanel></Border>
     </Grid>
-    <TextBlock Text="El ESP32 debe permanecer alimentado en casa. La aplicación no instala servicios en la torre." Foreground="{StaticResource Muted}" FontSize="11" Margin="2,15,0,0"/>
+    <TextBlock Text="El ESP32 debe permanecer alimentado en casa. La aplicación no instala servicios en la torre." Foreground="{DynamicResource Muted}" FontSize="11" Margin="2,15,0,0"/>
   </StackPanel>
 </ScrollViewer>
 
-        <ScrollViewer x:Name="SettingsView" Visibility="Collapsed" VerticalScrollBarVisibility="Auto"><StackPanel Margin="31,26,31,30"><TextBlock Text="Configuración" FontSize="25" FontWeight="SemiBold"/><TextBlock Text="Ajusta el equipo y las credenciales guardadas para este usuario de Windows." Foreground="{StaticResource Muted}" Margin="0,6,0,18"/>
-          <Border Style="{StaticResource Card}" Padding="22" Margin="0,0,0,15"><StackPanel><TextBlock Text="Idioma de la aplicación" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,7"/><TextBlock Text="Elige el idioma de la interfaz. El cambio se guarda automáticamente." Foreground="{StaticResource Muted}" FontSize="12" Margin="0,0,0,12"/><ComboBox x:Name="LanguageCombo" Style="{StaticResource DarkPortCombo}" Width="190" HorizontalAlignment="Left" SelectionChanged="LanguageChanged"><ComboBoxItem Tag="en" Content="English"/><ComboBoxItem Tag="es" Content="Español"/></ComboBox></StackPanel></Border>
+        <ScrollViewer x:Name="SettingsView" Visibility="Collapsed" VerticalScrollBarVisibility="Auto"><StackPanel Margin="31,26,31,30"><TextBlock Text="Configuración" FontSize="25" FontWeight="SemiBold"/><TextBlock Text="Ajusta el equipo y las credenciales guardadas para este usuario de Windows." Foreground="{DynamicResource Muted}" Margin="0,6,0,18"/>
+          <Border Style="{StaticResource Card}" Padding="22" Margin="0,0,0,15"><StackPanel><TextBlock Text="Idioma de la aplicación" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,7"/><TextBlock Text="Elige el idioma de la interfaz. El cambio se guarda automáticamente." Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,0,0,12"/><ComboBox x:Name="LanguageCombo" Style="{StaticResource DarkPortCombo}" Width="190" HorizontalAlignment="Left" SelectionChanged="LanguageChanged"><ComboBoxItem Tag="en" Content="English"/><ComboBoxItem Tag="es" Content="Español"/></ComboBox></StackPanel></Border>
           <Border Style="{StaticResource Card}" Padding="22"><StackPanel><TextBlock Text="Conexión" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,17"/><Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions><Grid.RowDefinitions><RowDefinition Height="76"/><RowDefinition Height="76"/><RowDefinition Height="76"/><RowDefinition Height="76"/></Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,10,0"><TextBlock Text="Firebase Database" Style="{StaticResource FieldLabel}"/><TextBox x:Name="DatabaseBox" Style="{StaticResource Input}"/></StackPanel>
             <StackPanel Grid.Row="0" Grid.Column="1" Margin="10,0,0,0"><TextBlock Text="IP Tailscale de la torre" Style="{StaticResource FieldLabel}"/><TextBox x:Name="TargetBox" Style="{StaticResource Input}"/></StackPanel>
@@ -167,19 +296,19 @@
             <StackPanel Grid.Row="2" Grid.Column="1" Margin="10,0,0,0"><TextBlock Text="Ruta de Moonlight.exe" Style="{StaticResource FieldLabel}"/><TextBox x:Name="MoonlightBox" Style="{StaticResource Input}"/></StackPanel>
             <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,10,0"><TextBlock Text="Ruta de tailscale.exe" Style="{StaticResource FieldLabel}"/><TextBox x:Name="TailscaleBox" Style="{StaticResource Input}"/></StackPanel>
           </Grid></StackPanel></Border>
-          <Border Style="{StaticResource Card}" Padding="22" Margin="0,15,0,0"><StackPanel><TextBlock Text="Acceso al ESP32 v2" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,7"/><TextBlock Text="Las credenciales se cifran con tu cuenta de Windows. Este panel utiliza siempre el protocolo autenticado del ESP32 v2." Foreground="{StaticResource Muted}" FontSize="12" Margin="0,0,0,16"/>
+          <Border Style="{StaticResource Card}" Padding="22" Margin="0,15,0,0"><StackPanel><TextBlock Text="Acceso al ESP32 v2" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,7"/><TextBlock Text="Las credenciales se cifran con tu cuenta de Windows. Este panel utiliza siempre el protocolo autenticado del ESP32 v2." Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,0,0,16"/>
             <Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions><Grid.RowDefinitions><RowDefinition Height="76"/><RowDefinition Height="76"/></Grid.RowDefinitions>
               <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,10,0"><TextBlock Text="Firebase Web API key" Style="{StaticResource FieldLabel}"/><TextBox x:Name="ApiKeyBox" Style="{StaticResource Input}"/></StackPanel>
               <StackPanel Grid.Row="0" Grid.Column="1" Margin="10,0,0,0"><TextBlock Text="Usuario del Yoga" Style="{StaticResource FieldLabel}"/><TextBox x:Name="EmailBox" Style="{StaticResource Input}"/></StackPanel>
-              <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,10,0"><TextBlock Text="Contraseña" Style="{StaticResource FieldLabel}"/><PasswordBox x:Name="PasswordBox" Height="38" Padding="10,8" Foreground="{StaticResource Ink}" Background="#111A27" BorderBrush="#405269" BorderThickness="1"/></StackPanel>
-            </Grid><TextBlock x:Name="CredentialStatus" Text="Comprobando credenciales…" Foreground="{StaticResource Muted}" FontSize="12" Margin="0,0,0,8"/><Button Style="{StaticResource PrimaryButton}" Content="Guardar cambios" HorizontalAlignment="Left" Click="SaveSettingsClick" Margin="0,10,0,0"/></StackPanel></Border>
+              <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,10,0"><TextBlock Text="Contraseña" Style="{StaticResource FieldLabel}"/><PasswordBox x:Name="PasswordBox" Height="38" Padding="10,8" Foreground="{DynamicResource Ink}" Background="{DynamicResource ThemeBrush02}" BorderBrush="{DynamicResource ThemeBrush13}" BorderThickness="1"/></StackPanel>
+            </Grid><TextBlock x:Name="CredentialStatus" Text="Comprobando credenciales…" Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,0,0,8"/><Button Style="{StaticResource PrimaryButton}" Content="Guardar cambios" HorizontalAlignment="Left" Click="SaveSettingsClick" Margin="0,10,0,0"/></StackPanel></Border>
         </StackPanel></ScrollViewer>
 
         <ScrollViewer x:Name="SetupView" Visibility="Collapsed" VerticalScrollBarVisibility="Auto"><StackPanel Margin="31,26,31,30">
-          <TextBlock Text="Preparar tu conexión" FontSize="25" FontWeight="SemiBold"/><TextBlock Text="Configura Firebase, prepara el ESP32 y comprueba cada etapa desde aquí." Foreground="{StaticResource Muted}" Margin="0,6,0,18"/>
+          <TextBlock Text="Preparar tu conexión" FontSize="25" FontWeight="SemiBold"/><TextBlock Text="Configura Firebase, prepara el ESP32 y comprueba cada etapa desde aquí." Foreground="{DynamicResource Muted}" Margin="0,6,0,18"/>
           <Border Style="{StaticResource Card}" Padding="22"><StackPanel>
             <TextBlock Text="1 · Tu red y Firebase" FontSize="17" FontWeight="SemiBold" Margin="0,0,0,7"/>
-            <TextBlock Text="Crea un proyecto Firebase con Realtime Database y activa Email/Password en Authentication. Usa un proyecto dedicado: las reglas de esta guía cierran otros nodos." TextWrapping="Wrap" Foreground="{StaticResource Muted}" FontSize="12" Margin="0,0,0,14"/>
+            <TextBlock Text="Crea un proyecto Firebase con Realtime Database y activa Email/Password en Authentication. Usa un proyecto dedicado: las reglas de esta guía cierran otros nodos." TextWrapping="Wrap" Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,0,0,14"/>
             <Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions><Grid.RowDefinitions><RowDefinition Height="76"/><RowDefinition Height="76"/><RowDefinition Height="76"/></Grid.RowDefinitions>
               <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,10,0"><TextBlock Text="URL raíz de Realtime Database" Style="{StaticResource FieldLabel}"/><TextBox x:Name="SetupDatabaseBox" Style="{StaticResource Input}"/></StackPanel>
               <StackPanel Grid.Row="0" Grid.Column="1" Margin="10,0,0,0"><TextBlock Text="Firebase Web API key" Style="{StaticResource FieldLabel}"/><TextBox x:Name="SetupApiKeyBox" Style="{StaticResource Input}"/></StackPanel>
@@ -189,29 +318,29 @@
               <StackPanel Grid.Row="2" Grid.Column="1" Margin="10,0,0,0"><TextBlock Text="Nombre de la red Wi-Fi de casa" Style="{StaticResource FieldLabel}"/><TextBox x:Name="SetupWifiBox" Style="{StaticResource Input}"/></StackPanel>
             </Grid>
             <TextBlock Text="Contraseña Wi-Fi (vacía al volver a abrir = conservar la guardada)" Style="{StaticResource FieldLabel}"/>
-            <PasswordBox x:Name="SetupWifiPasswordBox" Width="390" HorizontalAlignment="Left" Height="38" Padding="10,8" Foreground="{StaticResource Ink}" Background="#111A27" BorderBrush="#405269" BorderThickness="1"/>
+            <PasswordBox x:Name="SetupWifiPasswordBox" Width="390" HorizontalAlignment="Left" Height="38" Padding="10,8" Foreground="{DynamicResource Ink}" Background="{DynamicResource ThemeBrush02}" BorderBrush="{DynamicResource ThemeBrush13}" BorderThickness="1"/>
             <WrapPanel Margin="0,15,0,0"><Button Style="{StaticResource SecondaryButton}" Content="Guardar datos" Click="SetupSaveClick" Margin="0,0,9,0"/><Button x:Name="CreateAccountsButton" Style="{StaticResource PrimaryButton}" Content="Crear usuarios y reglas" Click="SetupAccountsClick"/></WrapPanel>
-            <TextBlock x:Name="SetupAccountStatus" Text="Aún no se han preparado usuarios técnicos." Foreground="{StaticResource Muted}" TextWrapping="Wrap" FontSize="12" Margin="0,13,0,0"/>
+            <TextBlock x:Name="SetupAccountStatus" Text="Aún no se han preparado usuarios técnicos." Foreground="{DynamicResource Muted}" TextWrapping="Wrap" FontSize="12" Margin="0,13,0,0"/>
           </StackPanel></Border>
           <Border Style="{StaticResource Card}" Padding="22" Margin="0,15,0,0"><StackPanel>
             <TextBlock Text="2 · Publicar reglas de acceso" FontSize="17" FontWeight="SemiBold" Margin="0,0,0,7"/>
-            <TextBlock Text="La aplicación genera las reglas con los UID de los dos usuarios. Cópialas en Realtime Database → Reglas de tu proyecto y publícalas allí. No reemplaces las reglas de una base compartida con otras aplicaciones." Foreground="{StaticResource Muted}" TextWrapping="Wrap" FontSize="12" Margin="0,0,0,12"/>
-            <TextBox x:Name="SetupRulesBox" Height="150" IsReadOnly="True" TextWrapping="NoWrap" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="11" Background="#111A27" Foreground="#D4E1EF" BorderBrush="#405269" Padding="8"/>
+            <TextBlock Text="La aplicación genera las reglas con los UID de los dos usuarios. Cópialas en Realtime Database → Reglas de tu proyecto y publícalas allí. No reemplaces las reglas de una base compartida con otras aplicaciones." Foreground="{DynamicResource Muted}" TextWrapping="Wrap" FontSize="12" Margin="0,0,0,12"/>
+            <TextBox x:Name="SetupRulesBox" Height="150" IsReadOnly="True" TextWrapping="NoWrap" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="11" Background="{DynamicResource ThemeBrush02}" Foreground="{DynamicResource ThemeBrush51}" BorderBrush="{DynamicResource ThemeBrush13}" Padding="8"/>
             <WrapPanel Margin="0,13,0,0"><Button Style="{StaticResource SecondaryButton}" Content="Copiar reglas" Click="SetupCopyRulesClick" Margin="0,0,9,0"/><Button Style="{StaticResource SecondaryButton}" Content="Abrir Firebase" Click="SetupOpenFirebaseClick"/></WrapPanel>
           </StackPanel></Border>
           <Border Style="{StaticResource Card}" Padding="22" Margin="0,15,0,0"><StackPanel>
             <TextBlock Text="3 · Flashear y configurar el ESP32" FontSize="17" FontWeight="SemiBold" Margin="0,0,0,7"/>
-            <TextBlock Text="Compatible con ESP32-WROOM-32 Dev Module de 4 MB. Conecta la placa por un cable USB de datos. La herramienta oficial esptool se descargará y verificará solo la primera vez." Foreground="{StaticResource Muted}" TextWrapping="Wrap" FontSize="12" Margin="0,0,0,12"/>
+            <TextBlock Text="Compatible con ESP32-WROOM-32 Dev Module de 4 MB. Conecta la placa por un cable USB de datos. La herramienta oficial esptool se descargará y verificará solo la primera vez." Foreground="{DynamicResource Muted}" TextWrapping="Wrap" FontSize="12" Margin="0,0,0,12"/>
             <WrapPanel><ComboBox x:Name="SetupPortCombo" Style="{StaticResource DarkPortCombo}" Width="150" Height="37" Margin="0,0,9,0"/><Button Style="{StaticResource SecondaryButton}" Content="Detectar puertos" Click="SetupDetectPortsClick" Margin="0,0,9,0"/><Button x:Name="SetupFlashButton" Style="{StaticResource PrimaryButton}" Content="Flashear y configurar" Click="SetupFlashClick" Margin="0,0,9,0"/><Button x:Name="SetupConfigureButton" Style="{StaticResource SecondaryButton}" Content="Solo configurar" Click="SetupConfigureClick" Margin="0,0,9,0"/><Button x:Name="SetupCancelButton" Style="{StaticResource SecondaryButton}" Content="Cancelar" Click="SetupCancelClick" IsEnabled="False"/></WrapPanel>
-            <TextBox x:Name="SetupProgressBox" Height="125" IsReadOnly="True" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" FontFamily="Consolas" FontSize="11" Background="#111A27" Foreground="#D4E1EF" BorderBrush="#405269" Padding="8" Margin="0,14,0,0"/>
+            <TextBox x:Name="SetupProgressBox" Height="125" IsReadOnly="True" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" FontFamily="Consolas" FontSize="11" Background="{DynamicResource ThemeBrush02}" Foreground="{DynamicResource ThemeBrush51}" BorderBrush="{DynamicResource ThemeBrush13}" Padding="8" Margin="0,14,0,0"/>
           </StackPanel></Border>
-          <TextBlock Text="Antes de salir de casa, activa Wake-on-LAN en BIOS/Windows, instala Tailscale y Sunshine en la torre, empareja Moonlight y deja el ESP32 alimentado con la torre apagada." TextWrapping="Wrap" Foreground="{StaticResource Muted}" FontSize="12" Margin="2,17,0,0"/>
+          <TextBlock Text="Antes de salir de casa, activa Wake-on-LAN en BIOS/Windows, instala Tailscale y Sunshine en la torre, empareja Moonlight y deja el ESP32 alimentado con la torre apagada." TextWrapping="Wrap" Foreground="{DynamicResource Muted}" FontSize="12" Margin="2,17,0,0"/>
         </StackPanel></ScrollViewer>
 
-        <ScrollViewer x:Name="GuideView" Visibility="Collapsed" VerticalScrollBarVisibility="Auto"><StackPanel Margin="31,26,31,30"><TextBlock Text="Ayuda y señales del ESP32" FontSize="25" FontWeight="SemiBold"/><TextBlock Text="Qué significa cada resultado y cómo leer el LED azul integrado." Foreground="{StaticResource Muted}" Margin="0,6,0,18"/>
-          <Border Style="{StaticResource Card}" Padding="22"><StackPanel><TextBlock Text="LED azul" FontSize="17" FontWeight="SemiBold" Margin="0,0,0,12"/><TextBlock Text="Tres destellos cortos cada 2 s · esperando configuración por USB" Margin="0,0,0,9"/><TextBlock Text="Parpadeo regular · buscando o recuperando Wi-Fi" Margin="0,0,0,9"/><TextBlock Text="Un destello cada 2 s · esperando hora NTP para comprobar TLS" Margin="0,0,0,9"/><TextBlock Text="Dos destellos cada 2 s · autenticación o Firebase con error" Margin="0,0,0,9"/><TextBlock Text="Encendido fijo · Wi-Fi y Firebase operativos" Margin="0,0,0,9"/><TextBlock Text="Apagado breve sobre la luz fija · petición HTTPS saliente" Margin="0,0,0,9"/><TextBlock Text="Tres pulsos largos · envío del paquete WOL"/><TextBlock Text="El ESP32 consulta Firebase; no recibe conexiones directas desde Internet." Foreground="{StaticResource Muted}" FontSize="12" Margin="0,17,0,0"/></StackPanel></Border>
+        <ScrollViewer x:Name="GuideView" Visibility="Collapsed" VerticalScrollBarVisibility="Auto"><StackPanel Margin="31,26,31,30"><TextBlock Text="Ayuda y señales del ESP32" FontSize="25" FontWeight="SemiBold"/><TextBlock Text="Qué significa cada resultado y cómo leer el LED azul integrado." Foreground="{DynamicResource Muted}" Margin="0,6,0,18"/>
+          <Border Style="{StaticResource Card}" Padding="22"><StackPanel><TextBlock Text="LED azul" FontSize="17" FontWeight="SemiBold" Margin="0,0,0,12"/><TextBlock Text="Tres destellos cortos cada 2 s · esperando configuración por USB" Margin="0,0,0,9"/><TextBlock Text="Parpadeo regular · buscando o recuperando Wi-Fi" Margin="0,0,0,9"/><TextBlock Text="Un destello cada 2 s · esperando hora NTP para comprobar TLS" Margin="0,0,0,9"/><TextBlock Text="Dos destellos cada 2 s · autenticación o Firebase con error" Margin="0,0,0,9"/><TextBlock Text="Encendido fijo · Wi-Fi y Firebase operativos" Margin="0,0,0,9"/><TextBlock Text="Apagado breve sobre la luz fija · petición HTTPS saliente" Margin="0,0,0,9"/><TextBlock Text="Tres pulsos largos · envío del paquete WOL"/><TextBlock Text="El ESP32 consulta Firebase; no recibe conexiones directas desde Internet." Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,17,0,0"/></StackPanel></Border>
           <Border Style="{StaticResource Card}" Padding="22" Margin="0,15,0,0"><StackPanel><TextBlock Text="Si no conecta" FontSize="17" FontWeight="SemiBold" Margin="0,0,0,12"/><TextBlock Text="ESP32 activo y torre local accesible, pero Sunshine remoto no: revisa Tailscale o firewall." TextWrapping="Wrap" Margin="0,0,0,11"/><TextBlock Text="ESP32 activo y puertos de casa cerrados: espera el arranque o revisa Sunshine, IP y firewall. No demuestra que la torre esté apagada." TextWrapping="Wrap" Margin="0,0,0,11"/><TextBlock Text="ESP32 sin señal: comprueba alimentación, Wi-Fi doméstico e Internet de casa." TextWrapping="Wrap" Margin="0,0,0,11"/><TextBlock Text="Puertos abiertos pero Moonlight falla: consulta su ventana; puede ser emparejamiento, vídeo UDP, sesión o pantalla." TextWrapping="Wrap"/></StackPanel></Border>
-          <Border Style="{StaticResource Card}" Padding="22" Margin="0,15,0,0"><StackPanel><TextBlock Text="Alimentación y límites" FontSize="17" FontWeight="SemiBold" Margin="0,0,0,12"/><TextBlock Text="Deja el ESP32 en casa y confirma que el puerto USB siga alimentándolo con la torre apagada. Un acuse «sent» confirma que el ESP32 envió WOL, no que Windows haya terminado de arrancar." TextWrapping="Wrap"/><TextBlock Text="La orden caduca a los 90 segundos. Cancelar la espera en el Yoga no retira una orden ya enviada." Foreground="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,10,0,0"/></StackPanel></Border>
+          <Border Style="{StaticResource Card}" Padding="22" Margin="0,15,0,0"><StackPanel><TextBlock Text="Alimentación y límites" FontSize="17" FontWeight="SemiBold" Margin="0,0,0,12"/><TextBlock Text="Deja el ESP32 en casa y confirma que el puerto USB siga alimentándolo con la torre apagada. Un acuse «sent» confirma que el ESP32 envió WOL, no que Windows haya terminado de arrancar." TextWrapping="Wrap"/><TextBlock Text="La orden caduca a los 90 segundos. Cancelar la espera en el Yoga no retira una orden ya enviada." Foreground="{DynamicResource Muted}" TextWrapping="Wrap" Margin="0,10,0,0"/></StackPanel></Border>
         </StackPanel></ScrollViewer>
       </Grid>
     </Grid>

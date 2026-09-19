@@ -322,3 +322,8 @@ Verificando y preparando esptool…	Verifying and preparing esptool…
 Conectando con\s	Connecting to\s
 Enviando ajustes al ESP32 por USB…	Sending settings to the ESP32 over USB…
 Idioma cambiado a español.	Language changed to Spanish.
+Tema claro	Light theme
+Tema oscuro	Dark theme
+Tema claro activado.	Light theme enabled.
+Tema oscuro activado.	Dark theme enabled.
+No se pudo guardar el tema	Could not save the theme

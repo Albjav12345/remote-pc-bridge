@@ -4,7 +4,9 @@
 
 **Enciende un PC de casa desde fuera y comprueba cada paso hasta abrir Moonlight.** Una aplicación de Windows envía una orden autenticada por Firebase; un ESP32 conectado al Wi-Fi doméstico la recibe y envía Wake-on-LAN a la torre. El panel comprueba por separado Firebase, el ESP32, los servicios de la torre, Tailscale, los puertos de Sunshine y la sesión de Moonlight.
 
-![Panel de control oscuro de Remote PC Bridge](docs/images/dashboard.es.png)
+| Tema oscuro (predeterminado) | Tema claro |
+|---|---|
+| ![Panel de control en modo oscuro con datos de ejemplo](docs/images/dashboard.es.png) | ![Panel de control en modo claro con datos de ejemplo](docs/images/dashboard.es.light.png) |
 
 > Estado: versión inicial para **Windows 10/11 y ESP32-WROOM-32 Dev Module con 4 MB de flash**. La aplicación pasa sus pruebas automáticas y el firmware compila. El asistente de flasheo todavía no se ha validado con otra placa física.
 
@@ -38,9 +40,11 @@ La [guía de instalación](docs/SETUP.es.md) desarrolla cada paso, incluido cóm
 
 ## Idioma
 
-El inglés es el idioma inicial. En **Configuración → Idioma de la aplicación**, elige **Español** para cambiarlo al momento; se guardará en tu cuenta de Windows. Desde el mismo selector puedes volver a **English**.
+El inglés es el idioma inicial. En **Configuración → Idioma de la aplicación**, elige **Español** para cambiarlo al momento; se guardará en tu cuenta de Windows. Desde el mismo selector puedes volver a **English**. **Configuración** está al pie de la barra lateral y debajo está el botón **Tema claro / Tema oscuro**. El cambio de tema se aplica al instante y queda guardado; el tema inicial es oscuro.
 
-![Selector de idioma en la aplicación](docs/images/settings.es.png)
+| Configuración en modo oscuro | Configuración en modo claro |
+|---|---|
+| ![Configuración en español en modo oscuro](docs/images/settings.es.png) | ![Configuración en español en modo claro](docs/images/settings.es.light.png) |
 
 ## Uso diario
 

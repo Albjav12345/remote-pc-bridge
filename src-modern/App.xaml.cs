@@ -37,7 +37,10 @@ public static class Program {
                     window.Loaded+=async (sender,ev)=>{
                         var watch=System.Diagnostics.Stopwatch.StartNew();
                         do { await System.Threading.Tasks.Task.Delay(200); } while(window.IsBusy && watch.Elapsed.TotalSeconds<25);
-                        Capture(window,Path.Combine(AppContext.BaseDirectory,settingsDemo?"preview-settings.png":flashDemo?"preview-flash.png":setupDemo?"preview-setup.png":"preview-modern.png"));
+                        string page=settingsDemo?"preview-settings":flashDemo?"preview-flash":setupDemo?"preview-setup":"preview-modern";
+                        string language=args.Contains("--demo-language-es")?".es":"";
+                        string theme=args.Contains("--demo-theme-light")?".light":"";
+                        Capture(window,Path.Combine(AppContext.BaseDirectory,page+language+theme+".png"));
                         window.Close();
                     };
                 }
