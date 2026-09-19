@@ -1,0 +1,324 @@
+# Spanish source text<TAB>English UI text. Longest matches are applied first.
+Panel de control	Dashboard
+Preparar ESP32	Set up ESP32
+Ayuda y LED	Help and LED
+ESTADO DE TU TORRE	DESKTOP STATUS
+ESP32 en línea	ESP32 online
+ESP32 sin señal	No ESP32 heartbeat
+Acciones rápidas	Quick actions
+Herramientas para comprobar y acceder	Tools to check and connect
+▣   Preparar ESP32	▣   Set up ESP32
+◉   Panel de control	◉   Dashboard
+⚙   Configuración	⚙   Settings
+ⓘ   Ayuda y LED	ⓘ   Help and LED
+Torre Remota	Remote PC Bridge
+ESTADO DEL SISTEMA	SYSTEM STATUS
+Leyendo configuración…	Loading settings…
+Configura tu equipo	Set up your PC
+Conexión a casa	Connect to your PC
+Enciende, comprueba y conecta desde un solo lugar	Wake, check, and connect from one place
+Comprobando tu conexión…	Checking your connection…
+Separaremos el estado del ESP32, la torre y la conexión remota.	The ESP32, desktop, and remote connection are checked separately.
+Moonlight · Sin sesión iniciada en esta ventana	Moonlight · No session started in this window
+Última comprobación: pendiente · actualización automática cada 30 s	Last check: pending · refreshes automatically every 30 s
+03 · TORRE	03 · DESKTOP
+04 · REMOTO	04 · REMOTE
+05 · VÍDEO	05 · VIDEO
+Pendiente	Pending
+Sin iniciar	Not started
+Encender y conectar	Wake and connect
+Solo encender	Wake only
+Diagnosticar	Run diagnostics
+Cancelar espera	Cancel wait
+Estado de la conexión	Connection status
+Pruebas independientes, con resultados recientes	Independent checks with recent results
+Órdenes y autenticación	Commands and authentication
+ESP32 EN CASA	ESP32 AT HOME
+Última señal y Wi-Fi	Latest heartbeat and Wi-Fi
+TORRE EN CASA	DESKTOP AT HOME
+Pruebas desde el ESP32	Checks from the ESP32
+Estado desde el Yoga	Status from this laptop
+Puertos TCP desde el Yoga	TCP ports from this laptop
+ÚLTIMA ORDEN	LAST COMMAND
+Sin órdenes en esta sesión	No commands in this session
+Sin comprobar	Not checked
+Ninguna	None
+Actividad y diagnóstico	Activity and diagnostics
+Probar ruta	Test route
+Abrir Moonlight	Open Moonlight
+Exportar	Export
+El ESP32 debe permanecer alimentado en casa. La aplicación no instala servicios en la torre.	Keep the ESP32 powered at home. This app installs no services on the desktop.
+Configuración	Settings
+Ajusta el equipo y las credenciales guardadas para este usuario de Windows.	Manage this PC and the credentials stored for your Windows account.
+Idioma de la aplicación	App language
+Elige el idioma de la interfaz. El cambio se guarda automáticamente.	Choose the interface language. Changes are saved automatically.
+Conexión	Connection
+IP Tailscale de la torre	Desktop Tailscale IP
+Aplicación de Moonlight	Moonlight application
+Puerto base de Sunshine	Sunshine base port
+Espera máxima (segundos)	Maximum wait (seconds)
+Ruta de Moonlight.exe	Path to Moonlight.exe
+Ruta de tailscale.exe	Path to tailscale.exe
+Acceso al ESP32 v2	ESP32 v2 access
+Las credenciales se cifran con tu cuenta de Windows. Este panel utiliza siempre el protocolo autenticado del ESP32 v2.	Credentials are encrypted for your Windows account. This panel always uses the authenticated ESP32 v2 protocol.
+Usuario del Yoga	Laptop user
+Contraseña Wi-Fi (vacía al volver a abrir = conservar la guardada)	Wi-Fi password (leave blank later to keep the saved password)
+Contraseña	Password
+Comprobando credenciales…	Checking credentials…
+Guardar cambios	Save changes
+Preparar tu conexión	Set up your connection
+Configura Firebase, prepara el ESP32 y comprueba cada etapa desde aquí.	Set up Firebase and the ESP32, then check each stage here.
+1 · Tu red y Firebase	1 · Your network and Firebase
+Crea un proyecto Firebase con Realtime Database y activa Email/Password en Authentication. Usa un proyecto dedicado: las reglas de esta guía cierran otros nodos.	Create a Firebase project with Realtime Database and enable Email/Password in Authentication. Use a dedicated project: these rules block other nodes.
+URL raíz de Realtime Database	Realtime Database root URL
+IP local de la torre	Desktop LAN IP
+MAC de la tarjeta Ethernet	Ethernet adapter MAC
+Nombre de la red Wi-Fi de casa	Home Wi-Fi network name
+Guardar datos	Save details
+Crear usuarios y reglas	Create users and rules
+Aún no se han preparado usuarios técnicos.	Technical users have not been created yet.
+2 · Publicar reglas de acceso	2 · Publish access rules
+La aplicación genera las reglas con los UID de los dos usuarios. Cópialas en Realtime Database → Reglas de tu proyecto y publícalas allí. No reemplaces las reglas de una base compartida con otras aplicaciones.	The app generates rules using both users' UIDs. Copy them to Realtime Database → Rules in your project and publish them there. Do not replace the rules of a database shared with other apps.
+Copiar reglas	Copy rules
+Abrir Firebase	Open Firebase
+3 · Flashear y configurar el ESP32	3 · Flash and configure the ESP32
+Compatible con ESP32-WROOM-32 Dev Module de 4 MB. Conecta la placa por un cable USB de datos. La herramienta oficial esptool se descargará y verificará solo la primera vez.	Supports the 4 MB ESP32-WROOM-32 Dev Module. Connect it with a USB data cable. Official esptool is downloaded and verified only on first use.
+Detectar puertos	Detect ports
+Flashear y configurar	Flash and configure
+Solo configurar	Configure only
+Cancelar	Cancel
+Antes de salir de casa, activa Wake-on-LAN en BIOS/Windows, instala Tailscale y Sunshine en la torre, empareja Moonlight y deja el ESP32 alimentado con la torre apagada.	Before leaving home, enable Wake-on-LAN in BIOS/Windows, install Tailscale and Sunshine on the desktop, pair Moonlight, and keep the ESP32 powered while the desktop is off.
+Ayuda y señales del ESP32	Help and ESP32 indicators
+Qué significa cada resultado y cómo leer el LED azul integrado.	What each result means and how to read the built-in blue LED.
+LED azul	Blue LED
+Tres destellos cortos cada 2 s · esperando configuración por USB	Three short flashes every 2 s · waiting for USB setup
+Parpadeo regular · buscando o recuperando Wi-Fi	Regular blinking · searching for or reconnecting to Wi-Fi
+Un destello cada 2 s · esperando hora NTP para comprobar TLS	One flash every 2 s · waiting for NTP time to validate TLS
+Dos destellos cada 2 s · autenticación o Firebase con error	Two flashes every 2 s · authentication or Firebase error
+Encendido fijo · Wi-Fi y Firebase operativos	Steady light · Wi-Fi and Firebase working
+Apagado breve sobre la luz fija · petición HTTPS saliente	Brief off pulse while lit · outgoing HTTPS request
+Tres pulsos largos · envío del paquete WOL	Three long pulses · sending WOL packet
+El ESP32 consulta Firebase; no recibe conexiones directas desde Internet.	The ESP32 polls Firebase; it accepts no direct connections from the Internet.
+Si no conecta	If it does not connect
+ESP32 activo y torre local accesible, pero Sunshine remoto no: revisa Tailscale o firewall.	ESP32 is active and the desktop responds locally, but remote Sunshine does not: check Tailscale or the firewall.
+ESP32 activo y puertos de casa cerrados: espera el arranque o revisa Sunshine, IP y firewall. No demuestra que la torre esté apagada.	ESP32 is active but home ports are closed: wait for startup or check Sunshine, IP, and firewall. This does not prove the desktop is off.
+ESP32 sin señal: comprueba alimentación, Wi-Fi doméstico e Internet de casa.	No ESP32 heartbeat: check power, home Wi-Fi, and home Internet.
+Puertos abiertos pero Moonlight falla: consulta su ventana; puede ser emparejamiento, vídeo UDP, sesión o pantalla.	Ports are open but Moonlight fails: check its window for pairing, UDP video, session, or display issues.
+Alimentación y límites	Power and limitations
+Deja el ESP32 en casa y confirma que el puerto USB siga alimentándolo con la torre apagada. Un acuse «sent» confirma que el ESP32 envió WOL, no que Windows haya terminado de arrancar.	Keep the ESP32 at home and confirm its USB port stays powered when the desktop is off. A “sent” acknowledgement confirms it sent WOL, not that Windows finished booting.
+La orden caduca a los 90 segundos. Cancelar la espera en el Yoga no retira una orden ya enviada.	A command expires after 90 seconds. Canceling the wait on the laptop does not withdraw an already sent command.
+Aplicación iniciada. Cargando diagnóstico sin enviar WOL.	App started. Loading diagnostics without sending WOL.
+Configuración v2:\s	V2 settings:\s
+no encontrada	not found
+\s· credenciales\s	\s· credentials\s
+listas	ready
+incompletas o ilegibles	incomplete or unreadable
+Moonlight · Última sesión con vídeo, finalizada\s	Moonlight · Last session received video, ended\s
+Moonlight · Última sesión finalizada sin vídeo confirmado	Moonlight · Last session ended without confirmed video
+Moonlight · Estado local no disponible	Moonlight · Local status unavailable
+No se pudo consultar el estado local de Moonlight:\s	Could not check local Moonlight status:\s
+Empieza por tu proyecto Firebase y los datos de la torre; todavía no se enviará ninguna orden.	Start with your Firebase project and desktop details; no command will be sent yet.
+Puente · conexión protegida	Bridge · protected connection
+Configuración pendiente	Setup pending
+Sistema configurado	System configured
+Preparar sistema	Set up system
+Sin torre configurada	No desktop configured
+Se han recargado los ajustes guardados.	Saved settings were reloaded.
+Credenciales guardadas. Deja la contraseña vacía para conservarla.	Credentials saved. Leave the password blank to keep it.
+Faltan credenciales o la contraseña guardada no se puede descifrar.	Credentials are missing or the saved password cannot be decrypted.
+Espera a que termine la comprobación actual.	Wait for the current check to finish.
+Ajustes guardados con copia de seguridad cifrada.	Settings saved with an encrypted backup.
+Revisa los ajustes	Check settings
+Faltan usuarios técnicos o sus UID. El asistente puede crearlos en tu proyecto Firebase.	Technical users or their UIDs are missing. The wizard can create them in your Firebase project.
+Usuarios preparados · portátil y ESP32 separados. La contraseña Wi-Fi guardada se conserva si dejas su campo vacío.	Users ready · separate laptop and ESP32 accounts. Leave the Wi-Fi password blank to keep it.
+Las reglas aparecerán al preparar los dos usuarios.	Rules appear after both users are ready.
+No se pudieron listar los puertos COM:\s	Could not list COM ports:\s
+Sin puerto COM	No COM port
+Ningún puerto COM detectado. Comprueba cable USB y controlador de la placa.	No COM port detected. Check the USB cable and board driver.
+Introduce la Firebase Web API key.	Enter the Firebase Web API key.
+Datos guardados en tu usuario de Windows.	Details saved for your Windows account.
+Revisa los datos	Check details
+Comprobando el usuario del portátil en Firebase…	Checking the laptop user in Firebase…
+Comprobando el usuario del ESP32 en Firebase…	Checking the ESP32 user in Firebase…
+Usuarios listos. Copia y publica las reglas antes de probar el puente.	Users ready. Copy and publish the rules before testing the bridge.
+Usuarios autenticados. Reglas generadas; falta publicarlas en Firebase.	Users authenticated. Rules generated; publish them in Firebase.
+Onboarding: dos usuarios técnicos preparados y reglas generadas.	Setup: two technical users created and rules generated.
+Preparación cancelada. Los datos ya guardados se conservarán.	Setup canceled. Previously saved details are kept.
+Error al preparar usuarios:\s	Could not create users:\s
+Las reglas	The rules
+Primero prepara los usuarios.	Create the users first.
+Reglas copiadas. Pégalas en la pestaña Reglas de Realtime Database.	Rules copied. Paste them into Realtime Database → Rules.
+No se pudo abrir Firebase:\s	Could not open Firebase:\s
+ESP32 configurado. Espera hasta 45 segundos y pulsa Diagnosticar para comprobar su señal.	ESP32 configured. Wait up to 45 seconds, then run diagnostics to check its heartbeat.
+ESP32 configurado por USB en\s	ESP32 configured over USB on\s
+. No se registraron secretos.	. No secrets were logged.
+Operación cancelada. Si se interrumpió el flasheo, repítelo antes de configurar.	Operation canceled. If flashing was interrupted, repeat it before configuring.
+Revisa el detalle del flasheo y vuelve a intentarlo.	Check the flashing details and try again.
+ESP32 · demostración	ESP32 · demo
+Vista de ejemplo	Sample view
+Pega aquí tu Web API key	Paste your Web API key here
+Mi Wi-Fi	My Wi-Fi
+COM7 (ejemplo)	COM7 (sample)
+Ejemplo de progreso: puerto COM7 detectado.	Sample progress: COM7 detected.
+Firmware escrito y verificado.	Firmware written and verified.
+Configuración guardada. El ESP32 se está reiniciando.	Configuration saved. The ESP32 is restarting.
+Vista de ejemplo · los usuarios se crearán en tu proyecto Firebase.	Sample view · users will be created in your Firebase project.
+Vista de ejemplo · sin conexiones reales	Sample view · no real connections
+No se pudo guardar el registro; usa Exportar.	Could not save the log; use Export.
+Vídeo recibido	Video received
+Conectando…	Connecting…
+Sin vídeo	No video
+Finalizada	Finished
+Última comprobación:\s	Last check:\s
+\s· actualización automática cada 30 s	\s· refreshes automatically every 30 s
+Conectado	Connected
+Sin acceso	No access
+En línea	Online
+Sin señal reciente	No recent heartbeat
+Servicios accesibles	Services reachable
+Sin respuesta	No response
+Sin datos	No data
+Revisar Tailscale	Check Tailscale
+Torre anunciada	Desktop advertised online
+Torre sin anuncio	Desktop not advertised
+Puertos abiertos	Ports open
+Autenticado	Authenticated
+Señal reciente	Recent heartbeat
+Sin señal	No heartbeat
+Servicios activos	Services active
+Tu torre responde	Your desktop responds
+Revisando la conexión	Checking the connection
+WOL enviado	WOL sent
+Último WOL enviado	Last WOL sent
+Acuse del ESP32 ·\s	ESP32 acknowledgement ·\s
+Acuse\s	Acknowledgement\s
+No se pudo actualizar:\s	Could not refresh:\s
+Actualización automática:\s	Automatic refresh:\s
+Acción:\s	Action:\s
+Comprobando cada etapa…	Checking every stage…
+Preparando la conexión…	Preparing the connection…
+Orden activa	Active command
+\s· esperando al ESP32	\s· waiting for the ESP32
+Orden\s	Command\s
+\saceptada por Firebase.	\saccepted by Firebase.
+El ESP32 ha enviado WOL	The ESP32 sent WOL
+Esperando a la torre ·\s	Waiting for the desktop ·\s
+Tiempo de espera agotado	Timed out
+Tiempo de espera agotado.\s	Timed out.\s
+Espera cancelada	Wait canceled
+Espera cancelada. Una orden ya enviada puede ejecutarse hasta caducar.	Wait canceled. A command already sent may still run until it expires.
+No se ha completado la acción	The action did not complete
+Ruta Tailscale:\s	Tailscale route:\s
+No encuentro Moonlight.exe. Revisa la ruta en Configuración.	Moonlight.exe was not found. Check its path in Settings.
+Windows no pudo iniciar Moonlight.	Windows could not start Moonlight.
+Conectando con Moonlight…	Connecting with Moonlight…
+Esperando confirmación local de que llega vídeo desde la torre.	Waiting for local confirmation that video is arriving from the desktop.
+Moonlight · Iniciando sesión	Moonlight · Starting session
+Moonlight lanzado. Esperando el primer paquete de vídeo; este botón no envía WOL a Firebase.	Moonlight launched. Waiting for the first video packet; this button does not send WOL to Firebase.
+Moonlight · No se pudo iniciar	Moonlight · Could not start
+Sesión Moonlight conectada	Moonlight session connected
+El registro local de Moonlight confirma que recibió vídeo de la torre. El estado de los servicios se muestra por separado abajo.	Moonlight's local log confirms video from the desktop. Service status appears separately below.
+Moonlight · Vídeo recibido · sesión activa	Moonlight · Video received · session active
+Moonlight · Sesión finalizada	Moonlight · Session ended
+Sesión Moonlight finalizada	Moonlight session ended
+Moonlight · Sin vídeo confirmado	Moonlight · Video not confirmed
+Moonlight no confirmó vídeo	Moonlight did not confirm video
+La aplicación se cerró sin recibir vídeo. Revisa Moonlight y exporta el registro si falla otra vez.	The app closed without receiving video. Check Moonlight and export the log if it happens again.
+Moonlight · Esperando vídeo	Moonlight · Waiting for video
+\sRegistro local:\s	\sLocal log:\s
+Registro de texto	Text log
+Torre Remota ·\s	Remote PC Bridge ·\s
+Registro exportado.	Log exported.
+No se pudo exportar	Could not export
+Configuración vacía.	Settings are empty.
+No se pudo leer la configuración guardada:\s	Could not read saved settings:\s
+Introduce la raíz HTTPS de Firebase, sin /encender.json ni parámetros.	Enter the Firebase HTTPS root URL without /encender.json or parameters.
+La dirección de la torre debe ser una IPv4 de Tailscale.	The desktop address must be a Tailscale IPv4.
+Puerto base fuera de rango.	Base port is out of range.
+La espera debe estar entre 30 y 600 segundos.	Wait time must be between 30 and 600 seconds.
+Nombre de aplicación de Moonlight no válido.	Invalid Moonlight application name.
+El firmware v2 requiere API key, correo y contraseña de Firebase Authentication.	Firmware v2 requires a Firebase Authentication API key, email, and password.
+. Revisa credenciales y proveedor Email/Password.	. Check credentials and the Email/Password provider.
+Firebase Auth no devolvió un token.	Firebase Auth did not return a token.
+Firebase Auth: tiempo de espera agotado (8 s).	Firebase Auth: timed out (8 s).
+Revisa autenticación y reglas.	Check authentication and rules.
+Reintenta y comprueba la conexión.	Retry and check the connection.
+Firebase inaccesible: comprueba Internet, DNS y TLS.	Firebase is unreachable: check Internet, DNS, and TLS.
+Firebase: tiempo de espera agotado (8 s).	Firebase: timed out (8 s).
+No se pudo consultar la orden pendiente: HTTP\s	Could not read the pending command: HTTP\s
+Hay una orden reciente. Espera a que cumpla 90 s antes de enviar otra; usa Diagnosticar para consultar su acuse.	A recent command exists. Wait until it is 90 s old before sending another; run diagnostics to check its acknowledgement.
+Firebase no devolvió ETag; no se envía una orden sin control de concurrencia.	Firebase did not return an ETag; no command was sent without concurrency protection.
+Otra instancia envió una orden antes. Usa Diagnosticar.	Another instance sent a command first. Run diagnostics.
+Firebase rechazó la orden: HTTP\s	Firebase rejected the command: HTTP\s
+sin respuesta (timeout)	no response (timeout)
+abierto	open
+Ejecutable no encontrado:\s	Executable not found:\s
+Tiempo de espera agotado al consultar Tailscale.	Timed out while checking Tailscale.
+Sunshine responde por Tailscale, pero el ESP32 no alcanza sus puertos en casa. Moonlight puede funcionar; revisa la IP local configurada y el firewall si persiste la diferencia.	Sunshine responds over Tailscale, but the ESP32 cannot reach its home ports. Moonlight may still work; check the configured LAN IP and firewall if the difference persists.
+Los tres puertos TCP responden. Puedes abrir Moonlight. El vídeo, UDP y el emparejamiento se verifican al iniciar la sesión.	All three TCP ports respond. You can open Moonlight. Video, UDP, and pairing are checked when the session starts.
+El ESP32 detecta un servicio de la torre en casa, pero el portátil no alcanza todos los puertos. Revisa Tailscale, sus permisos y el firewall de la torre.	The ESP32 detects a desktop service at home, but the laptop cannot reach all ports. Check Tailscale, its permissions, and the desktop firewall.
+El ESP32 está activo, pero los puertos de Sunshine no responden en la LAN. Puede ser arranque, Sunshine detenido, firewall o IP local incorrecta; no demuestra que la torre esté apagada.	The ESP32 is active, but Sunshine's LAN ports do not respond. The desktop may be booting, Sunshine may be stopped, or the firewall or LAN IP may be wrong; this does not prove the desktop is off.
+El firmware actual no informa del estado de la torre. El ping por sí solo no permite determinar si está apagada. Revisa el detalle de Tailscale y los puertos.	This firmware does not report the desktop state. Ping alone cannot determine whether it is off. Check the Tailscale and port details.
+No se puede leer Firebase. Los puertos remotos se comprueban por separado; un fallo de Firebase no implica un fallo de la torre.	Firebase cannot be read. Remote ports are checked separately; a Firebase failure does not imply a desktop failure.
+No hay telemetría reciente del ESP32. Comprueba su alimentación, Wi-Fi, acceso a Firebase y firmware; no es posible localizar el fallo dentro de casa.	There is no recent ESP32 telemetry. Check its power, Wi-Fi, Firebase access, and firmware; the fault cannot be located inside the home network.
+Accesible · modo anterior	Accessible · legacy mode
+Sin telemetría en firmware anterior	No telemetry with legacy firmware
+No disponible con firmware anterior	Unavailable with legacy firmware
+\s· orden pendiente	\s· pending command
+Lectura autenticada correcta	Authenticated read successful
+Activo · Wi-Fi\s	Active · Wi-Fi\s
+\s· reinicio\s	\s· reset\s
+Sin señal reciente (más de 45 s o sin datos)	No recent heartbeat (older than 45 s or no data)
+Lecturas antiguas: no se usan para diagnosticar	Stale readings: not used for diagnostics
+Falta configurar la IP local en el ESP32	The ESP32 LAN IP needs to be configured
+\s· memoria\s	\s· memory\s
+\s· fallos HTTP\s	\s· HTTP failures\s
+\s· último HTTP\s	\s· last HTTP\s
+\s· paquetes WOL\s	\s· WOL packets\s
+\s· último fallo:\s	\s· last error:\s
+Portátil:\s	Laptop:\s
+\s· torre anunciada en línea	\s· desktop advertised online
+\s· torre no anunciada en línea	\s· desktop not advertised online
+\s(no prueba conexión directa)	\s(does not test a direct connection)
+\s· torre no encontrada en los peers visibles	\s· desktop not found among visible peers
+No se pudo consultar Tailscale:\s	Could not check Tailscale:\s
+Introduce la IP local de la torre (por ejemplo, 192.168.1.50).	Enter the desktop LAN IP (for example, 192.168.1.50).
+La MAC de la tarjeta Ethernet debe tener formato AA:BB:CC:DD:EE:FF.	The Ethernet adapter MAC must use AA:BB:CC:DD:EE:FF format.
+El nombre Wi-Fi debe tener entre 1 y 32 bytes.	The Wi-Fi network name must be 1 to 32 bytes.
+La contraseña Wi-Fi debe tener de 8 a 63 caracteres (o 64 hexadecimales). Para red abierta, déjala vacía.	The Wi-Fi password must be 8 to 63 characters (or 64 hexadecimal characters). Leave it blank for an open network.
+Prepara primero la cuenta técnica del ESP32 y sus reglas de Firebase.	Create the ESP32 technical account and its Firebase rules first.
+Faltan dos UID distintos y válidos para generar las reglas.	Two distinct valid UIDs are needed to generate rules.
+No se encontró la plantilla de reglas incluida en la aplicación.	The rules template included with the app was not found.
+Faltan API key, correo o contraseña.	API key, email, or password is missing.
+. Comprueba la API key y que Email/Password esté habilitado.	. Check the API key and that Email/Password is enabled.
+Firebase no devolvió un UID válido.	Firebase did not return a valid UID.
+Esta compilación no incluye el firmware genérico para ESP32-WROOM-32 de 4 MB.	This build does not include generic firmware for the 4 MB ESP32-WROOM-32.
+La imagen de firmware incluida está incompleta.	The included firmware image is incomplete.
+Selecciona un puerto COM válido del ESP32.	Select a valid ESP32 COM port.
+La descarga superó el tamaño esperado.	The download exceeded the expected size.
+El hash SHA-256 de esptool no coincide; no se ejecutará.	The esptool SHA-256 hash does not match; it will not run.
+El paquete de esptool no tiene el contenido esperado.	The esptool package does not contain the expected files.
+El ejecutable de esptool no coincide con la versión verificada.	The esptool executable does not match the verified version.
+No se pudo iniciar esptool.	Could not start esptool.
+esptool terminó con código\s	esptool exited with code\s
+. Comprueba el puerto COM, el cable de datos y el botón BOOT.	. Check the COM port, data cable, and BOOT button.
+. Si se queda esperando, mantén BOOT hasta que comience la escritura.	. If it waits, hold BOOT until writing starts.
+La configuración del ESP32 es demasiado grande.	The ESP32 configuration is too large.
+Esperando al firmware por USB…	Waiting for firmware over USB…
+El ESP32 no respondió al protocolo v3. Comprueba que se flasheó, reinícialo y prueba de nuevo.	The ESP32 did not respond to protocol v3. Confirm it was flashed, restart it, and retry.
+Enviando ajustes al ESP32 por USB…	Sending settings to the ESP32 over USB…
+El ESP32 rechazó la configuración:\s	The ESP32 rejected the configuration:\s
+El ESP32 no confirmó los ajustes. Repite «Solo configurar» antes de desconectarlo.	The ESP32 did not confirm the settings. Repeat “Configure only” before unplugging it.
+La sesión recibió vídeo y después terminó.	The session received video and then ended.
+Moonlight terminó sin confirmar vídeo.	Moonlight ended without confirmed video.
+\sCódigo del servidor:\s	\sServer code:\s
+Moonlight recibe vídeo de la torre.	Moonlight is receiving video from the desktop.
+Esperando el primer paquete de vídeo.	Waiting for the first video packet.
+Moonlight se cerró sin confirmar vídeo.	Moonlight closed without confirmed video.
+No se encontró una sesión de Moonlight activa.	No active Moonlight session was found.
+Descargando esptool 5.1.0 desde Espressif (60 MB)…	Downloading esptool 5.1.0 from Espressif (60 MB)…
+Descargando esptool ·\s	Downloading esptool ·\s
+Verificando y preparando esptool…	Verifying and preparing esptool…
+Conectando con\s	Connecting to\s
+Enviando ajustes al ESP32 por USB…	Sending settings to the ESP32 over USB…
+Idioma cambiado a español.	Language changed to Spanish.

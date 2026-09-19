@@ -20,11 +20,14 @@
     <Compile Include="..\src\Tests.cs" Link="Tests.cs" />
     <Compile Include="App.xaml.cs" />
     <Compile Include="MainWindow.xaml.cs" />
+    <Compile Include="Localization.cs" />
+    <EmbeddedResource Include="Localization.tsv" LogicalName="TorreRemota.Localization" />
     <Compile Include="MoonlightSession.cs" />
     <Compile Include="Provisioning.cs" />
     <Compile Include="Esp32Flasher.cs" />
     <Page Include="MainWindow.xaml" />
     <Content Include="Resources\TorreRemota.ico" CopyToOutputDirectory="Never" />
+    <Resource Include="Resources\hero-pc.png" />
     <EmbeddedResource Include="..\firebase\database.rules.json" LogicalName="TorreRemota.FirebaseRules" />
     <EmbeddedResource Include="..\firmware\release\RemotePcBridge-esp32-4mb.bin" LogicalName="TorreRemota.Firmware.Esp32" />
   </ItemGroup>

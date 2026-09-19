@@ -29,7 +29,7 @@ public static class Provisioning {
     public static void ValidateBase(Settings s) {
         var basic=Json.ReadSettings(Json.Encode(s));basic.Legacy=true;basic.Validate();
         IPAddress ip;
-        if(!IPAddress.TryParse(s.TowerLanIp,out ip)||ip.AddressFamily!=AddressFamily.InterNetwork||ip.Equals(IPAddress.Any))throw new Exception("Introduce la IP local de la torre (por ejemplo, 192.168.1.200).");
+        if(!IPAddress.TryParse(s.TowerLanIp,out ip)||ip.AddressFamily!=AddressFamily.InterNetwork||ip.Equals(IPAddress.Any))throw new Exception("Introduce la IP local de la torre (por ejemplo, 192.168.1.50).");
         if(!MacPattern.IsMatch(s.TowerMac??""))throw new Exception("La MAC de la tarjeta Ethernet debe tener formato AA:BB:CC:DD:EE:FF.");
         if(string.IsNullOrWhiteSpace(s.WifiSsid)||Encoding.UTF8.GetByteCount(s.WifiSsid)>32)throw new Exception("El nombre Wi-Fi debe tener entre 1 y 32 bytes.");
         string wifi=s.WifiPassword;

@@ -17,7 +17,8 @@ namespace TorreRemota {
 public partial class ModernWindow : Window {
     public bool IsBusy { get { return running!=null; } }
     Settings cfg; Firebase firebase; Diagnostics diagnostics; CancellationTokenSource running;
-    readonly Brush ok=Brushes.SeaGreen, warn=new SolidColorBrush(Color.FromRgb(227,158,35)), bad=new SolidColorBrush(Color.FromRgb(211,73,73)), neutral=new SolidColorBrush(Color.FromRgb(165,180,196));
+    Localization localization; bool updatingLanguage;
+    readonly Brush ok=new SolidColorBrush(Color.FromRgb(77,213,149)), warn=new SolidColorBrush(Color.FromRgb(255,187,91)), bad=new SolidColorBrush(Color.FromRgb(244,111,123)), neutral=new SolidColorBrush(Color.FromRgb(165,180,196));
     readonly List<Button> actions=new List<Button>();
     string pendingId="",lastDigest="",logPath=""; bool closing;
     readonly DispatcherTimer moonlightTimer=new DispatcherTimer{Interval=TimeSpan.FromSeconds(2)};
@@ -28,17 +29,21 @@ public partial class ModernWindow : Window {
     readonly bool demoMode;
     readonly bool setupDemoMode;
     readonly bool flashDemoMode;
+    readonly bool settingsDemoMode;
     bool setupBusy;
     CancellationTokenSource setupCancellation;
     Process moonlightProcess;
     DateTime moonlightStartedAt=DateTime.MinValue;
     MoonlightPhase moonlightPhase=MoonlightPhase.None;
     [DllImport("dwmapi.dll")]static extern int DwmSetWindowAttribute(IntPtr hwnd,int attribute,ref int value,int size);
-    public ModernWindow(bool demo=false,bool setupDemo=false,bool flashDemo=false) {
+    public ModernWindow(bool demo=false,bool setupDemo=false,bool flashDemo=false,bool settingsDemo=false) {
         InitializeComponent();
-        demoMode=demo;setupDemoMode=setupDemo;flashDemoMode=flashDemo;
-        try{var helper=new System.Windows.Interop.WindowInteropHelper(this);SourceInitialized+=delegate{int dark=1;DwmSetWindowAttribute(helper.Handle,20,ref dark,sizeof(int));};}catch{}
-        cfg=demo?new Settings{Database="https://demo-default-rtdb.europe-west1.firebasedatabase.app",Target="100.64.0.10"}:Settings.Load();cfg.Legacy=false;firebase=new Firebase(cfg);diagnostics=new Diagnostics(cfg,firebase);
+        demoMode=demo;setupDemoMode=setupDemo;flashDemoMode=flashDemo;settingsDemoMode=settingsDemo;
+        try{var helper=new System.Windows.Interop.WindowInteropHelper(this);SourceInitialized+=delegate{int dark=1,mica=2,round=2;DwmSetWindowAttribute(helper.Handle,20,ref dark,sizeof(int));DwmSetWindowAttribute(helper.Handle,38,ref mica,sizeof(int));DwmSetWindowAttribute(helper.Handle,33,ref round,sizeof(int));};}catch{}
+        cfg=demo?new Settings{Database="https://demo-default-rtdb.europe-west1.firebasedatabase.app",Target="100.64.0.10",Language=Environment.GetCommandLineArgs().Contains("--demo-language-es")?"es":"en"}:Settings.Load();cfg.Legacy=false;
+        localization=new Localization(this,cfg.Language);
+        UpdateLanguageCombo();
+        firebase=new Firebase(cfg);diagnostics=new Diagnostics(cfg,firebase);
         actions.AddRange(new[]{ConnectButton,WakeButton,DiagnoseButton});
         FillSettings();FillSetup();RefreshPorts();RefreshMode();
         if(!demo&&!HasUsableCredentials(cfg))SelectPage(SetupView,NavSetup);
@@ -56,13 +61,21 @@ public partial class ModernWindow : Window {
         if(!demo)moonlightTimer.Start();
         statusTimer.Tick+=async (sender,ev)=>await RefreshBackground();
         if(!demo)statusTimer.Start();
-        Loaded+=async (sender,ev)=>{if(demo){ShowDemoSnapshot();if(setupDemoMode)ShowSetupDemo();if(flashDemoMode)SetupView.ScrollToBottom();}else if(HasUsableCredentials(cfg))await RunAction("diagnose",true);else SetupAccountStatus.Text="Empieza por tu proyecto Firebase y los datos de la torre; todavía no se enviará ninguna orden.";};
+        Loaded+=async (sender,ev)=>{if(demo){ShowDemoSnapshot();if(setupDemoMode)ShowSetupDemo();if(flashDemoMode)SetupView.ScrollToBottom();if(settingsDemoMode)SelectPage(SettingsView,NavSettings);}else if(HasUsableCredentials(cfg))await RunAction("diagnose",true);else SetupAccountStatus.Text="Empieza por tu proyecto Firebase y los datos de la torre; todavía no se enviará ninguna orden.";};
         Closing+=delegate {closing=true;windowLifetime.Cancel();if(running!=null)running.Cancel();if(setupCancellation!=null)setupCancellation.Cancel();};
         Closed+=delegate {moonlightTimer.Stop();statusTimer.Stop();windowLifetime.Dispose();if(moonlightProcess!=null)moonlightProcess.Dispose();firebase.Dispose();};
     }
     static bool HasUsableCredentials(Settings s){try{return !string.IsNullOrWhiteSpace(s.ApiKey)&&!string.IsNullOrWhiteSpace(s.Email)&&!string.IsNullOrWhiteSpace(s.Password);}catch{return false;}}
-    void RefreshMode(){bool complete=HasUsableCredentials(cfg);SideMode.Text=complete?"Puente · conexión protegida":"Configuración pendiente";TopMode.Text=complete?"Sistema configurado":"Preparar sistema";SideAddress.Text=string.IsNullOrWhiteSpace(cfg.Target)?"Sin torre configurada":cfg.Target+"  ·  "+cfg.App;}
-    void ApplySettings(Settings next){firebase.Dispose();cfg=next;firebase=new Firebase(cfg);diagnostics=new Diagnostics(cfg,firebase);pendingId="";FillSettings();FillSetup();RefreshMode();}
+    void RefreshMode(){bool complete=HasUsableCredentials(cfg);SideMode.Text=complete?"Puente · conexión protegida":"Configuración pendiente";TopMode.Text=complete?"Sistema configurado":"Preparar sistema";SideAddress.Text=string.IsNullOrWhiteSpace(cfg.Target)?"Sin torre configurada":cfg.Target+"  ·  "+cfg.App;SideStatusDot.Fill=complete?neutral:warn;HeaderWifiIcon.Foreground=complete?neutral:warn;}
+    void ApplySettings(Settings next){firebase.Dispose();cfg=next;localization.SetLanguage(cfg.Language);UpdateLanguageCombo();firebase=new Firebase(cfg);diagnostics=new Diagnostics(cfg,firebase);pendingId="";FillSettings();FillSetup();RefreshMode();}
+    void UpdateLanguageCombo(){updatingLanguage=true;LanguageCombo.SelectedIndex=cfg.Language=="es"?1:0;updatingLanguage=false;}
+    void LanguageChanged(object sender,SelectionChangedEventArgs e){
+        if(updatingLanguage||cfg==null||localization==null)return;
+        string language=LanguageCombo.SelectedIndex==1?"es":"en";
+        if(cfg.Language==language)return;
+        try{cfg.Language=language;if(!demoMode)cfg.Save();localization.SetLanguage(language);FillSettings();FillSetup();RefreshMode();Log(language=="es"?"Idioma cambiado a español.":"Language changed to English.");}
+        catch(Exception ex){MessageBox.Show(this,ex.Message,"Could not save language",MessageBoxButton.OK,MessageBoxImage.Warning);}
+    }
     void ReloadSettings(){var latest=Settings.Load();latest.Legacy=false;if(Json.Encode(latest)==Json.Encode(cfg))return;ApplySettings(latest);Log("Se han recargado los ajustes guardados.");}
     void FillSettings(){DatabaseBox.Text=cfg.Database;TargetBox.Text=cfg.Target;AppBox.Text=cfg.App;MoonlightBox.Text=cfg.Moonlight;TailscaleBox.Text=cfg.Tailscale;PortBox.Text=cfg.BasePort.ToString();WaitBox.Text=cfg.WaitSeconds.ToString();ApiKeyBox.Text=cfg.ApiKey;EmailBox.Text=cfg.Email;PasswordBox.Password="";CredentialStatus.Text=HasUsableCredentials(cfg)?"Credenciales guardadas. Deja la contraseña vacía para conservarla.":"Faltan credenciales o la contraseña guardada no se puede descifrar.";CredentialStatus.Foreground=HasUsableCredentials(cfg)?ok:warn;}
     void SelectPage(FrameworkElement page,Button nav){DashboardView.Visibility=page==DashboardView?Visibility.Visible:Visibility.Collapsed;SetupView.Visibility=page==SetupView?Visibility.Visible:Visibility.Collapsed;SettingsView.Visibility=page==SettingsView?Visibility.Visible:Visibility.Collapsed;GuideView.Visibility=page==GuideView?Visibility.Visible:Visibility.Collapsed;foreach(var b in new[]{NavDashboard,NavSetup,NavSettings,NavGuide}){b.Background=(Brush)new BrushConverter().ConvertFromString(b==nav?"#183650":"#00000000");b.Foreground=(Brush)new BrushConverter().ConvertFromString(b==nav?"#77C4FF":"#AFC1D7");}}
@@ -70,14 +83,14 @@ public partial class ModernWindow : Window {
     void ShowSetup(object sender,RoutedEventArgs e){FillSetup();RefreshPorts();SelectPage(SetupView,NavSetup);}
     void ShowSettings(object sender,RoutedEventArgs e){FillSettings();SelectPage(SettingsView,NavSettings);}
     void ShowGuide(object sender,RoutedEventArgs e){SelectPage(GuideView,NavGuide);}
-    async void SaveSettingsClick(object sender,RoutedEventArgs e){try{if(running!=null||setupBusy)throw new Exception("Espera a que termine la comprobación actual.");while(statusRefreshing&&!closing)await Task.Delay(100);if(closing)return;var next=Json.ReadSettings(Json.Encode(cfg));next.Database=DatabaseBox.Text.Trim().TrimEnd('/');next.Target=TargetBox.Text.Trim();next.App=AppBox.Text.Trim();next.Moonlight=MoonlightBox.Text.Trim();next.Tailscale=TailscaleBox.Text.Trim();next.BasePort=int.Parse(PortBox.Text);next.WaitSeconds=int.Parse(WaitBox.Text);next.Legacy=false;next.ApiKey=string.IsNullOrWhiteSpace(ApiKeyBox.Text)?cfg.ApiKey:ApiKeyBox.Text.Trim();next.Email=string.IsNullOrWhiteSpace(EmailBox.Text)?cfg.Email:EmailBox.Text.Trim();if(PasswordBox.Password!="")next.Password=PasswordBox.Password;next.Validate();next.Save();ApplySettings(next);Log("Ajustes guardados con copia de seguridad cifrada.");SelectPage(DashboardView,NavDashboard);_=RunAction("diagnose",true);}catch(Exception ex){MessageBox.Show(this,ex.Message,"Revisa los ajustes",MessageBoxButton.OK,MessageBoxImage.Warning);}}
+    async void SaveSettingsClick(object sender,RoutedEventArgs e){try{if(running!=null||setupBusy)throw new Exception("Espera a que termine la comprobación actual.");while(statusRefreshing&&!closing)await Task.Delay(100);if(closing)return;var next=Json.ReadSettings(Json.Encode(cfg));next.Database=DatabaseBox.Text.Trim().TrimEnd('/');next.Target=TargetBox.Text.Trim();next.App=AppBox.Text.Trim();next.Moonlight=MoonlightBox.Text.Trim();next.Tailscale=TailscaleBox.Text.Trim();next.BasePort=int.Parse(PortBox.Text);next.WaitSeconds=int.Parse(WaitBox.Text);next.Legacy=false;next.ApiKey=string.IsNullOrWhiteSpace(ApiKeyBox.Text)?cfg.ApiKey:ApiKeyBox.Text.Trim();next.Email=string.IsNullOrWhiteSpace(EmailBox.Text)?cfg.Email:EmailBox.Text.Trim();if(PasswordBox.Password!="")next.Password=PasswordBox.Password;next.Validate();next.Save();ApplySettings(next);Log("Ajustes guardados con copia de seguridad cifrada.");SelectPage(DashboardView,NavDashboard);_=RunAction("diagnose",true);}catch(Exception ex){MessageBox.Show(this,localization.Convert(ex.Message),localization.Convert("Revisa los ajustes"),MessageBoxButton.OK,MessageBoxImage.Warning);}}
     void FillSetup(){
         SetupDatabaseBox.Text=cfg.Database;SetupApiKeyBox.Text=cfg.ApiKey;SetupTargetBox.Text=cfg.Target;
         SetupLanBox.Text=cfg.TowerLanIp;SetupMacBox.Text=cfg.TowerMac;SetupWifiBox.Text=cfg.WifiSsid;SetupWifiPasswordBox.Password="";
         SetupAccountStatus.Text=string.IsNullOrWhiteSpace(cfg.LaptopUid)||string.IsNullOrWhiteSpace(cfg.DeviceUid)?
             "Faltan usuarios técnicos o sus UID. El asistente puede crearlos en tu proyecto Firebase.":
             "Usuarios preparados · portátil y ESP32 separados. La contraseña Wi-Fi guardada se conserva si dejas su campo vacío.";
-        try{SetupRulesBox.Text=Provisioning.Rules(cfg.LaptopUid,cfg.DeviceUid);}catch{SetupRulesBox.Text="Las reglas aparecerán al preparar los dos usuarios.";}
+        try{SetupRulesBox.Text=Provisioning.Rules(cfg.LaptopUid,cfg.DeviceUid);}catch{SetupRulesBox.Text=localization.Convert("Las reglas aparecerán al preparar los dos usuarios.");}
     }
     void RefreshPorts(){
         string selected=SetupPortCombo.SelectedItem as string;
@@ -90,7 +103,7 @@ public partial class ModernWindow : Window {
     void SetupDetectPortsClick(object sender,RoutedEventArgs e){RefreshPorts();}
     void AppendSetup(string message){
         if(closing)return;
-        SetupProgressBox.AppendText(DateTime.Now.ToString("HH:mm:ss")+"  "+message+Environment.NewLine);
+        SetupProgressBox.AppendText(DateTime.Now.ToString("HH:mm:ss")+"  "+localization.Convert(message)+Environment.NewLine);
         if(SetupProgressBox.Text.Length>30000)SetupProgressBox.Text=SetupProgressBox.Text.Substring(SetupProgressBox.Text.Length-20000);
         SetupProgressBox.ScrollToEnd();
     }
@@ -107,7 +120,7 @@ public partial class ModernWindow : Window {
     }
     async void SetupSaveClick(object sender,RoutedEventArgs e){
         try {if(setupBusy)return;await SaveSetupForm();AppendSetup("Datos guardados en tu usuario de Windows.");}
-        catch(Exception ex){MessageBox.Show(this,ex.Message,"Revisa los datos",MessageBoxButton.OK,MessageBoxImage.Warning);}
+        catch(Exception ex){MessageBox.Show(this,localization.Convert(ex.Message),localization.Convert("Revisa los datos"),MessageBoxButton.OK,MessageBoxImage.Warning);}
     }
     void SetSetupBusy(bool busy){setupBusy=busy;CreateAccountsButton.IsEnabled=!busy;SetupFlashButton.IsEnabled=!busy;SetupConfigureButton.IsEnabled=!busy;SetupCancelButton.IsEnabled=busy;}
     async Task<FirebaseAccount> ResolveAccount(Settings s,bool device,CancellationToken ct){
@@ -143,7 +156,7 @@ public partial class ModernWindow : Window {
         catch(Exception ex){AppendSetup("Error al preparar usuarios: "+ex.Message);SetupAccountStatus.Text=ex.Message;}
         finally {setupCancellation.Dispose();setupCancellation=null;SetSetupBusy(false);}
     }
-    void SetupCopyRulesClick(object sender,RoutedEventArgs e){try{if(SetupRulesBox.Text.StartsWith("Las reglas"))throw new Exception("Primero prepara los usuarios.");Clipboard.SetText(SetupRulesBox.Text);AppendSetup("Reglas copiadas. Pégalas en la pestaña Reglas de Realtime Database.");}catch(Exception ex){AppendSetup(ex.Message);}}
+    void SetupCopyRulesClick(object sender,RoutedEventArgs e){try{if(string.IsNullOrWhiteSpace(cfg.LaptopUid)||string.IsNullOrWhiteSpace(cfg.DeviceUid))throw new Exception("Primero prepara los usuarios.");Clipboard.SetText(SetupRulesBox.Text);AppendSetup("Reglas copiadas. Pégalas en la pestaña Reglas de Realtime Database.");}catch(Exception ex){AppendSetup(ex.Message);}}
     void SetupOpenFirebaseClick(object sender,RoutedEventArgs e){try{Process.Start(new ProcessStartInfo("https://console.firebase.google.com/"){UseShellExecute=true});}catch(Exception ex){AppendSetup("No se pudo abrir Firebase: "+ex.Message);}}
     void SetupFlashClick(object sender,RoutedEventArgs e){_=RunProvision(true);}
     void SetupConfigureClick(object sender,RoutedEventArgs e){_=RunProvision(false);}
@@ -170,21 +183,21 @@ public partial class ModernWindow : Window {
             LanText="192.168.1.25 · HTTP abierto · HTTPS abierto · RTSP abierto",
             TailText="Portátil: Running · torre anunciada en línea (no prueba conexión directa)",
             PortsText="47984: abierto   |   47989: abierto   |   48010: abierto"};
-        sample.Explain(false);ShowSnapshot(sample);StatusFreshnessText.Text="Vista de ejemplo · sin conexiones reales";
+        sample.Explain(false);ShowSnapshot(sample);TopMode.Text="Vista de ejemplo";StatusFreshnessText.Text="Vista de ejemplo · sin conexiones reales";
     }
     void ShowSetupDemo(){
-        SetupDatabaseBox.Text="https://mi-proyecto-default-rtdb.firebaseio.com";
-        SetupApiKeyBox.Text="Pega aquí tu Web API key";SetupTargetBox.Text="100.64.0.10";
-        SetupLanBox.Text="192.168.1.25";SetupMacBox.Text="AA:BB:CC:DD:EE:FF";SetupWifiBox.Text="Mi Wi-Fi";
-        SetupPortCombo.Items.Clear();SetupPortCombo.Items.Add("COM7 (ejemplo)");SetupPortCombo.SelectedIndex=0;
-        if(flashDemoMode)SetupProgressBox.Text="Ejemplo de progreso: puerto COM7 detectado."+Environment.NewLine+
-            "Firmware escrito y verificado."+Environment.NewLine+
-            "Configuración guardada. El ESP32 se está reiniciando.";
+        SetupDatabaseBox.Text="https://sample-project-default-rtdb.firebaseio.com";
+        SetupApiKeyBox.Text=localization.Convert("Pega aquí tu Web API key");SetupTargetBox.Text="100.64.0.10";
+        SetupLanBox.Text="192.168.1.25";SetupMacBox.Text="AA:BB:CC:DD:EE:FF";SetupWifiBox.Text=localization.Convert("Mi Wi-Fi");
+        SetupPortCombo.Items.Clear();SetupPortCombo.Items.Add(localization.Convert("COM7 (ejemplo)"));SetupPortCombo.SelectedIndex=0;
+        if(flashDemoMode)SetupProgressBox.Text=localization.Convert("Ejemplo de progreso: puerto COM7 detectado.")+Environment.NewLine+
+            localization.Convert("Firmware escrito y verificado.")+Environment.NewLine+
+            localization.Convert("Configuración guardada. El ESP32 se está reiniciando.");
         SetupAccountStatus.Text="Vista de ejemplo · los usuarios se crearán en tu proyecto Firebase.";
         SelectPage(SetupView,NavSetup);
     }
-    void Log(string message){if(closing)return;string line=DateTime.Now.ToString("HH:mm:ss")+"  "+message+Environment.NewLine;ActivityLog.AppendText(line);if(ActivityLog.Text.Length>120000)ActivityLog.Text=ActivityLog.Text.Substring(ActivityLog.Text.Length-90000);ActivityLog.ScrollToEnd();if(logPath!="")try{File.AppendAllText(logPath,line,System.Text.Encoding.UTF8);}catch{OrderDetail.Text="No se pudo guardar el registro; usa Exportar.";}}
-    void SetCard(TextBlock value,TextBlock detail,Ellipse dot,string summary,string full,Brush color){value.Text=summary;detail.Text=full;detail.ToolTip=full;dot.Fill=color;}
+    void Log(string message){if(closing)return;string line=DateTime.Now.ToString("HH:mm:ss")+"  "+localization.Convert(message)+Environment.NewLine;ActivityLog.AppendText(line);if(ActivityLog.Text.Length>120000)ActivityLog.Text=ActivityLog.Text.Substring(ActivityLog.Text.Length-90000);ActivityLog.ScrollToEnd();if(logPath!="")try{File.AppendAllText(logPath,line,System.Text.Encoding.UTF8);}catch{OrderDetail.Text="No se pudo guardar el registro; usa Exportar.";}}
+    void SetCard(TextBlock value,TextBlock detail,Ellipse dot,string summary,string full,Brush color){value.Text=summary;value.Foreground=color;detail.Text=full;detail.ToolTip=localization.Convert(full);dot.Fill=color;}
     void SetStage(Border border,TextBlock label,string summary,Brush color){label.Text=summary;label.Foreground=color;border.BorderBrush=color;}
     void UpdateVideoStage(){
         if(moonlightPhase==MoonlightPhase.Video)SetStage(StageVideo,StageVideoText,"Vídeo recibido",ok);
@@ -208,6 +221,10 @@ public partial class ModernWindow : Window {
         SetStage(StageLan,StageLanText,s.LanOpen?"Servicios activos":s.LanKnown?"Sin respuesta":"Sin datos",s.LanOpen?ok:s.LanKnown?warn:neutral);
         SetStage(StageRemote,StageRemoteText,s.Ready?"Puertos abiertos":"Sin respuesta",s.Ready?ok:warn);
         UpdateVideoStage();
+        HeroStatusDot.Fill=s.Ready?ok:s.Cloud?warn:bad;
+        SideStatusDot.Fill=s.Fresh?ok:s.Cloud?warn:bad;
+        HeaderWifiIcon.Foreground=s.Fresh?ok:s.Cloud?warn:bad;
+        TopMode.Text=s.Fresh?"ESP32 en línea":s.Cloud?"ESP32 sin señal":"Sin acceso";
         Headline.Text=s.Ready?"Tu torre responde":"Revisando la conexión";
         Advice.Text=s.Advice;
         string digest=string.Join(Environment.NewLine,new[]{s.CloudText,s.EspText,s.LanText,s.TailText,s.PortsText});
@@ -276,6 +293,6 @@ public partial class ModernWindow : Window {
         else{MoonlightStatusText.Text="Moonlight · Esperando vídeo";MoonlightStatusText.Foreground=warn;}
         Log(state.Detail+(state.LogPath!=""?" Registro local: "+state.LogPath:""));
     }
-    void ExportClick(object sender,RoutedEventArgs e){var dialog=new SaveFileDialog{Filter="Registro de texto|*.txt",FileName="TorreRemota-"+DateTime.Now.ToString("yyyyMMdd-HHmmss")+".txt"};if(dialog.ShowDialog(this)==true)try{File.WriteAllText(dialog.FileName,"Torre Remota · "+DateTime.Now+Environment.NewLine+SideMode.Text+Environment.NewLine+ActivityLog.Text);Log("Registro exportado.");}catch(Exception ex){MessageBox.Show(this,ex.Message,"No se pudo exportar");}}
+    void ExportClick(object sender,RoutedEventArgs e){var dialog=new SaveFileDialog{Filter=localization.Convert("Registro de texto")+"|*.txt",FileName="RemotePcBridge-"+DateTime.Now.ToString("yyyyMMdd-HHmmss")+".txt"};if(dialog.ShowDialog(this)==true)try{File.WriteAllText(dialog.FileName,localization.Convert("Torre Remota · ")+DateTime.Now+Environment.NewLine+SideMode.Text+Environment.NewLine+ActivityLog.Text);Log("Registro exportado.");}catch(Exception ex){MessageBox.Show(this,localization.Convert(ex.Message),localization.Convert("No se pudo exportar"));}}
 }
 }

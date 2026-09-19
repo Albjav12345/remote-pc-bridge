@@ -96,10 +96,10 @@ void showLed(uint32_t now) {
 
 // Todas las peticiones verifican TLS y tienen tiempos limitados. Nunca se imprime el token.
 int request(const String &url,const char *method,const String &body,String &out) {
-  if(!clockReady()){error("Reloj sin NTP: TLS en espera");return -100;}
+  if(!clockReady()){error("NTP time unavailable: TLS waiting");return -100;}
   WiFiClientSecure tls; tls.setCACert(ROOT_CA); tls.setHandshakeTimeout(6);
   HTTPClient http; http.setConnectTimeout(4000);http.setTimeout(5000);http.setReuse(false);
-  if(!http.begin(tls,url)){error("No se pudo iniciar HTTPS");return -101;}
+  if(!http.begin(tls,url)){error("Could not start HTTPS");return -101;}
   if(body.length())http.addHeader("Content-Type","application/json");
   // Pulso corto al iniciar una comunicación con Firebase o Authentication.
   digitalWrite(LED_PIN,LOW);delay(65);digitalWrite(LED_PIN,HIGH);
@@ -114,10 +114,10 @@ bool authenticate() {
   String encoded,response;serializeJson(body,encoded);
   int code=request(String("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=")+cfg.apiKey,"POST",encoded,response);
   if(code!=200)return false;
-  JsonDocument d; if(deserializeJson(d,response)){error("Auth: JSON no valido");return false;}
-  if(String(d["localId"] | "")!=cfg.uid){error("Auth: UID del dispositivo incorrecto");return false;}
-  token=d["idToken"].as<String>();tokenAt=millis();if(token.isEmpty()){error("Auth: token vacio");return false;}
-  Serial.println("Firebase: autenticado");return true;
+  JsonDocument d; if(deserializeJson(d,response)){error("Auth: invalid JSON");return false;}
+  if(String(d["localId"] | "")!=cfg.uid){error("Auth: incorrect device UID");return false;}
+  token=d["idToken"].as<String>();tokenAt=millis();if(token.isEmpty()){error("Auth: empty token");return false;}
+  Serial.println("Firebase: authenticated");return true;
 }
 int db(const char *path,const char *method,const String &body,String &out) {
   if(token.isEmpty())return -102;
@@ -137,7 +137,7 @@ int sendWol() {
     if(udp.beginPacket(broadcast,9)){size_t bytes=udp.write(packet,sizeof(packet));int result=udp.endPacket();if(bytes==sizeof(packet)&&result==1)sent++;}
     delay(180);digitalWrite(LED_PIN,HIGH);delay(180);
   }
-  wolCount+=sent;Serial.printf("WOL: %d/3 paquetes enviados\n",sent);return sent;
+  wolCount+=sent;Serial.printf("WOL: %d/3 packets sent\n",sent);return sent;
 }
 void publishAck() {
   if(!ackDirty)return;
@@ -147,7 +147,7 @@ void publishAck() {
 }
 void command() {
   String response; if(db("command","GET","",response)!=200)return;
-  JsonDocument d;if(deserializeJson(d,response)){error("Orden: JSON no valido");return;}if(d.isNull())return;
+  JsonDocument d;if(deserializeJson(d,response)){error("Command: invalid JSON");return;}if(d.isNull())return;
   String id=d["id"] | "";if(id.length()!=32)return;
   if(id==lastId) {if(ackId!=id){ackId=id;ackState=prefs.getString("state","uncertain_after_restart");ackDirty=true;}return;}
   int64_t created=d["createdAt"] | int64_t(0), now=int64_t(time(nullptr))*1000;
@@ -157,7 +157,7 @@ void command() {
   }
   // Persistir antes del envío evita repetir tras un reinicio. Una caída aquí puede dejar
   // una orden sin ejecutar: se informa como uncertain_after_restart, nunca como éxito.
-  if(prefs.putString("state","uncertain_after_restart")==0 || prefs.putString("lastId",id)==0){error("NVS: no se puede persistir la orden");ackId=id;ackState="storage_error";ackDirty=true;return;}
+  if(prefs.putString("state","uncertain_after_restart")==0 || prefs.putString("lastId",id)==0){error("NVS: could not persist command");ackId=id;ackState="storage_error";ackDirty=true;return;}
   lastId=id;ackId=id;
   int count=sendWol();ackState=count>0?"sent":"udp_failed";ackDirty=true;
   prefs.putString("state",ackState);
@@ -171,22 +171,22 @@ void heartbeat() {
 }
 void setup() {
   Serial.begin(115200);pinMode(LED_PIN,OUTPUT);digitalWrite(LED_PIN,LOW);
-  if(!prefs.begin("torre-bridge",false)){error("NVS no disponible: reinicia el ESP32");while(true)delay(1000);}
+  if(!prefs.begin("torre-bridge",false)){error("NVS unavailable: restart the ESP32");while(true)delay(1000);}
   lastId=prefs.getString("lastId","");if(!lastId.isEmpty()){ackId=lastId;ackState=prefs.getString("state","uncertain_after_restart");ackDirty=true;}
   configured=loadConfig();lanConfigured=configured;
   if(configured){WiFi.mode(WIFI_STA);WiFi.setAutoReconnect(true);WiFi.setSleep(false);WiFi.begin(cfg.wifiSsid.c_str(),cfg.wifiPassword.c_str());}
   configTime(0,0,"time.google.com","pool.ntp.org","time.cloudflare.com");
   lastAuthTry=millis()-30000;lastPoll=millis()-5000;lastBeat=millis()-10000;
-  Serial.println(configured?"Remote PC Bridge v3: iniciando Wi-Fi / NTP / TLS / Firebase":"Remote PC Bridge v3: esperando configuracion USB");
+  Serial.println(configured?"Remote PC Bridge v3: starting Wi-Fi / NTP / TLS / Firebase":"Remote PC Bridge v3: waiting for USB configuration");
 }
 void loop() {
   uint32_t now=millis();uptimeMs+=uint32_t(now-prevMillis);prevMillis=now;
   handleSerial();
   showLed(now);
   if(!configured){delay(20);return;}
-  if(WiFi.status()!=WL_CONNECTED){if(wasWifiConnected){token="";lastHttp=-103;wasWifiConnected=false;}if(elapsed(now,lastWifiTry,15000)){lastWifiTry=now;WiFi.reconnect();error("Wi-Fi desconectado: reintentando");}delay(20);return;}
+  if(WiFi.status()!=WL_CONNECTED){if(wasWifiConnected){token="";lastHttp=-103;wasWifiConnected=false;}if(elapsed(now,lastWifiTry,15000)){lastWifiTry=now;WiFi.reconnect();error("Wi-Fi disconnected: retrying");}delay(20);return;}
   wasWifiConnected=true;
-  if(!clockReady()){if(elapsed(now,lastWifiTry,15000)){lastWifiTry=now;error("Esperando hora NTP");}delay(50);return;}
+  if(!clockReady()){if(elapsed(now,lastWifiTry,15000)){lastWifiTry=now;error("Waiting for NTP time");}delay(50);return;}
   if(token.isEmpty()||elapsed(now,tokenAt,3000000UL)){
     if(elapsed(now,lastAuthTry,30000)){lastAuthTry=now;authenticate();}
     if(token.isEmpty()){delay(50);return;}

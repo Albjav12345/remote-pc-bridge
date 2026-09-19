@@ -1,27 +1,29 @@
-# Contribuir
+# Contributing
 
-Se agradecen informes reproducibles y cambios pequeños que mejoren la instalación o el diagnóstico. Antes de compartir un registro o captura, sustituye direcciones, SSID, MAC, UID, correos, tokens y cualquier contraseña.
+[![Read in Spanish](https://img.shields.io/badge/Read%20in-Espa%C3%B1ol-2563eb?style=for-the-badge)](CONTRIBUTING.es.md) · [Home](README.md)
 
-## Estructura
+Reproducible bug reports and small changes that improve setup or diagnostics are welcome. Before sharing a log or screenshot, replace IP addresses, SSIDs, MAC addresses, UIDs, emails, tokens, and passwords.
 
-- src-modern: interfaz WPF, asistente de preparación, flasheo y seguimiento de Moonlight.
-- src: configuración, comunicación Firebase, diagnósticos y pruebas.
-- firmware/TorreBridge: firmware genérico para ESP32-WROOM-32 de 4 MB.
-- firebase: plantilla de reglas; la app sustituye los marcadores por los UID de las cuentas creadas.
-- scripts: compilación del firmware e icono.
-- docs/images: capturas generadas con los modos de demostración, sin conexión a una cuenta real.
+## Project layout
 
-## Compilar y comprobar
+- `src-modern`: WPF interface, setup wizard, flashing, and Moonlight session tracking.
+- `src`: settings, Firebase communication, diagnostics, and tests.
+- `firmware/TorreBridge`: generic firmware for a 4 MB ESP32-WROOM-32.
+- `firebase`: database rules template; the app replaces placeholders with generated account UIDs.
+- `scripts`: firmware and icon build helpers.
+- `docs/images`: screenshots generated in demo modes without a real account.
 
-Instala .NET 8 SDK, Arduino CLI, el core esp32:esp32 3.3.2 y ArduinoJson 7.4.2. En PowerShell:
+## Build and verify
+
+Install .NET 8 SDK, Arduino CLI, ESP32 core `esp32:esp32` **3.3.2**, and ArduinoJson **7.4.2**. In PowerShell:
 
 ~~~powershell
 ./build.ps1
 $p = Start-Process ./dist/TorreRemota.exe -ArgumentList '--self-test' -PassThru -Wait
 Get-Content ./dist/test-results.txt
-if ($p.ExitCode -ne 0) { throw 'Pruebas fallidas' }
+if ($p.ExitCode -ne 0) { throw 'Tests failed' }
 ~~~
 
-Los modos --render-demo, --render-setup-demo y --render-flash-demo generan capturas de ejemplo junto al EXE. Para cambios del flasheo hace falta comprobar además una placa física y una configuración Firebase de prueba; las pruebas automáticas no sustituyen esa verificación.
+The `--render-demo`, `--render-setup-demo`, and `--render-flash-demo` modes create example screenshots beside the EXE. Add `--demo-language-es` to render a Spanish example. Flashing changes also need testing on a physical board with a test Firebase project; automated tests cannot replace that check.
 
-No agregues config.h, ajustes locales, registros ni firmware configurado al control de versiones. Revisa el diff antes de proponer un cambio. El archivo binario de firmware que el EXE incrusta se genera durante la compilación y no se versiona.
+Do not add `config.h`, local settings, logs, or configured firmware to version control. Review the diff before opening a change. The EXE's embedded firmware binary is generated during the build and is not versioned.

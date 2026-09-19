@@ -1,83 +1,85 @@
 # Remote PC Bridge
 
-[English](README.en.md)
+[![Read in Spanish](https://img.shields.io/badge/Read%20in-Espa%C3%B1ol-2563eb?style=for-the-badge)](README.es.md)
 
-**Enciende un PC de casa desde fuera y comprueba cada paso hasta abrir Moonlight.** Una aplicación de Windows envía una orden autenticada por Firebase; un ESP32 conectado al Wi-Fi doméstico la recibe y envía Wake-on-LAN a la torre. El panel comprueba por separado Firebase, el ESP32, los servicios de la torre, Tailscale, los puertos de Sunshine y la sesión de Moonlight.
+**Wake a home Windows PC remotely, see where the connection fails, and launch Moonlight.** A Windows app writes an authenticated command to Firebase Realtime Database. An ESP32 on your home Wi-Fi reads that command and sends a Wake-on-LAN packet on the local network. The dashboard separately reports Firebase, ESP32 heartbeat, local Sunshine ports, Tailscale, remote ports, and Moonlight video.
 
-![Panel de control oscuro de Remote PC Bridge](docs/images/dashboard.png)
+![Dark dashboard with sample data](docs/images/dashboard.png)
 
-> Estado: versión inicial para **Windows 10/11 y ESP32-WROOM-32 Dev Module con 4 MB de flash**. La aplicación pasa sus pruebas automáticas y el firmware compila. El asistente de flasheo todavía no se ha validado con otra placa física.
+This project targets **Windows 10/11 and an ESP32-WROOM-32 Dev Module with 4 MB flash**. The application passes automated tests and the firmware compiles. The USB flashing assistant has not yet been verified on a second physical board. The app starts in English; choose **Settings → App language → Español** to switch the interface.
 
-## Qué necesitas
+## Requirements
 
-| Componente | Dónde | Para qué |
-|---|---|---|
-| ESP32-WROOM-32 de 4 MB y cable USB de datos | En casa | Envía Wake-on-LAN mientras el PC está apagado |
-| PC con Ethernet y Wake-on-LAN habilitado | En casa | Equipo que quieres encender |
-| [Sunshine](https://docs.lizardbyte.dev/projects/sunshine/latest/) y [Tailscale](https://tailscale.com/download) | PC de casa | Streaming y acceso privado desde fuera |
-| [Moonlight](https://moonlight-stream.org/) y Tailscale | Portátil Windows | Cliente de streaming y conexión remota |
-| [Firebase Realtime Database](https://firebase.google.com/docs/database) y Authentication Email/Password | Proyecto propio dedicado | Canal autenticado entre portátil y ESP32 |
-| [.NET 8 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/8.0) | Portátil | Ejecutar la aplicación |
+- A desktop PC connected by Ethernet with Wake-on-LAN enabled in firmware and Windows.
+- An ESP32-WROOM-32 on 2.4 GHz home Wi-Fi, powered even while the desktop is off, and a USB data cable for setup.
+- [Sunshine](https://docs.lizardbyte.dev/projects/sunshine/latest/) and [Tailscale](https://tailscale.com/download) on the desktop; [Moonlight](https://moonlight-stream.org/) and Tailscale on the Windows laptop.
+- A **dedicated** Firebase project with [Realtime Database](https://firebase.google.com/docs/database) and Email/Password Authentication.
+- [.NET 8 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/8.0) on the laptop.
 
-El PC de casa **no necesita un agente adicional, servicio ni tarea de inicio de este proyecto**. Sí necesita que Sunshine y Tailscale estén configurados para funcionar cuando Windows arranque. El ESP32 debe quedar alimentado cuando la torre esté apagada; puede servir un puerto USB con alimentación permanente si lo compruebas en tu placa.
+The desktop needs no extra agent from this project. Sunshine and Tailscale still need to be configured to start with Windows.
 
-## Puesta en marcha
+## Quick start
 
-1. En la torre, activa Wake-on-LAN en UEFI/BIOS y en el adaptador Ethernet de Windows. Asigna una IP local estable, instala Sunshine y Tailscale y comprueba que Moonlight se empareja **antes de salir de casa**. Anota la IP local, la MAC de Ethernet y la IP Tailscale de la torre.
-2. Crea un proyecto de Firebase **dedicado**. Activa Realtime Database y, en Authentication → Método de inicio de sesión, habilita Email/Password. Copia la URL raíz de Realtime Database y la Web API key de Configuración del proyecto. No uses una clave de cuenta de servicio.
-3. Descarga el EXE de la sección Releases cuando haya una versión publicada, o compila el proyecto con el script de compilación. Abre TorreRemota.exe en el portátil. La primera apertura te lleva a **Preparar ESP32**.
-4. Escribe los datos de Firebase, red, torre y Wi-Fi. Pulsa **Crear usuarios y reglas**. Se crean dos cuentas técnicas distintas, una para el portátil y otra para el ESP32, con contraseñas aleatorias. Copia las reglas generadas y publícalas en la pestaña **Reglas** de tu Realtime Database.
-5. Conecta el ESP32 al portátil con un cable de datos, elige su puerto COM y pulsa **Flashear y configurar**. La app extrae el firmware genérico incluido, descarga esptool oficial de Espressif una sola vez, verifica su SHA-256 y escribe la placa. Luego envía los ajustes por USB. Si la escritura no empieza, mantén **BOOT** hasta que aparezca el progreso. **Solo configurar** sirve para cambiar los ajustes sin flashear de nuevo.
-6. Alimenta el ESP32 en casa, comprueba que el LED azul queda fijo y pulsa **Diagnosticar**. Prueba **Encender y conectar** con la torre apagada y, finalmente, con el portátil fuera de la red doméstica.
+1. Enable Wake-on-LAN on the desktop and verify Sunshine, Tailscale, and Moonlight while you are at home. Record the desktop's Ethernet MAC, stable LAN IPv4, and Tailscale IPv4.
+2. Create a dedicated Firebase project. Enable Realtime Database and Authentication → Email/Password. Copy the database root URL and Web API key.
+3. Download the EXE from [Releases](https://github.com/Albjav12345/remote-pc-bridge/releases), or build it with the script below. Launch TorreRemota.exe.
+4. In **Set up ESP32**, enter the Firebase, network, desktop, and home Wi-Fi details. **Create users and rules** creates two separate technical users with random passwords. Copy the generated rules and publish them in your Realtime Database Rules tab.
+5. Connect the ESP32 over a USB data cable, select its COM port, and click **Flash and configure**. On first use the app downloads official esptool and verifies its SHA-256. It flashes a generic image and then sends your private configuration over USB. If it stalls at Connecting, hold BOOT until writing begins.
+6. Keep the ESP32 powered at home, click **Run diagnostics**, and test **Wake and connect** with the desktop off. Finally test from another network.
 
-![Datos de la instalación en el asistente](docs/images/setup.png)
+![Setup wizard with sample values](docs/images/setup.png)
 
-![Reglas y flasheo del ESP32 desde la aplicación](docs/images/flash.png)
+![Rules and USB flashing page](docs/images/flash.png)
 
-La [guía de instalación](docs/INSTALACION.md) desarrolla cada paso, incluido cómo localizar la MAC y qué comprobar si el puerto COM no aparece. La aplicación guía la creación de cuentas y el flasheo; la activación de Wake-on-LAN, la instalación de Sunshine/Tailscale/Moonlight y la publicación de reglas requieren acceso a sus respectivas interfaces.
+The [detailed setup guide](docs/SETUP.md) covers each step, including how to find the Ethernet MAC and troubleshoot a missing COM port. BIOS/Windows Wake-on-LAN setup, third-party app installation, Firebase rule publication, and Sunshine pairing require manual access to those products.
 
-## Uso diario
+## Language
 
-**Encender y conectar** primero comprueba si Sunshine ya responde; si no, envía una orden WOL y espera el arranque antes de abrir Moonlight. **Solo encender** envía WOL y muestra el acuse sin abrir el cliente. **Diagnosticar** lee los estados sin encender nada. El panel se actualiza mientras la ventana está abierta, y **Exportar** guarda un registro para investigar fallos. Cerrar la ventana termina la aplicación; no instala un proceso en segundo plano.
+English is the default. In **Settings → App language**, choose **Español** to switch immediately; the selection is saved for your Windows account. Choose **English** there to switch back.
 
-El indicador de Tailscale «anunciada en línea» procede del plano de control y **no demuestra** que la conexión directa funcione. Un puerto TCP abierto tampoco confirma vídeo: la aplicación busca en el registro local de Moonlight el primer paquete de vídeo. El acuse «sent» confirma que el ESP32 entregó paquetes WOL a su pila UDP, **no** que el PC los haya recibido o completado el arranque.
+![Language selector in the Windows app](docs/images/settings.png)
 
-| LED azul del ESP32 | Estado |
+## Daily use
+
+**Wake and connect** checks whether Sunshine already responds, sends WOL only when needed, waits for startup, and opens Moonlight. **Wake only** sends WOL and shows the ESP32 acknowledgement. **Run diagnostics** checks every stage without waking the desktop. **Export** saves a diagnostic log. Closing the window exits the app; it installs no background process.
+
+## What the indicators mean
+
+The ESP32 sends a heartbeat with Wi-Fi signal, uptime, local TCP probes, and its last WOL acknowledgement. An acknowledgement of “sent” means the ESP32 submitted packets to its local UDP stack; it does **not** prove the PC received them or finished booting. Tailscale advertising a machine online does not establish a working data path. Open TCP ports do not prove video works; the app checks Moonlight's local log for its first received video packet.
+
+| Built-in blue LED | Meaning |
 |---|---|
-| Tres destellos cortos cada 2 s | Espera configuración USB |
-| Parpadeo regular | Busca o recupera Wi-Fi |
-| Un destello cada 2 s | Espera la hora NTP para validar TLS |
-| Dos destellos cada 2 s | Error de autenticación o Firebase |
-| Encendido fijo | Wi-Fi y Firebase operativos |
-| Apagado breve sobre luz fija | Petición HTTPS saliente |
-| Tres pulsos largos | Envío WOL |
+| Three short flashes every 2 s | Waiting for USB configuration |
+| Regular blinking | Looking for or reconnecting to Wi-Fi |
+| One flash every 2 s | Waiting for NTP time to validate TLS |
+| Two flashes every 2 s | Firebase or authentication error |
+| Steady light | Wi-Fi and Firebase working |
+| Brief off pulse while lit | Outgoing HTTPS request |
+| Three long pulses | Sending WOL |
 
-## Cómo funciona
+## How it works
 
 ~~~mermaid
 flowchart LR
-    Y[Portátil Windows<br/>Remote PC Bridge] -->|HTTPS autenticado| F[(Firebase<br/>Realtime Database)]
-    E[ESP32 en casa] -->|HTTPS autenticado| F
-    E -->|Paquete WOL<br/>red local| P[PC de casa]
-    Y <-->|Tailscale + Moonlight/Sunshine| P
+    L[Windows laptop<br/>Remote PC Bridge] -->|Authenticated HTTPS| F[(Firebase<br/>Realtime Database)]
+    E[ESP32 at home] -->|Authenticated HTTPS| F
+    E -->|WOL packet<br/>home LAN| P[Desktop PC]
+    L <-->|Tailscale + Moonlight/Sunshine| P
 ~~~
 
-Firebase almacena una orden pendiente, el último acuse y una señal reciente del ESP32 con RSSI, tiempo encendido y comprobaciones TCP locales. Las reglas limitan las lecturas y escrituras a dos UID concretos; la orden caduca a los 90 segundos y el ESP32 guarda su ID antes de enviar para evitar duplicados tras un reinicio. El firmware valida TLS.
+Firebase holds a pending command, its latest acknowledgement, and recent ESP32 telemetry. Rules restrict reads and writes to the two generated user IDs. A command expires after 90 seconds; the ESP32 stores its ID before sending to avoid duplicates after a reboot. The firmware validates TLS.
 
-La aplicación guarda la configuración en la carpeta Roaming AppData de TorreRemota y una copia de seguridad. Las contraseñas se protegen con DPAPI de la cuenta actual de Windows. Los registros locales se guardan en Local AppData. El firmware guarda sus credenciales en NVS del ESP32; quien tenga acceso físico y herramientas adecuadas al dispositivo podría extraerlas. Consulta [Seguridad](SECURITY.md) antes de reutilizar una placa o compartir registros.
+## Build
 
-## Compilar y colaborar
-
-En Windows, instala [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0), [Arduino CLI](https://arduino.github.io/arduino-cli/) con el core esp32:esp32 **3.3.2** y ArduinoJson **7.4.2**. Luego:
+Install .NET 8 SDK, Arduino CLI, ESP32 core **3.3.2**, and ArduinoJson **7.4.2**. On Windows PowerShell:
 
 ~~~powershell
 ./build.ps1
-Start-Process ./dist/TorreRemota.exe -ArgumentList '--self-test' -Wait
+$p = Start-Process ./dist/TorreRemota.exe -ArgumentList '--self-test' -PassThru -Wait
 Get-Content ./dist/test-results.txt
+if ($p.ExitCode -ne 0) { throw 'Tests failed' }
 ~~~
 
-El script compila el firmware genérico y publica un único EXE que lo lleva incrustado. El flujo [GitHub Actions](.github/workflows/build.yml) reproduce la compilación y ejecuta las pruebas en Windows; al enviar una etiqueta de versión, el flujo de [publicación](.github/workflows/release.yml) crea una descarga con su SHA-256. El EXE no incluye esptool: en el primer flasheo descarga la distribución oficial verificada de Espressif. La descarga ronda los 60 MB y requiere Internet. Consulta [CONTRIBUTING.md](CONTRIBUTING.md) para la estructura y las verificaciones.
+The build embeds generic firmware in one EXE. The [build workflow](.github/workflows/build.yml) reproduces this in GitHub Actions; a version tag runs the [release workflow](.github/workflows/release.yml) to publish the EXE and its SHA-256. esptool is downloaded separately on first flash. The app stores passwords with Windows-user DPAPI; the ESP32 stores its configuration in NVS, which this project does **not** encrypt. See [security notes](SECURITY.md) and [contribution guide](CONTRIBUTING.md). Do not commit settings, logs, configured firmware, secrets, or real screenshots.
 
-Este repositorio contiene únicamente ejemplos y capturas de demostración. **No subas** ajustes, registros, firmware configurado, credenciales ni capturas con datos reales. La imagen de firmware incluida en el EXE es genérica y recibe la configuración por USB después de flashear.
-
-Licencia del código de este repositorio: [MIT](LICENSE). esptool se descarga aparte y conserva su propia licencia GPLv2 o posterior.
+Repository code is [MIT licensed](LICENSE). esptool is downloaded separately under its own GPLv2-or-later license.

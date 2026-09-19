@@ -34,6 +34,7 @@ public static class Tests {
             s=new Snapshot{Ready=true,Fresh=true,LanKnown=true,LanOpen=false};s.Explain(false);Check(s.Advice.Contains("IP local")&&s.Advice.Contains("Moonlight"),"Discrepancia entre Tailscale y LAN visible");
             s=new Snapshot{Ready=true,Cloud=false};s.Explain(false);Check(s.Advice.Contains("UDP"),"Firebase caído no invalida puertos y no se garantiza vídeo");
             var cfg=new Settings{Database="https://example-default-rtdb.europe-west1.firebasedatabase.app",Target="100.64.0.1",Legacy=true};cfg.Validate();Check(true,"Configuración de prueba válida");
+            Check(Json.ReadSettings("{}").Language=="en"&&Json.ReadSettings(Json.Encode(new Settings{Language="es"})).Language=="es","English default and saved Spanish preference");
             bool rejected=false;try{new Settings{Database="http://example.com"}.Validate();}catch{rejected=true;}Check(rejected,"Rechaza URL insegura o ajena a Firebase");
             cfg.Password="test-secret";Check(cfg.Password=="test-secret"&&!Json.Encode(cfg).Contains("test-secret"),"DPAPI y ausencia de contraseña en JSON");
 #if NET8_0_OR_GREATER

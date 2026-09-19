@@ -1,19 +1,21 @@
-# Seguridad y privacidad
+# Security and privacy
 
-## Qué protege cada componente
+[![Read in Spanish](https://img.shields.io/badge/Read%20in-Espa%C3%B1ol-2563eb?style=for-the-badge)](SECURITY.es.md) · [Home](README.md)
 
-- La aplicación usa dos cuentas técnicas distintas de Firebase Authentication. Las reglas generadas conceden al portátil el envío de órdenes y al ESP32 la publicación de telemetría y acuses. El resto de nodos queda denegado por defecto. Usa un proyecto Firebase **dedicado**.
-- La comunicación con Firebase usa HTTPS con validación TLS. El firmware no usa conexiones entrantes desde Internet ni desactiva la validación del certificado.
-- Las tres contraseñas que conserva el portátil (usuario técnico del portátil, usuario técnico del ESP32 y Wi-Fi) se cifran con DPAPI para la cuenta actual de Windows. La Web API key y las direcciones no son secretos de autenticación, pero no conviene divulgar un archivo de ajustes completo.
-- El ESP32 guarda su configuración en NVS. Esa memoria **no está cifrada por este proyecto**. No entregues una placa configurada a otra persona sin borrar su flash y revocar su usuario técnico.
-- El instalador integrado obtiene esptool desde una versión oficial concreta y verifica SHA-256 del ZIP y del ejecutable antes de usarlo. esptool mantiene su licencia GPLv2 o posterior.
+## What each component protects
 
-## Qué no debes publicar
+- The app uses two separate Firebase Authentication accounts. Generated rules allow the laptop to send commands and the ESP32 to publish telemetry and acknowledgements. All other nodes are denied by default. Use a **dedicated** Firebase project.
+- Firebase communication uses HTTPS with TLS certificate validation. The firmware accepts no inbound connections from the Internet and does not disable certificate checks.
+- The laptop encrypts its three saved passwords (laptop account, ESP32 account, and Wi-Fi) with DPAPI for the current Windows account. The Web API key and addresses are not authentication secrets, but avoid sharing a complete settings file.
+- The ESP32 stores its configuration in NVS. **This project does not encrypt that memory.** Erase the flash and revoke the ESP32 account before giving a configured board to someone else.
+- The integrated flasher downloads a pinned official esptool version and verifies the ZIP and executable SHA-256 before use. esptool retains its GPLv2-or-later license.
 
-No adjuntes a incidencias, commits ni capturas: archivos de ajustes o copias, contraseñas, tokens de Firebase, volcados de NVS, registros sin revisar, SSID y MAC reales si no son necesarios. Los archivos locales, compilaciones y binarios generados están excluidos del repositorio. La imagen de firmware del repositorio se compila sin datos personales y se configura después por USB.
+## What you should not publish
 
-Si crees que se filtraron credenciales, cambia la contraseña Wi-Fi si procede, deshabilita o elimina ambos usuarios técnicos en Firebase Authentication, crea unos nuevos desde el asistente y vuelve a configurar el ESP32. Publica reglas que apunten solo a los nuevos UID.
+Do not attach settings files or backups, passwords, Firebase tokens, NVS dumps, unreviewed logs, or real SSIDs and MAC addresses to issues, commits, or screenshots. Local files, builds, and generated binaries are excluded from the repository. The firmware image embedded in the EXE is built without personal data and configured afterward over USB.
 
-## Informar de una vulnerabilidad
+If credentials may have leaked, change your Wi-Fi password if relevant, disable or delete both technical users in Firebase Authentication, create replacements from the wizard, and reconfigure the ESP32. Publish rules pointing only to the new UIDs.
 
-No publiques instrucciones de explotación o credenciales en una incidencia abierta. Cuando exista repositorio público, utiliza **GitHub → Security → Report a vulnerability** si está habilitado. En caso contrario, abre una incidencia sin detalles sensibles para solicitar un canal privado.
+## Reporting a vulnerability
+
+Do not post exploit instructions or credentials in a public issue. Use **GitHub → Security → Report a vulnerability** if available. Otherwise, open an issue without sensitive details to request a private reporting channel.

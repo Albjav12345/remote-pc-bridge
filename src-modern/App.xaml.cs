@@ -18,30 +18,32 @@ public static class Program {
         if(args.Contains("--moonlight-report")) {
             var last=MoonlightSession.Recent(TimeSpan.FromHours(24));
             File.WriteAllLines(Path.Combine(AppContext.BaseDirectory,"moonlight-report.txt"),
-                last==null?new[]{"Sin registro de Moonlight en las últimas 24 horas."}:
+                last==null?new[]{"No Moonlight log in the last 24 hours."}:
                 new[]{last.Phase.ToString(),last.Detail,last.LastWrite.ToString("O"),last.LogPath});
             return 0;
         }
+        bool settingsDemo=args.Contains("--render-settings-demo");
         bool flashDemo=args.Contains("--render-flash-demo");
         bool setupDemo=flashDemo||args.Contains("--render-setup-demo");
-        bool demo=setupDemo||args.Contains("--render-demo")||args.Contains("--render-preview");
+        bool demo=settingsDemo||setupDemo||args.Contains("--render-demo")||args.Contains("--render-preview");
         bool created;
         using(var mutex=new Mutex(true,demo?"Local\\TorreRemota.Demo.UI":"Local\\TorreRemota.Modern.UI",out created)) {
-            if(!created){MessageBox.Show("Torre Remota ya está abierta.","Torre Remota");return 0;}
+            if(!created){MessageBox.Show("Remote PC Bridge is already open.","Remote PC Bridge");return 0;}
             try {
                 var app=new Application();
-                var window=new ModernWindow(demo,setupDemo,flashDemo);
+                var window=new ModernWindow(demo,setupDemo,flashDemo,settingsDemo);
+                if(!demo){window.Width=Math.Min(window.Width,Math.Max(window.MinWidth,SystemParameters.WorkArea.Width-24));window.Height=Math.Min(window.Height,Math.Max(window.MinHeight,SystemParameters.WorkArea.Height-24));}
                 if(demo) {
                     window.Loaded+=async (sender,ev)=>{
                         var watch=System.Diagnostics.Stopwatch.StartNew();
                         do { await System.Threading.Tasks.Task.Delay(200); } while(window.IsBusy && watch.Elapsed.TotalSeconds<25);
-                        Capture(window,Path.Combine(AppContext.BaseDirectory,flashDemo?"preview-flash.png":setupDemo?"preview-setup.png":"preview-modern.png"));
+                        Capture(window,Path.Combine(AppContext.BaseDirectory,settingsDemo?"preview-settings.png":flashDemo?"preview-flash.png":setupDemo?"preview-setup.png":"preview-modern.png"));
                         window.Close();
                     };
                 }
                 app.Run(window);
                 return 0;
-            } catch(Exception e) {MessageBox.Show("No se pudo iniciar: "+e.Message,"Torre Remota");return 1;}
+            } catch(Exception e) {MessageBox.Show("Could not start: "+e.Message,"Remote PC Bridge");return 1;}
         }
     }
     static void Capture(Window window,string path) {

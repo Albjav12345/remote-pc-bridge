@@ -50,6 +50,7 @@ public static class Json {
     public static object Timestamp { get { return new Dictionary<string,object>{{".sv","timestamp"}}; } }
 }
 public class Settings {
+    public string Language = "en";
     public string Database = "";
     public string Target = "";
     public string App = "Desktop";
