@@ -4,9 +4,9 @@
 
 **Wake a home Windows PC remotely, see where the connection fails, and launch Moonlight.** A Windows app writes an authenticated command to Firebase Realtime Database. An ESP32 on your home Wi-Fi reads that command and sends a Wake-on-LAN packet on the local network. The dashboard separately reports Firebase, ESP32 heartbeat, local Sunshine ports, Tailscale, remote ports, and Moonlight video.
 
-[![Watch the Remote PC Bridge UI demo](docs/media/demo-poster.jpg)](docs/media/remote-pc-bridge-demo.mp4)
+![Remote PC Bridge presentation image, using fictional sample data](docs/media/remote-pc-bridge-cover.png)
 
-[Watch the 26-second UI demo](docs/media/remote-pc-bridge-demo.mp4). It uses fictional sample data and makes no live connection.
+Presentation image uses fictional sample data and makes no live connection. [Download the app icon (PNG)](docs/media/remote-pc-bridge-icon.png).
 
 | Dark theme (default) | Light theme |
 |---|---|
@@ -96,6 +96,6 @@ if ($p.ExitCode -ne 0) { throw 'Tests failed' }
 
 The build embeds generic firmware in one EXE. The [build workflow](.github/workflows/build.yml) reproduces this in GitHub Actions; a version tag runs the [release workflow](.github/workflows/release.yml) to publish the EXE and its SHA-256. esptool is downloaded separately on first flash. The app stores passwords with Windows-user DPAPI; the ESP32 stores its configuration in NVS, which this project does **not** encrypt. See [security notes](SECURITY.md) and [contribution guide](CONTRIBUTING.md). Do not commit settings, logs, configured firmware, secrets, or real screenshots.
 
-To rebuild the demo from the repository's sample screenshots, install `Pillow` and `imageio-ffmpeg` with pip, then run `python scripts/build_demo_video.py`. The script creates the MP4 and poster in `docs/media` without opening the app or reading local settings.
+To rebuild the presentation image from the repository's sample screenshot, install `Pillow` with pip, then run `python scripts/build_presentation_image.py`. Run `./scripts/Make-Icon.ps1` in PowerShell to export the 512 px PNG from the application's icon geometry. These scripts do not open the app or read local settings.
 
 Repository code is [MIT licensed](LICENSE). esptool is downloaded separately under its own GPLv2-or-later license.

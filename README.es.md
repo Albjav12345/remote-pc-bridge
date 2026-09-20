@@ -4,9 +4,9 @@
 
 **Enciende un PC de casa desde fuera y comprueba cada paso hasta abrir Moonlight.** Una aplicación de Windows envía una orden autenticada por Firebase; un ESP32 conectado al Wi-Fi doméstico la recibe y envía Wake-on-LAN a la torre. El panel comprueba por separado Firebase, el ESP32, los servicios de la torre, Tailscale, los puertos de Sunshine y la sesión de Moonlight.
 
-[![Ver la demostración de Remote PC Bridge](docs/media/demo-poster.jpg)](docs/media/remote-pc-bridge-demo.mp4)
+![Imagen de presentación de Remote PC Bridge con datos ficticios](docs/media/remote-pc-bridge-cover.png)
 
-[Ver la demo de 26 segundos](docs/media/remote-pc-bridge-demo.mp4). Utiliza datos ficticios y no establece conexiones reales.
+La imagen utiliza datos ficticios y no establece conexiones reales. [Descargar el icono de la aplicación (PNG)](docs/media/remote-pc-bridge-icon.png).
 
 | Tema oscuro (predeterminado) | Tema claro |
 |---|---|
@@ -98,7 +98,7 @@ Get-Content ./dist/test-results.txt
 
 El script compila el firmware genérico y publica un único EXE que lo lleva incrustado. El flujo [GitHub Actions](.github/workflows/build.yml) reproduce la compilación y ejecuta las pruebas en Windows; al enviar una etiqueta de versión, el flujo de [publicación](.github/workflows/release.yml) crea una descarga con su SHA-256. El EXE no incluye esptool: en el primer flasheo descarga la distribución oficial verificada de Espressif. La descarga ronda los 60 MB y requiere Internet. Consulta [guía para contribuir](CONTRIBUTING.es.md) para la estructura y las verificaciones.
 
-Para regenerar la demo a partir de las capturas ficticias del repositorio, instala `Pillow` e `imageio-ffmpeg` con pip y ejecuta `python scripts/build_demo_video.py`. El script crea el MP4 y su portada en `docs/media` sin leer ajustes locales ni abrir la aplicación.
+Para regenerar la imagen de presentación a partir de la captura ficticia del repositorio, instala `Pillow` con pip y ejecuta `python scripts/build_presentation_image.py`. Ejecuta `./scripts/Make-Icon.ps1` en PowerShell para exportar el PNG de 512 px a partir del icono de la aplicación. Estos scripts no leen ajustes locales ni abren la aplicación.
 
 Este repositorio contiene únicamente ejemplos y capturas de demostración. **No subas** ajustes, registros, firmware configurado, credenciales ni capturas con datos reales. La imagen de firmware incluida en el EXE es genérica y recibe la configuración por USB después de flashear.
 
