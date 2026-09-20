@@ -16,3 +16,4 @@ test-results.txt
 diagnostico-real.txt
 prueba-wol.txt
 preview-*.png
+__pycache__/
