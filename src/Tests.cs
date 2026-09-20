@@ -36,6 +36,19 @@ public static class Tests {
             var cfg=new Settings{Database="https://example-default-rtdb.europe-west1.firebasedatabase.app",Target="100.64.0.1",Legacy=true};cfg.Validate();Check(true,"Configuración de prueba válida");
             Check(Json.ReadSettings("{}").Language=="en"&&Json.ReadSettings(Json.Encode(new Settings{Language="es"})).Language=="es","English default and saved Spanish preference");
             Check(Json.ReadSettings("{}").Theme=="dark"&&Json.ReadSettings(Json.Encode(new Settings{Theme="light"})).Theme=="light","Dark default and saved light preference");
+            string redirectedProfile=Path.Combine(Path.GetTempPath(),"remote-pc-profile-"+Guid.NewGuid().ToString("N"));
+            try {
+                string roaming=Path.Combine(redirectedProfile,"AppData","Roaming","TorreRemota");
+                Directory.CreateDirectory(roaming);
+                File.WriteAllText(Path.Combine(roaming,"settings.json"),"{}");
+                Check(Settings.ResolveConfigFolder(redirectedProfile,Path.Combine(redirectedProfile,"redirected"))==roaming,
+                    "Existing profile settings win over a redirected ApplicationData path");
+            } finally {
+                string roaming=Path.Combine(redirectedProfile,"AppData","Roaming","TorreRemota");
+                File.Delete(Path.Combine(roaming,"settings.json"));
+                Directory.Delete(roaming);Directory.Delete(Path.GetDirectoryName(roaming));
+                Directory.Delete(Path.Combine(redirectedProfile,"AppData"));Directory.Delete(redirectedProfile);
+            }
             bool rejected=false;try{new Settings{Database="http://example.com"}.Validate();}catch{rejected=true;}Check(rejected,"Rechaza URL insegura o ajena a Firebase");
             cfg.Password="test-secret";Check(cfg.Password=="test-secret"&&!Json.Encode(cfg).Contains("test-secret"),"DPAPI y ausencia de contraseña en JSON");
 #if NET8_0_OR_GREATER

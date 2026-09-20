@@ -56,8 +56,12 @@ public partial class ModernWindow : Window {
         }
         if(!demo)try {Directory.CreateDirectory(Settings.Folder);string folder=Path.Combine(Settings.Folder,"logs");Directory.CreateDirectory(folder);foreach(var file in new DirectoryInfo(folder).GetFiles("*.log").OrderByDescending(x=>x.LastWriteTimeUtc).Skip(19))file.Delete();logPath=Path.Combine(folder,DateTime.Now.ToString("yyyyMMdd-HHmmss")+".log");}catch{}
         Log("Aplicación iniciada. Cargando diagnóstico sin enviar WOL.");
-        Log("Configuración v2: "+(Settings.LastLoadSource==""?"no encontrada":Settings.LastLoadSource)+
-            " · credenciales "+(HasUsableCredentials(cfg)?"listas":"incompletas o ilegibles")+".");
+        if(demo)Log("Vista de ejemplo con datos ficticios; no se consultan credenciales guardadas.");
+        else {
+            Log("Configuración v2: "+(Settings.LastLoadSource==""?"no encontrada":Settings.LastLoadSource)+
+                " · credenciales "+(HasUsableCredentials(cfg)?"listas":"incompletas o ilegibles")+".");
+            if(!HasUsableCredentials(cfg))Log("Buscando ajustes en "+Settings.ConfigFolder+". Comprueba también la copia .bak antes de introducir datos nuevos.");
+        }
         moonlightTimer.Tick+=delegate{try{PollMoonlight();}catch(Exception ex){if(!closing&&moonlightPhase!=MoonlightPhase.NoVideo){moonlightPhase=MoonlightPhase.NoVideo;MoonlightStatusText.Text="Moonlight · Estado local no disponible";MoonlightStatusText.Foreground=warn;Log("No se pudo consultar el estado local de Moonlight: "+ex.Message);}}};
         if(!demo)moonlightTimer.Start();
         statusTimer.Tick+=async (sender,ev)=>await RefreshBackground();

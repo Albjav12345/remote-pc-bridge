@@ -50,6 +50,12 @@ El inglés es el idioma inicial. En **Configuración → Idioma de la aplicació
 
 **Encender y conectar** primero comprueba si Sunshine ya responde; si no, envía una orden WOL y espera el arranque antes de abrir Moonlight. **Solo encender** envía WOL y muestra el acuse sin abrir el cliente. **Diagnosticar** lee los estados sin encender nada. El panel se actualiza mientras la ventana está abierta, y **Exportar** guarda un registro para investigar fallos. Cerrar la ventana termina la aplicación; no instala un proceso en segundo plano.
 
+Las acciones rápidas ocupan el panel inferior y quedan visibles al bajar hasta el registro de diagnóstico:
+
+| Tema oscuro | Tema claro |
+|---|---|
+| ![Acciones rápidas y diagnóstico en modo oscuro](docs/images/actions.es.png) | ![Acciones rápidas y diagnóstico en modo claro](docs/images/actions.es.light.png) |
+
 El indicador de Tailscale «anunciada en línea» procede del plano de control y **no demuestra** que la conexión directa funcione. Un puerto TCP abierto tampoco confirma vídeo: la aplicación busca en el registro local de Moonlight el primer paquete de vídeo. El acuse «sent» confirma que el ESP32 entregó paquetes WOL a su pila UDP, **no** que el PC los haya recibido o completado el arranque.
 
 | LED azul del ESP32 | Estado |

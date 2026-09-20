@@ -25,7 +25,8 @@ public static class Program {
         bool settingsDemo=args.Contains("--render-settings-demo");
         bool flashDemo=args.Contains("--render-flash-demo");
         bool setupDemo=flashDemo||args.Contains("--render-setup-demo");
-        bool demo=settingsDemo||setupDemo||args.Contains("--render-demo")||args.Contains("--render-preview");
+        bool bottomDemo=args.Contains("--render-bottom-demo");
+        bool demo=settingsDemo||setupDemo||bottomDemo||args.Contains("--render-demo")||args.Contains("--render-preview");
         bool created;
         using(var mutex=new Mutex(true,demo?"Local\\TorreRemota.Demo.UI":"Local\\TorreRemota.Modern.UI",out created)) {
             if(!created){MessageBox.Show("Remote PC Bridge is already open.","Remote PC Bridge");return 0;}
@@ -37,7 +38,10 @@ public static class Program {
                     window.Loaded+=async (sender,ev)=>{
                         var watch=System.Diagnostics.Stopwatch.StartNew();
                         do { await System.Threading.Tasks.Task.Delay(200); } while(window.IsBusy && watch.Elapsed.TotalSeconds<25);
-                        string page=settingsDemo?"preview-settings":flashDemo?"preview-flash":setupDemo?"preview-setup":"preview-modern";
+                        if(bottomDemo && window.FindName("DashboardView") is System.Windows.Controls.ScrollViewer dashboard) {
+                            dashboard.ScrollToBottom();window.UpdateLayout();
+                        }
+                        string page=bottomDemo?"preview-bottom":settingsDemo?"preview-settings":flashDemo?"preview-flash":setupDemo?"preview-setup":"preview-modern";
                         string language=args.Contains("--demo-language-es")?".es":"";
                         string theme=args.Contains("--demo-theme-light")?".light":"";
                         Capture(window,Path.Combine(AppContext.BaseDirectory,page+language+theme+".png"));

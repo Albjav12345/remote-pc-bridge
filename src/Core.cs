@@ -90,7 +90,24 @@ public class Settings {
 #endif
     public string WifiPassword { get { return string.IsNullOrEmpty(ProtectedWifiPassword) ? "" : Encoding.UTF8.GetString(ProtectedData.Unprotect(Convert.FromBase64String(ProtectedWifiPassword),null,DataProtectionScope.CurrentUser)); } set { ProtectedWifiPassword=string.IsNullOrEmpty(value)?"":Convert.ToBase64String(ProtectedData.Protect(Encoding.UTF8.GetBytes(value),null,DataProtectionScope.CurrentUser)); } }
     public static string Folder { get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"TorreRemota"); } }
-    public static string ConfigFolder { get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),"TorreRemota"); } }
+    public static string ConfigFolder {
+        get {
+            // Some launch contexts resolve ApplicationData differently from the user's
+            // actual roaming profile. Prefer the existing profile configuration so a
+            // new EXE cannot silently start with empty settings or save over it.
+            var profile=Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            var applicationData=Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            return ResolveConfigFolder(profile,applicationData);
+        }
+    }
+    internal static string ResolveConfigFolder(string profile,string applicationData) {
+            var profileFolder=Path.Combine(profile,"AppData","Roaming","TorreRemota");
+            var shellFolder=Path.Combine(applicationData,"TorreRemota");
+            return File.Exists(Path.Combine(profileFolder,"settings.json")) ||
+                File.Exists(Path.Combine(profileFolder,"settings.json.bak")) ||
+                string.IsNullOrWhiteSpace(applicationData)
+                ? profileFolder : shellFolder;
+    }
     public static string LastLoadSource { get; private set; } = "";
     static bool CredentialsReadable(Settings s) {
         if(string.IsNullOrWhiteSpace(s.ApiKey)||string.IsNullOrWhiteSpace(s.Email)||string.IsNullOrWhiteSpace(s.ProtectedPassword))return false;
@@ -100,7 +117,8 @@ public class Settings {
         var profile=Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         var primary=Path.Combine(ConfigFolder,"settings.json");
         var recovery=Path.Combine(profile,"Desktop","TorreRemota.recuperacion.json");
-        var paths=new[]{primary,primary+".bak",Path.Combine(Folder,"settings.json"),
+        var profileRoaming=Path.Combine(profile,"AppData","Roaming","TorreRemota","settings.json");
+        var paths=new[]{primary,primary+".bak",profileRoaming,profileRoaming+".bak",Path.Combine(Folder,"settings.json"),
             Path.Combine(profile,"AppData","Local","TorreRemota","settings.json"),recovery};
         return LoadFromPaths(primary,recovery,paths);
     }

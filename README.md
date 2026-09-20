@@ -47,6 +47,12 @@ English is the default. In **Settings → App language**, choose **Español** to
 
 **Wake and connect** checks whether Sunshine already responds, sends WOL only when needed, waits for startup, and opens Moonlight. **Wake only** sends WOL and shows the ESP32 acknowledgement. **Run diagnostics** checks every stage without waking the desktop. **Export** saves a diagnostic log. Closing the window exits the app; it installs no background process.
 
+The quick actions fill the lower panel and stay visible when you scroll to the diagnostics log:
+
+| Dark theme | Light theme |
+|---|---|
+| ![Quick actions and diagnostics in dark mode](docs/images/actions.png) | ![Quick actions and diagnostics in light mode](docs/images/actions.light.png) |
+
 ## What the indicators mean
 
 The ESP32 sends a heartbeat with Wi-Fi signal, uptime, local TCP probes, and its last WOL acknowledgement. An acknowledgement of “sent” means the ESP32 submitted packets to its local UDP stack; it does **not** prove the PC received them or finished booting. Tailscale advertising a machine online does not establish a working data path. Open TCP ports do not prove video works; the app checks Moonlight's local log for its first received video packet.
