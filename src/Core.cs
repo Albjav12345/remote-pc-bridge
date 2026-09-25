@@ -113,6 +113,20 @@ public class Settings {
         if(string.IsNullOrWhiteSpace(s.ApiKey)||string.IsNullOrWhiteSpace(s.Email)||string.IsNullOrWhiteSpace(s.ProtectedPassword))return false;
         try{return !string.IsNullOrWhiteSpace(s.Password);}catch{return false;}
     }
+    static bool TryRefreshProtection(Settings value) {
+        try {
+            // Re-encrypt readable DPAPI values for the current Windows profile. This
+            // also verifies the values before a recovered copy replaces the primary.
+            var password=value.Password;
+            var devicePassword=value.DevicePassword;
+            var wifiPassword=value.WifiPassword;
+            if(string.IsNullOrWhiteSpace(password))return false;
+            value.Password=password;
+            if(!string.IsNullOrEmpty(devicePassword))value.DevicePassword=devicePassword;
+            if(!string.IsNullOrEmpty(wifiPassword))value.WifiPassword=wifiPassword;
+            return true;
+        } catch {return false;}
+    }
     public static Settings Load() {
         var profile=Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         var primary=Path.Combine(ConfigFolder,"settings.json");
@@ -140,7 +154,15 @@ public class Settings {
                 if(!File.Exists(p))continue;
                 var value=Json.ReadSettings(File.ReadAllText(p));
                 if(value==null)throw new InvalidDataException("Configuración vacía.");
-                if(CredentialsReadable(value))return Finish(value,p);
+                if(CredentialsReadable(value)) {
+                    // A successful read proves the credentials still exist. Refresh
+                    // their DPAPI blobs and repair the primary atomically so later GUI
+                    // launches do not get stuck on a stale or partially copied file.
+                    if(!p.Equals(primary,StringComparison.OrdinalIgnoreCase)&&TryRefreshProtection(value)) {
+                        try {value.SaveTo(primary);} catch(IOException) {} catch(UnauthorizedAccessException) {}
+                    }
+                    return Finish(value,p);
+                }
                 if(incomplete==null){incomplete=value;incompletePath=p;}
             } catch(Exception e){lastError=e;}
         }

@@ -51,6 +51,16 @@ public static class Tests {
             }
             bool rejected=false;try{new Settings{Database="http://example.com"}.Validate();}catch{rejected=true;}Check(rejected,"Rechaza URL insegura o ajena a Firebase");
             cfg.Password="test-secret";Check(cfg.Password=="test-secret"&&!Json.Encode(cfg).Contains("test-secret"),"DPAPI y ausencia de contraseña en JSON");
+            string protectedBefore=cfg.ProtectedPassword;
+            string repairedPrimary=Path.Combine(Path.GetTempPath(),"remote-pc-settings-"+Guid.NewGuid().ToString("N")+".json");
+            try {
+                cfg.ApiKey="key";cfg.Email="client@example.invalid";cfg.SaveTo(repairedPrimary+".bak");
+                var repaired=Settings.LoadFromPaths(repairedPrimary,repairedPrimary+".recovery",new[]{repairedPrimary,repairedPrimary+".bak"});
+                Check(repaired.Password=="test-secret"&&File.Exists(repairedPrimary),"Una copia válida repara el archivo principal");
+                Check(repaired.ProtectedPassword!=protectedBefore,"La recuperación renueva el bloque DPAPI");
+            } finally {
+                foreach(var suffix in new[]{"",".bak",".tmp",".recovery"})File.Delete(repairedPrimary+suffix);
+            }
 #if NET8_0_OR_GREATER
             var onboarding=new Settings{Database="https://demo-default-rtdb.europe-west1.firebasedatabase.app",Target="100.64.0.10",ApiKey="demo-api-key",Email="client@example.invalid",DeviceEmail="device@example.invalid",DeviceUid="device_123456",LaptopUid="client_123456",WifiSsid="TEST-NET",TowerLanIp="192.168.1.25",TowerMac="AA:BB:CC:DD:EE:FF"};
             onboarding.Password="client-secret";onboarding.DevicePassword="device-secret";onboarding.WifiPassword="wifi-secret";
