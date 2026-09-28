@@ -6,7 +6,7 @@
 
 - The app uses two separate Firebase Authentication accounts. Generated rules allow the laptop to send commands and the ESP32 to publish telemetry and acknowledgements. All other nodes are denied by default. Use a **dedicated** Firebase project.
 - Firebase communication uses HTTPS with TLS certificate validation. The firmware accepts no inbound connections from the Internet and does not disable certificate checks.
-- The laptop encrypts its three saved passwords (laptop account, ESP32 account, and Wi-Fi) with DPAPI for the current Windows account. The Web API key and addresses are not authentication secrets, but avoid sharing a complete settings file.
+- The laptop encrypts its three saved passwords (laptop account, ESP32 account, and Wi-Fi) with DPAPI for the current Windows account. It also keeps a current-user recovery entry in Windows Credential Manager and a stable configuration copy in the user's registry/AppData. The Web API key and addresses are not authentication secrets, but avoid sharing a complete settings file.
 - The ESP32 stores its configuration in NVS. **This project does not encrypt that memory.** Erase the flash and revoke the ESP32 account before giving a configured board to someone else.
 - The integrated flasher downloads a pinned official esptool version and verifies the ZIP and executable SHA-256 before use. esptool retains its GPLv2-or-later license.
 

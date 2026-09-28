@@ -94,7 +94,7 @@ Get-Content ./dist/test-results.txt
 if ($p.ExitCode -ne 0) { throw 'Tests failed' }
 ~~~
 
-The build embeds generic firmware in one EXE. The [build workflow](.github/workflows/build.yml) reproduces this in GitHub Actions; a version tag runs the [release workflow](.github/workflows/release.yml) to publish the EXE and its SHA-256. esptool is downloaded separately on first flash. The app stores passwords with Windows-user DPAPI; the ESP32 stores its configuration in NVS, which this project does **not** encrypt. See [security notes](SECURITY.md) and [contribution guide](CONTRIBUTING.md). Do not commit settings, logs, configured firmware, secrets, or real screenshots.
+The build embeds generic firmware in one EXE. The [build workflow](.github/workflows/build.yml) reproduces this in GitHub Actions; a version tag runs the [release workflow](.github/workflows/release.yml) to publish the EXE and its SHA-256. esptool is downloaded separately on first flash. The app stores passwords with Windows-user DPAPI and keeps a current-user recovery entry in Windows Credential Manager; the ESP32 stores its configuration in NVS, which this project does **not** encrypt. See [security notes](SECURITY.md) and [contribution guide](CONTRIBUTING.md). Do not commit settings, logs, configured firmware, secrets, or real screenshots.
 
 To rebuild the presentation image from the repository's sample screenshot, install `Pillow` with pip, then run `python scripts/build_presentation_image.py`. Run `./scripts/Make-Icon.ps1` in PowerShell to export the 512 px PNG from the application's icon geometry. These scripts do not open the app or read local settings.
 

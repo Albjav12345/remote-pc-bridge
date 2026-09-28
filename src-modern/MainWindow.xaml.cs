@@ -60,6 +60,8 @@ public partial class ModernWindow : Window {
         else {
             Log("Configuración v2: "+(Settings.LastLoadSource==""?"no encontrada":Settings.LastLoadSource)+
                 " · credenciales "+(HasUsableCredentials(cfg)?"listas":"incompletas o ilegibles")+".");
+            if(Settings.LastRecoveryStatus=="ready")Log("La recuperación de credenciales está preparada para esta cuenta de Windows.");
+            else if(Settings.LastRecoveryStatus.StartsWith("error: ",StringComparison.Ordinal))Log("No se pudo actualizar la recuperación de credenciales: "+Settings.LastRecoveryStatus.Substring(7));
             if(!HasUsableCredentials(cfg))Log("Buscando ajustes en "+Settings.ConfigFolder+". Comprueba también la copia .bak antes de introducir datos nuevos.");
         }
         moonlightTimer.Tick+=delegate{try{PollMoonlight();}catch(Exception ex){if(!closing&&moonlightPhase!=MoonlightPhase.NoVideo){moonlightPhase=MoonlightPhase.NoVideo;MoonlightStatusText.Text="Moonlight · Estado local no disponible";MoonlightStatusText.Foreground=warn;Log("No se pudo consultar el estado local de Moonlight: "+ex.Message);}}};

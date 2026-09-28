@@ -60,9 +60,10 @@ public static class Esp32Flasher {
         }
         return tool;
     }
-    public static string ExtractFirmware() {
-        Directory.CreateDirectory(WorkFolder);
-        string path=Path.Combine(WorkFolder,"RemotePcBridge-ESP32-v3.bin");
+    public static string ExtractFirmware(string outputFolder=null) {
+        string folder=string.IsNullOrWhiteSpace(outputFolder)?WorkFolder:outputFolder;
+        Directory.CreateDirectory(folder);
+        string path=Path.Combine(folder,"RemotePcBridge-ESP32-v3.bin");
         using(var source=typeof(Esp32Flasher).Assembly.GetManifestResourceStream("TorreRemota.Firmware.Esp32")) {
             if(source==null)throw new Exception("Esta compilación no incluye el firmware genérico para ESP32-WROOM-32 de 4 MB.");
             using(var output=File.Create(path))source.CopyTo(output);

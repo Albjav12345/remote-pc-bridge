@@ -84,7 +84,7 @@ flowchart LR
 
 Firebase almacena una orden pendiente, el último acuse y una señal reciente del ESP32 con RSSI, tiempo encendido y comprobaciones TCP locales. Las reglas limitan las lecturas y escrituras a dos UID concretos; la orden caduca a los 90 segundos y el ESP32 guarda su ID antes de enviar para evitar duplicados tras un reinicio. El firmware valida TLS.
 
-La aplicación guarda la configuración en la carpeta Roaming AppData de TorreRemota y una copia de seguridad. Las contraseñas se protegen con DPAPI de la cuenta actual de Windows. Los registros locales se guardan en Local AppData. El firmware guarda sus credenciales en NVS del ESP32; quien tenga acceso físico y herramientas adecuadas al dispositivo podría extraerlas. Consulta [Seguridad](SECURITY.es.md) antes de reutilizar una placa o compartir registros.
+La aplicación guarda la configuración en Roaming AppData, una copia estable de rescate y una copia en el registro del usuario. Las contraseñas se protegen con DPAPI y disponen de una entrada de recuperación para el usuario en el Administrador de credenciales de Windows. Los registros locales se guardan en Local AppData. El firmware guarda sus credenciales en NVS del ESP32; quien tenga acceso físico y herramientas adecuadas al dispositivo podría extraerlas. Consulta [Seguridad](SECURITY.es.md) antes de reutilizar una placa o compartir registros.
 
 ## Compilar y colaborar
 

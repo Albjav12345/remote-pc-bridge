@@ -331,3 +331,5 @@ Comprueba Tailscale	Check Tailscale
 Abre la sesión remota	Open the remote session
 Guarda un informe	Save a report
 Vista de ejemplo con datos ficticios; no se consultan credenciales guardadas.	Sample view with fictional data; saved credentials are not used.
+La recuperación de credenciales está preparada para esta cuenta de Windows.	Credential recovery is ready for this Windows account.
+No se pudo actualizar la recuperación de credenciales:\s	Credential recovery could not be updated:\s

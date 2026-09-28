@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -49,6 +50,53 @@ public static class Json {
     public static long Now { get { return (long)(DateTime.UtcNow-new DateTime(1970,1,1)).TotalMilliseconds; } }
     public static object Timestamp { get { return new Dictionary<string,object>{{".sv","timestamp"}}; } }
 }
+static class CredentialVault {
+    const uint Generic=1,PersistOnThisComputer=2;
+    [StructLayout(LayoutKind.Sequential,CharSet=CharSet.Unicode)]
+    struct NativeCredential {
+        public uint Flags,Type;
+        [MarshalAs(UnmanagedType.LPWStr)] public string TargetName;
+        [MarshalAs(UnmanagedType.LPWStr)] public string Comment;
+        public System.Runtime.InteropServices.ComTypes.FILETIME LastWritten;
+        public uint CredentialBlobSize;
+        public IntPtr CredentialBlob;
+        public uint Persist,AttributeCount;
+        public IntPtr Attributes;
+        [MarshalAs(UnmanagedType.LPWStr)] public string TargetAlias;
+        [MarshalAs(UnmanagedType.LPWStr)] public string UserName;
+    }
+    [DllImport("Advapi32.dll",EntryPoint="CredReadW",CharSet=CharSet.Unicode,SetLastError=true)]
+    static extern bool CredRead(string target,uint type,uint flags,out IntPtr credential);
+    [DllImport("Advapi32.dll",EntryPoint="CredWriteW",CharSet=CharSet.Unicode,SetLastError=true)]
+    static extern bool CredWrite(ref NativeCredential credential,uint flags);
+    [DllImport("Advapi32.dll",SetLastError=true)]static extern void CredFree(IntPtr buffer);
+    public static string Read(string target) {
+        if(string.IsNullOrWhiteSpace(target))return "";
+        IntPtr pointer;if(!CredRead(target,Generic,0,out pointer))return "";
+        try {
+            var credential=Marshal.PtrToStructure<NativeCredential>(pointer);
+            if(credential.CredentialBlob==IntPtr.Zero||credential.CredentialBlobSize==0)return "";
+            var bytes=new byte[credential.CredentialBlobSize];Marshal.Copy(credential.CredentialBlob,bytes,0,bytes.Length);
+            return Encoding.UTF8.GetString(bytes);
+        } finally {CredFree(pointer);}
+    }
+    public static void Write(string target,string value) {
+        if(string.IsNullOrWhiteSpace(target)||string.IsNullOrEmpty(value))return;
+        byte[] bytes=Encoding.UTF8.GetBytes(value);if(bytes.Length>512)throw new InvalidDataException("Credential is too long for Windows Credential Manager.");
+        IntPtr blob=Marshal.AllocHGlobal(bytes.Length);
+        try {
+            Marshal.Copy(bytes,0,blob,bytes.Length);
+            var credential=new NativeCredential{Type=Generic,TargetName=target,CredentialBlobSize=(uint)bytes.Length,
+                CredentialBlob=blob,Persist=PersistOnThisComputer,UserName=Environment.UserName};
+            if(!CredWrite(ref credential,0))throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
+        } finally {Marshal.FreeHGlobal(blob);}
+    }
+}
+static class RecoveryStore {
+    const string Key=@"Software\RemotePcBridge";
+    public static string Read() {using(var key=Microsoft.Win32.Registry.CurrentUser.OpenSubKey(Key,false))return Convert.ToString(key==null?null:key.GetValue("Settings"));}
+    public static void Write(string json) {using(var key=Microsoft.Win32.Registry.CurrentUser.CreateSubKey(Key,true))key.SetValue("Settings",json,Microsoft.Win32.RegistryValueKind.String);}
+}
 public class Settings {
     public string Language = "en";
     public string Theme = "dark";
@@ -76,19 +124,34 @@ public class Settings {
 #else
     [ScriptIgnore]
 #endif
-    public string Password { get { return string.IsNullOrEmpty(ProtectedPassword) ? "" : Encoding.UTF8.GetString(ProtectedData.Unprotect(Convert.FromBase64String(ProtectedPassword),null,DataProtectionScope.CurrentUser)); } set { ProtectedPassword=string.IsNullOrEmpty(value)?"":Convert.ToBase64String(ProtectedData.Protect(Encoding.UTF8.GetBytes(value),null,DataProtectionScope.CurrentUser)); } }
+    public string Password { get { return ReadSecret(ProtectedPassword,"client",Email); } set {ProtectedPassword=ProtectSecret(value);} }
 #if NET8_0_OR_GREATER
     [JsonIgnore]
 #else
     [ScriptIgnore]
 #endif
-    public string DevicePassword { get { return string.IsNullOrEmpty(ProtectedDevicePassword) ? "" : Encoding.UTF8.GetString(ProtectedData.Unprotect(Convert.FromBase64String(ProtectedDevicePassword),null,DataProtectionScope.CurrentUser)); } set { ProtectedDevicePassword=string.IsNullOrEmpty(value)?"":Convert.ToBase64String(ProtectedData.Protect(Encoding.UTF8.GetBytes(value),null,DataProtectionScope.CurrentUser)); } }
+    public string DevicePassword { get { return ReadSecret(ProtectedDevicePassword,"device",DeviceEmail); } set {ProtectedDevicePassword=ProtectSecret(value);} }
 #if NET8_0_OR_GREATER
     [JsonIgnore]
 #else
     [ScriptIgnore]
 #endif
-    public string WifiPassword { get { return string.IsNullOrEmpty(ProtectedWifiPassword) ? "" : Encoding.UTF8.GetString(ProtectedData.Unprotect(Convert.FromBase64String(ProtectedWifiPassword),null,DataProtectionScope.CurrentUser)); } set { ProtectedWifiPassword=string.IsNullOrEmpty(value)?"":Convert.ToBase64String(ProtectedData.Protect(Encoding.UTF8.GetBytes(value),null,DataProtectionScope.CurrentUser)); } }
+    public string WifiPassword { get { return ReadSecret(ProtectedWifiPassword,"wifi",WifiSsid); } set {ProtectedWifiPassword=ProtectSecret(value);} }
+    static string ProtectSecret(string value) {return string.IsNullOrEmpty(value)?"":Convert.ToBase64String(ProtectedData.Protect(Encoding.UTF8.GetBytes(value),null,DataProtectionScope.CurrentUser));}
+    static string ReadSecret(string currentUser,string kind,string identity) {
+        Exception error=null;
+        if(!string.IsNullOrEmpty(currentUser))try{return Encoding.UTF8.GetString(ProtectedData.Unprotect(Convert.FromBase64String(currentUser),null,DataProtectionScope.CurrentUser));}catch(Exception e){error=e;}
+        var vault=CredentialVault.Read(VaultTarget(kind,identity));
+        if(!string.IsNullOrEmpty(vault))return vault;
+        if(error!=null)throw error;
+        return "";
+    }
+    static string VaultTarget(string kind,string identity) {
+        using(var sha=SHA256.Create()) {
+            string hash=BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(identity??""))).Replace("-","").Substring(0,24);
+            return "RemotePcBridge/"+kind+"/"+hash;
+        }
+    }
     public static string Folder { get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"TorreRemota"); } }
     public static string ConfigFolder {
         get {
@@ -105,13 +168,20 @@ public class Settings {
             var shellFolder=Path.Combine(applicationData,"TorreRemota");
             return File.Exists(Path.Combine(profileFolder,"settings.json")) ||
                 File.Exists(Path.Combine(profileFolder,"settings.json.bak")) ||
+                File.Exists(Path.Combine(profileFolder,"settings.rescue.json")) ||
                 string.IsNullOrWhiteSpace(applicationData)
                 ? profileFolder : shellFolder;
     }
     public static string LastLoadSource { get; private set; } = "";
+    public static string LastRecoveryStatus { get; private set; } = "";
     static bool CredentialsReadable(Settings s) {
         if(string.IsNullOrWhiteSpace(s.ApiKey)||string.IsNullOrWhiteSpace(s.Email)||string.IsNullOrWhiteSpace(s.ProtectedPassword))return false;
         try{return !string.IsNullOrWhiteSpace(s.Password);}catch{return false;}
+    }
+    static bool UserProtectionReadable(Settings value) {
+        try {return !string.IsNullOrWhiteSpace(value.ProtectedPassword)&&
+            !string.IsNullOrWhiteSpace(Encoding.UTF8.GetString(ProtectedData.Unprotect(Convert.FromBase64String(value.ProtectedPassword),null,DataProtectionScope.CurrentUser)));}
+        catch{return false;}
     }
     static bool TryRefreshProtection(Settings value) {
         try {
@@ -127,25 +197,40 @@ public class Settings {
             return true;
         } catch {return false;}
     }
+    static void SaveDurableRecovery(Settings value) {
+        RecoveryStore.Write(Json.Encode(value));
+        string password=value.Password;if(!string.IsNullOrEmpty(password))CredentialVault.Write(VaultTarget("client",value.Email),password);
+        string device=value.DevicePassword;if(!string.IsNullOrEmpty(device))CredentialVault.Write(VaultTarget("device",value.DeviceEmail),device);
+        string wifi=value.WifiPassword;if(!string.IsNullOrEmpty(wifi))CredentialVault.Write(VaultTarget("wifi",value.WifiSsid),wifi);
+    }
     public static Settings Load() {
+        LastRecoveryStatus="";
         var profile=Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         var primary=Path.Combine(ConfigFolder,"settings.json");
+        var rescue=Path.Combine(ConfigFolder,"settings.rescue.json");
         var recovery=Path.Combine(profile,"Desktop","TorreRemota.recuperacion.json");
         var profileRoaming=Path.Combine(profile,"AppData","Roaming","TorreRemota","settings.json");
-        var paths=new[]{primary,primary+".bak",profileRoaming,profileRoaming+".bak",Path.Combine(Folder,"settings.json"),
+        var paths=new[]{primary,primary+".bak",rescue,profileRoaming,profileRoaming+".bak",Path.Combine(Folder,"settings.json"),
             Path.Combine(profile,"AppData","Local","TorreRemota","settings.json"),recovery};
-        return LoadFromPaths(primary,recovery,paths);
+        Settings durable=null;try {var saved=RecoveryStore.Read();if(!string.IsNullOrWhiteSpace(saved))durable=Json.ReadSettings(saved);} catch {}
+        return LoadFromPaths(primary,recovery,paths,durable,true);
     }
-    internal static Settings LoadFromPaths(string primary,string recovery,IEnumerable<string> paths) {
+    internal static Settings LoadFromPaths(string primary,string recovery,IEnumerable<string> paths,Settings durable=null,bool persistDurable=false) {
         Exception lastError=null;
         Settings incomplete=null;string incompletePath="";
         Settings Finish(Settings value,string p) {
             LastLoadSource=p;
-            if(!p.Equals(primary,StringComparison.OrdinalIgnoreCase)) {
+            bool valid=CredentialsReadable(value);
+            bool refreshed=valid&&!UserProtectionReadable(value)&&TryRefreshProtection(value);
+            if(!p.Equals(primary,StringComparison.OrdinalIgnoreCase)||refreshed) {
                 try {
                     value.SaveTo(primary);
                     if(p.Equals(recovery,StringComparison.OrdinalIgnoreCase))File.Delete(recovery);
-                } catch(IOException) {} catch(UnauthorizedAccessException) {}
+                } catch(IOException) {if(!persistDurable)throw;} catch(UnauthorizedAccessException) {if(!persistDurable)throw;}
+            }
+            if(valid) {
+                try {value.SaveRescueTo(Path.Combine(Path.GetDirectoryName(primary),"settings.rescue.json"));} catch(IOException) {} catch(UnauthorizedAccessException) {}
+                if(persistDurable)try {SaveDurableRecovery(value);LastRecoveryStatus="ready";} catch(Exception e) {LastRecoveryStatus="error: "+e.Message;}
             }
             return value;
         }
@@ -155,28 +240,30 @@ public class Settings {
                 var value=Json.ReadSettings(File.ReadAllText(p));
                 if(value==null)throw new InvalidDataException("Configuración vacía.");
                 if(CredentialsReadable(value)) {
-                    // A successful read proves the credentials still exist. Refresh
-                    // their DPAPI blobs and repair the primary atomically so later GUI
-                    // launches do not get stuck on a stale or partially copied file.
-                    if(!p.Equals(primary,StringComparison.OrdinalIgnoreCase)&&TryRefreshProtection(value)) {
-                        try {value.SaveTo(primary);} catch(IOException) {} catch(UnauthorizedAccessException) {}
-                    }
                     return Finish(value,p);
                 }
                 if(incomplete==null){incomplete=value;incompletePath=p;}
             } catch(Exception e){lastError=e;}
         }
+        if(durable!=null&&CredentialsReadable(durable))return Finish(durable,"Windows Credential Manager recovery");
         if(incomplete!=null)return Finish(incomplete,incompletePath);
         if(lastError!=null)throw new IOException("No se pudo leer la configuración guardada: "+lastError.Message,lastError);
         LastLoadSource="";
         return new Settings();
     }
-    public void Save() {SaveTo(Path.Combine(ConfigFolder,"settings.json"));}
+    public void Save() {var primary=Path.Combine(ConfigFolder,"settings.json");SaveTo(primary);if(CredentialsReadable(this)){SaveRescueTo(Path.Combine(ConfigFolder,"settings.rescue.json"));SaveDurableRecovery(this);}}
     internal void SaveTo(string p) {
+        // Write two independently replaceable valid copies. File.Replace cannot
+        // safely use settings.json.bak as both the recovery source and the backup
+        // destination while repairing settings.json.
+        SaveRescueTo(p);
+        SaveRescueTo(p+".bak");
+    }
+    internal void SaveRescueTo(string p) {
         Directory.CreateDirectory(Path.GetDirectoryName(p));
-        File.WriteAllText(p+".tmp",Json.Encode(this),Encoding.UTF8);
-        if(File.Exists(p))File.Replace(p+".tmp",p,p+".bak");
-        else {File.Move(p+".tmp",p);File.Copy(p,p+".bak",true);}
+        string temporary=p+".tmp";
+        File.WriteAllText(temporary,Json.Encode(this),Encoding.UTF8);
+        if(File.Exists(p))File.Replace(temporary,p,null);else File.Move(temporary,p);
     }
     public void Validate() {
         Uri u; if(!Uri.TryCreate(Database,UriKind.Absolute,out u) || u.Scheme!="https" || !(u.Host.EndsWith(".firebasedatabase.app")||u.Host.EndsWith(".firebaseio.com")) || u.AbsolutePath!="/" || u.Query!="" || u.UserInfo!="" || !u.IsDefaultPort) throw new Exception("Introduce la raíz HTTPS de Firebase, sin /encender.json ni parámetros.");

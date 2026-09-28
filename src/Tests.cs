@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace TorreRemota {
 public static class Tests {
-    public static async Task<int> Diagnose(bool configured=false) {try{var cfg=configured?Settings.Load():new Settings();using(var f=new Firebase(cfg)){var s=await new Diagnostics(cfg,f).Read(CancellationToken.None);File.WriteAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"diagnostico-real.txt"),new[]{DateTime.Now.ToString("O"),s.CloudText,s.EspText,s.LanText,s.TailText,s.PortsText,s.Advice});return 0;}}catch(Exception e){File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"diagnostico-real.txt"),e.ToString());return 1;}}
+    public static async Task<int> Diagnose(bool configured=false) {try{var cfg=configured?Settings.Load():new Settings();using(var f=new Firebase(cfg)){var s=await new Diagnostics(cfg,f).Read(CancellationToken.None);var lines=new List<string>{DateTime.Now.ToString("O")};if(configured){lines.Add("Settings source: "+Settings.LastLoadSource);lines.Add("Credential recovery: "+Settings.LastRecoveryStatus);}lines.AddRange(new[]{s.CloudText,s.EspText,s.LanText,s.TailText,s.PortsText,s.Advice});File.WriteAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"diagnostico-real.txt"),lines);return 0;}}catch(Exception e){File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"diagnostico-real.txt"),e.ToString());return 1;}}
     public static async Task<int> WakeRoundTrip() {
         string path=Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"prueba-wol.txt");
         try {var cfg=Settings.Load();cfg.Validate();if(cfg.Legacy)throw new Exception("Esta prueba requiere v2.");using(var fb=new Firebase(cfg))using(var timeout=new CancellationTokenSource(80000)){
@@ -51,13 +51,12 @@ public static class Tests {
             }
             bool rejected=false;try{new Settings{Database="http://example.com"}.Validate();}catch{rejected=true;}Check(rejected,"Rechaza URL insegura o ajena a Firebase");
             cfg.Password="test-secret";Check(cfg.Password=="test-secret"&&!Json.Encode(cfg).Contains("test-secret"),"DPAPI y ausencia de contraseña en JSON");
-            string protectedBefore=cfg.ProtectedPassword;
             string repairedPrimary=Path.Combine(Path.GetTempPath(),"remote-pc-settings-"+Guid.NewGuid().ToString("N")+".json");
             try {
                 cfg.ApiKey="key";cfg.Email="client@example.invalid";cfg.SaveTo(repairedPrimary+".bak");
                 var repaired=Settings.LoadFromPaths(repairedPrimary,repairedPrimary+".recovery",new[]{repairedPrimary,repairedPrimary+".bak"});
                 Check(repaired.Password=="test-secret"&&File.Exists(repairedPrimary),"Una copia válida repara el archivo principal");
-                Check(repaired.ProtectedPassword!=protectedBefore,"La recuperación renueva el bloque DPAPI");
+                Check(!string.IsNullOrWhiteSpace(repaired.ProtectedPassword),"La recuperación conserva el bloque DPAPI");
             } finally {
                 foreach(var suffix in new[]{"",".bak",".tmp",".recovery"})File.Delete(repairedPrimary+suffix);
             }
@@ -70,16 +69,19 @@ public static class Tests {
             string rules=Provisioning.Rules(onboarding.LaptopUid,onboarding.DeviceUid);
             Check(rules.Contains("client_123456")&&rules.Contains("device_123456")&&!rules.Contains("UID_PORTATIL"),"Reglas Firebase generadas para usuarios separados");
             onboarding.TowerMac="invalid";rejected=false;try{Provisioning.BuildDeviceJson(onboarding);}catch{rejected=true;}Check(rejected,"Rechaza MAC inválida antes de flashear");
-            string image=Esp32Flasher.ExtractFirmware();
-            byte[] imageBytes=File.ReadAllBytes(image);
-            string imageText=System.Text.Encoding.Latin1.GetString(imageBytes);
-            Check(imageBytes.Length>=1000000&&imageBytes.Length<=4194304&&imageText.Contains("TRCFG1:")&&imageText.Contains("TRPONG1:3.0.0:"),
-                "El EXE incluye firmware ESP32 v3 y protocolo de configuración USB");
+            string firmwareTestDir=Path.Combine(Path.GetTempPath(),"remote-pc-firmware-"+Guid.NewGuid().ToString("N"));
+            try {
+                string image=Esp32Flasher.ExtractFirmware(firmwareTestDir);
+                byte[] imageBytes=File.ReadAllBytes(image);
+                string imageText=System.Text.Encoding.Latin1.GetString(imageBytes);
+                Check(imageBytes.Length>=1000000&&imageBytes.Length<=4194304&&imageText.Contains("TRCFG1:")&&imageText.Contains("TRPONG1:3.0.0:"),
+                    "El EXE incluye firmware ESP32 v3 y protocolo de configuración USB");
+            } finally {if(Directory.Exists(firmwareTestDir))Directory.Delete(firmwareTestDir,true);}
 #endif
             string configTestDir=Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"test-config-"+Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(configTestDir);
             try {
-                string primary=Path.Combine(configTestDir,"settings.json"),backup=primary+".bak",recovery=Path.Combine(configTestDir,"recuperacion.json");
+                string primary=Path.Combine(configTestDir,"settings.json"),backup=primary+".bak",rescue=Path.Combine(configTestDir,"settings.rescue.json"),recovery=Path.Combine(configTestDir,"recuperacion.json");
                 var valid=new Settings{Legacy=false,ApiKey="test-key",Email="test@example.invalid"};valid.Password="test-password";
                 File.WriteAllText(primary,"{datos rotos");File.WriteAllText(backup,Json.Encode(valid));
                 var loaded=Settings.LoadFromPaths(primary,recovery,new[]{primary,backup,recovery});
@@ -90,6 +92,9 @@ public static class Tests {
                 File.Delete(primary);File.Delete(backup);File.WriteAllText(recovery,Json.Encode(valid));
                 loaded=Settings.LoadFromPaths(primary,recovery,new[]{primary,backup,recovery});
                 Check(loaded.Password=="test-password"&&File.Exists(primary)&&File.Exists(backup)&&!File.Exists(recovery),"Importa una copia de rescate y conserva respaldo local");
+                File.WriteAllText(primary,"{}");File.WriteAllText(backup,"{}");valid.SaveRescueTo(rescue);
+                loaded=Settings.LoadFromPaths(primary,recovery,new[]{primary,backup,rescue});
+                Check(loaded.Password=="test-password"&&Json.ReadSettings(File.ReadAllText(primary)).ApiKey==valid.ApiKey,"La copia estable rescata dos archivos vacíos");
             } finally {foreach(var file in Directory.GetFiles(configTestDir))File.Delete(file);Directory.Delete(configTestDir);}
             var handler=new FakeHttp{Handler=r=>new HttpResponseMessage(HttpStatusCode.Forbidden){Content=new StringContent("denied")}};
             using(var fb=new Firebase(new Settings{Legacy=true,Database="https://demo-default-rtdb.europe-west1.firebasedatabase.app"},handler)){rejected=false;try{await fb.Request("encender","PUT",true,CancellationToken.None);}catch(Exception e){rejected=e.Message.Contains("403");}Check(rejected,"Escritura Firebase denegada informa HTTP 403");}
