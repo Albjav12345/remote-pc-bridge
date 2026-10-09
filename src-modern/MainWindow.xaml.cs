@@ -47,7 +47,6 @@ public partial class ModernWindow : Window {
         firebase=new Firebase(cfg);diagnostics=new Diagnostics(cfg,firebase);
         actions.AddRange(new[]{ConnectButton,WakeButton,DiagnoseButton});
         FillSettings();FillSetup();RefreshPorts();RefreshMode();
-        if(!demo&&!HasUsableCredentials(cfg))SelectPage(SetupView,NavSetup);
         var previousSession=demo?null:MoonlightSession.Recent(TimeSpan.FromHours(24));
         if(previousSession!=null && previousSession.Phase==MoonlightPhase.Finished){
             MoonlightStatusText.Text=previousSession.VideoReceived?
@@ -62,17 +61,41 @@ public partial class ModernWindow : Window {
                 " · credenciales "+(HasUsableCredentials(cfg)?"listas":"incompletas o ilegibles")+".");
             if(Settings.LastRecoveryStatus=="ready")Log("La recuperación de credenciales está preparada para esta cuenta de Windows.");
             else if(Settings.LastRecoveryStatus.StartsWith("error: ",StringComparison.Ordinal))Log("No se pudo actualizar la recuperación de credenciales: "+Settings.LastRecoveryStatus.Substring(7));
-            if(!HasUsableCredentials(cfg))Log("Buscando ajustes en "+Settings.ConfigFolder+". Comprueba también la copia .bak antes de introducir datos nuevos.");
+            if(!HasUsableCredentials(cfg))Log(Settings.HasStoredConfiguration(cfg)?
+                "Se encontró la configuración guardada, pero Windows aún no ha desbloqueado las credenciales. Se reintentará automáticamente.":
+                "Buscando ajustes en "+Settings.ConfigFolder+". Comprueba también la copia .bak antes de introducir datos nuevos.");
         }
         moonlightTimer.Tick+=delegate{try{PollMoonlight();}catch(Exception ex){if(!closing&&moonlightPhase!=MoonlightPhase.NoVideo){moonlightPhase=MoonlightPhase.NoVideo;MoonlightStatusText.Text="Moonlight · Estado local no disponible";MoonlightStatusText.Foreground=warn;Log("No se pudo consultar el estado local de Moonlight: "+ex.Message);}}};
         if(!demo)moonlightTimer.Start();
         statusTimer.Tick+=async (sender,ev)=>await RefreshBackground();
         if(!demo)statusTimer.Start();
-        Loaded+=async (sender,ev)=>{if(demo){ShowDemoSnapshot();if(setupDemoMode)ShowSetupDemo();if(flashDemoMode)SetupView.ScrollToBottom();if(settingsDemoMode)SelectPage(SettingsView,NavSettings);}else if(HasUsableCredentials(cfg))await RunAction("diagnose",true);else SetupAccountStatus.Text="Empieza por tu proyecto Firebase y los datos de la torre; todavía no se enviará ninguna orden.";};
+        Loaded+=async (sender,ev)=>{if(demo){ShowDemoSnapshot();if(setupDemoMode)ShowSetupDemo();if(flashDemoMode)SetupView.ScrollToBottom();if(settingsDemoMode)SelectPage(SettingsView,NavSettings);}else await InitializeLive();};
         Closing+=delegate {closing=true;windowLifetime.Cancel();if(running!=null)running.Cancel();if(setupCancellation!=null)setupCancellation.Cancel();};
         Closed+=delegate {moonlightTimer.Stop();statusTimer.Stop();windowLifetime.Dispose();if(moonlightProcess!=null)moonlightProcess.Dispose();firebase.Dispose();};
     }
     static bool HasUsableCredentials(Settings s){try{return !string.IsNullOrWhiteSpace(s.ApiKey)&&!string.IsNullOrWhiteSpace(s.Email)&&!string.IsNullOrWhiteSpace(s.Password);}catch{return false;}}
+    async Task InitializeLive(){
+        if(HasUsableCredentials(cfg)){await RunAction("diagnose",true);return;}
+        if(!Settings.HasStoredConfiguration(cfg)){
+            SelectPage(SetupView,NavSetup);
+            SetupAccountStatus.Text="Empieza por tu proyecto Firebase y los datos de la torre; todavía no se enviará ninguna orden.";
+            return;
+        }
+        Headline.Text="Recuperando la configuración guardada…";
+        Advice.Text="Windows todavía no ha desbloqueado las credenciales. La aplicación seguirá intentándolo sin borrar ni reemplazar tus datos.";
+        int[] waits={250,750,1500,3000};
+        foreach(int wait in waits){
+            await Task.Delay(wait,windowLifetime.Token);
+            var latest=Settings.Load();latest.Legacy=false;
+            if(!HasUsableCredentials(latest))continue;
+            ApplySettings(latest);SelectPage(DashboardView,NavDashboard);
+            Log("Configuración guardada recuperada automáticamente.");
+            await RunAction("diagnose",true);return;
+        }
+        Headline.Text="Configuración guardada temporalmente bloqueada";
+        Advice.Text="Tus datos siguen guardados. Se volverá a intentar automáticamente cada 30 segundos; también puedes pulsar Diagnosticar para reintentar ahora.";
+        Log("Las credenciales siguen bloqueadas; se mantienen intactas y se reintentará en segundo plano.");
+    }
     void RefreshMode(){bool complete=HasUsableCredentials(cfg);SideMode.Text=complete?"Puente · conexión protegida":"Configuración pendiente";TopMode.Text=complete?"Sistema configurado":"Preparar sistema";SideAddress.Text=string.IsNullOrWhiteSpace(cfg.Target)?"Sin torre configurada":cfg.Target+"  ·  "+cfg.App;SideStatusDot.Fill=complete?neutral:warn;HeaderWifiIcon.Foreground=complete?neutral:warn;}
     void ApplySettings(Settings next){firebase.Dispose();cfg=next;localization.SetLanguage(cfg.Language);UpdateLanguageCombo();ApplyTheme();firebase=new Firebase(cfg);diagnostics=new Diagnostics(cfg,firebase);pendingId="";FillSettings();FillSetup();RefreshMode();}
     void UpdateWindowTheme(){try{var handle=new System.Windows.Interop.WindowInteropHelper(this).Handle;if(handle!=IntPtr.Zero){int dark=cfg?.Theme=="light"?0:1;DwmSetWindowAttribute(handle,20,ref dark,sizeof(int));}}catch{}}
@@ -263,9 +286,14 @@ public partial class ModernWindow : Window {
     }
     void SetBusy(bool busy){foreach(var b in actions)b.IsEnabled=!busy;CancelButton.IsEnabled=busy;}
     async Task RefreshBackground(){
-        if(closing||running!=null||statusRefreshing||setupBusy||!HasUsableCredentials(cfg))return;
+        if(closing||running!=null||statusRefreshing||setupBusy)return;
         statusRefreshing=true;
         try {
+            if(!HasUsableCredentials(cfg)){
+                var latest=Settings.Load();latest.Legacy=false;
+                if(!HasUsableCredentials(latest))return;
+                ApplySettings(latest);SelectPage(DashboardView,NavDashboard);Log("Configuración guardada recuperada automáticamente.");
+            }
             cfg.Validate();
             var snapshot=await diagnostics.Read(windowLifetime.Token);
             if(!closing){ShowSnapshot(snapshot);lastBackgroundError="";}

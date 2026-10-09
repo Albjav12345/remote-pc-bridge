@@ -174,6 +174,21 @@ public class Settings {
     }
     public static string LastLoadSource { get; private set; } = "";
     public static string LastRecoveryStatus { get; private set; } = "";
+    internal static int CompletenessScore(Settings s) {
+        if(s==null)return 0;
+        int score=0;
+        if(!string.IsNullOrWhiteSpace(s.Database))score+=4;
+        if(!string.IsNullOrWhiteSpace(s.Target))score+=3;
+        if(!string.IsNullOrWhiteSpace(s.ApiKey))score+=4;
+        if(!string.IsNullOrWhiteSpace(s.Email))score+=4;
+        if(!string.IsNullOrWhiteSpace(s.ProtectedPassword))score+=5;
+        if(!string.IsNullOrWhiteSpace(s.TowerLanIp))score++;
+        if(!string.IsNullOrWhiteSpace(s.TowerMac))score++;
+        if(!string.IsNullOrWhiteSpace(s.WifiSsid))score++;
+        if(!string.IsNullOrWhiteSpace(s.DeviceEmail))score++;
+        return score;
+    }
+    public static bool HasStoredConfiguration(Settings s) {return CompletenessScore(s)>=12;}
     static bool CredentialsReadable(Settings s) {
         if(string.IsNullOrWhiteSpace(s.ApiKey)||string.IsNullOrWhiteSpace(s.Email)||string.IsNullOrWhiteSpace(s.ProtectedPassword))return false;
         try{return !string.IsNullOrWhiteSpace(s.Password);}catch{return false;}
@@ -217,12 +232,12 @@ public class Settings {
     }
     internal static Settings LoadFromPaths(string primary,string recovery,IEnumerable<string> paths,Settings durable=null,bool persistDurable=false) {
         Exception lastError=null;
-        Settings incomplete=null;string incompletePath="";
+        Settings incomplete=null;string incompletePath="";int incompleteScore=-1;
         Settings Finish(Settings value,string p) {
             LastLoadSource=p;
             bool valid=CredentialsReadable(value);
             bool refreshed=valid&&!UserProtectionReadable(value)&&TryRefreshProtection(value);
-            if(!p.Equals(primary,StringComparison.OrdinalIgnoreCase)||refreshed) {
+            if(valid&&(!p.Equals(primary,StringComparison.OrdinalIgnoreCase)||refreshed)) {
                 try {
                     value.SaveTo(primary);
                     if(p.Equals(recovery,StringComparison.OrdinalIgnoreCase))File.Delete(recovery);
@@ -242,10 +257,15 @@ public class Settings {
                 if(CredentialsReadable(value)) {
                     return Finish(value,p);
                 }
-                if(incomplete==null){incomplete=value;incompletePath=p;}
+                int score=CompletenessScore(value);
+                if(score>incompleteScore){incomplete=value;incompletePath=p;incompleteScore=score;}
             } catch(Exception e){lastError=e;}
         }
-        if(durable!=null&&CredentialsReadable(durable))return Finish(durable,"Windows Credential Manager recovery");
+        if(durable!=null) {
+            if(CredentialsReadable(durable))return Finish(durable,"Windows Credential Manager recovery");
+            int score=CompletenessScore(durable);
+            if(score>incompleteScore){incomplete=durable;incompletePath="Windows user recovery";incompleteScore=score;}
+        }
         if(incomplete!=null)return Finish(incomplete,incompletePath);
         if(lastError!=null)throw new IOException("No se pudo leer la configuración guardada: "+lastError.Message,lastError);
         LastLoadSource="";

@@ -333,3 +333,10 @@ Guarda un informe	Save a report
 Vista de ejemplo con datos ficticios; no se consultan credenciales guardadas.	Sample view with fictional data; saved credentials are not used.
 La recuperación de credenciales está preparada para esta cuenta de Windows.	Credential recovery is ready for this Windows account.
 No se pudo actualizar la recuperación de credenciales:\s	Credential recovery could not be updated:\s
+Se encontró la configuración guardada, pero Windows aún no ha desbloqueado las credenciales. Se reintentará automáticamente.	The saved configuration was found, but Windows has not unlocked the credentials yet. The app will retry automatically.
+Recuperando la configuración guardada…	Recovering the saved configuration…
+Windows todavía no ha desbloqueado las credenciales. La aplicación seguirá intentándolo sin borrar ni reemplazar tus datos.	Windows has not unlocked the credentials yet. The app will keep trying without deleting or replacing your data.
+Configuración guardada recuperada automáticamente.	Saved configuration recovered automatically.
+Configuración guardada temporalmente bloqueada	Saved configuration temporarily locked
+Tus datos siguen guardados. Se volverá a intentar automáticamente cada 30 segundos; también puedes pulsar Diagnosticar para reintentar ahora.	Your data is still saved. The app will retry automatically every 30 seconds; you can also select Run diagnostics to retry now.
+Las credenciales siguen bloqueadas; se mantienen intactas y se reintentará en segundo plano.	The credentials are still locked; they remain intact and the app will retry in the background.

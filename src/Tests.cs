@@ -95,6 +95,13 @@ public static class Tests {
                 File.WriteAllText(primary,"{}");File.WriteAllText(backup,"{}");valid.SaveRescueTo(rescue);
                 loaded=Settings.LoadFromPaths(primary,recovery,new[]{primary,backup,rescue});
                 Check(loaded.Password=="test-password"&&Json.ReadSettings(File.ReadAllText(primary)).ApiKey==valid.ApiKey,"La copia estable rescata dos archivos vacíos");
+                var completeLocked=new Settings{Database="https://demo-default-rtdb.europe-west1.firebasedatabase.app",Target="100.64.0.10",ApiKey="key",Email="client@example.invalid",ProtectedPassword="not-valid-base64"};
+                File.WriteAllText(primary,"{}");File.WriteAllText(backup,Json.Encode(completeLocked));File.Delete(rescue);
+                loaded=Settings.LoadFromPaths(primary,recovery,new[]{primary,backup});
+                Check(loaded.Database==completeLocked.Database&&Settings.HasStoredConfiguration(loaded)&&File.ReadAllText(primary)=="{}","Una copia bloqueada completa gana frente a un archivo vacío sin sobrescribirlo");
+                File.WriteAllText(backup,"{}");
+                loaded=Settings.LoadFromPaths(primary,recovery,new[]{primary,backup},completeLocked);
+                Check(loaded.Database==completeLocked.Database&&Settings.HasStoredConfiguration(loaded)&&File.ReadAllText(primary)=="{}","La recuperación del usuario también conserva una configuración bloqueada sin sobrescribir el archivo");
             } finally {foreach(var file in Directory.GetFiles(configTestDir))File.Delete(file);Directory.Delete(configTestDir);}
             var handler=new FakeHttp{Handler=r=>new HttpResponseMessage(HttpStatusCode.Forbidden){Content=new StringContent("denied")}};
             using(var fb=new Firebase(new Settings{Legacy=true,Database="https://demo-default-rtdb.europe-west1.firebasedatabase.app"},handler)){rejected=false;try{await fb.Request("encender","PUT",true,CancellationToken.None);}catch(Exception e){rejected=e.Message.Contains("403");}Check(rejected,"Escritura Firebase denegada informa HTTP 403");}
