@@ -13,6 +13,7 @@ public static class Program {
     public static int Main(string[] args) {
         ServicePointManager.SecurityProtocol=SecurityProtocolType.Tls12;
         if(args.Contains("--self-test"))return Tests.Run().GetAwaiter().GetResult();
+        if(args.Contains("--diagnose-bootstrap"))return Tests.DiagnoseBootstrap().GetAwaiter().GetResult();
         if(args.Contains("--diagnose-config"))return Tests.Diagnose(true).GetAwaiter().GetResult();
         if(args.Contains("--wake-test"))return Tests.WakeRoundTrip().GetAwaiter().GetResult();
         if(args.Contains("--moonlight-report")) {

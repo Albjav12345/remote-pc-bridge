@@ -98,6 +98,8 @@ static class RecoveryStore {
     public static void Write(string json) {using(var key=Microsoft.Win32.Registry.CurrentUser.CreateSubKey(Key,true))key.SetValue("Settings",json,Microsoft.Win32.RegistryValueKind.String);}
 }
 public class Settings {
+    const string BootstrapTarget="RemotePcBridge/bootstrap/v1";
+    string sessionPassword="";
     public string Language = "en";
     public string Theme = "dark";
     public string Database = "";
@@ -124,7 +126,7 @@ public class Settings {
 #else
     [ScriptIgnore]
 #endif
-    public string Password { get { return ReadSecret(ProtectedPassword,"client",Email); } set {ProtectedPassword=ProtectSecret(value);} }
+    public string Password { get { return !string.IsNullOrEmpty(sessionPassword)?sessionPassword:ReadSecret(ProtectedPassword,"client",Email); } set {sessionPassword=value??"";if(string.IsNullOrEmpty(value)){ProtectedPassword="";return;}try{ProtectedPassword=ProtectSecret(value);}catch{}} }
 #if NET8_0_OR_GREATER
     [JsonIgnore]
 #else
@@ -174,6 +176,7 @@ public class Settings {
     }
     public static string LastLoadSource { get; private set; } = "";
     public static string LastRecoveryStatus { get; private set; } = "";
+    public static string LastLoadDiagnostics { get; private set; } = "";
     internal static int CompletenessScore(Settings s) {
         if(s==null)return 0;
         int score=0;
@@ -189,8 +192,18 @@ public class Settings {
         return score;
     }
     public static bool HasStoredConfiguration(Settings s) {return CompletenessScore(s)>=12;}
+    public static bool HasStoredArtifacts() {
+        try {
+            foreach(string name in new[]{"settings.json","settings.json.bak","settings.rescue.json"}) {
+                string path=Path.Combine(ConfigFolder,name);if(File.Exists(path)&&new FileInfo(path).Length>32)return true;
+            }
+        } catch {}
+        try {if(!string.IsNullOrWhiteSpace(RecoveryStore.Read()))return true;} catch {}
+        try {if(!string.IsNullOrWhiteSpace(CredentialVault.Read(BootstrapTarget)))return true;} catch {}
+        return false;
+    }
     static bool CredentialsReadable(Settings s) {
-        if(string.IsNullOrWhiteSpace(s.ApiKey)||string.IsNullOrWhiteSpace(s.Email)||string.IsNullOrWhiteSpace(s.ProtectedPassword))return false;
+        if(string.IsNullOrWhiteSpace(s.ApiKey)||string.IsNullOrWhiteSpace(s.Email))return false;
         try{return !string.IsNullOrWhiteSpace(s.Password);}catch{return false;}
     }
     static bool UserProtectionReadable(Settings value) {
@@ -209,14 +222,37 @@ public class Settings {
             value.Password=password;
             if(!string.IsNullOrEmpty(devicePassword))value.DevicePassword=devicePassword;
             if(!string.IsNullOrEmpty(wifiPassword))value.WifiPassword=wifiPassword;
-            return true;
+            return UserProtectionReadable(value);
         } catch {return false;}
     }
+    static Settings ReadBootstrap() {
+        string json=CredentialVault.Read(BootstrapTarget);if(string.IsNullOrWhiteSpace(json))return null;
+        var data=Json.Read(json);string password=Json.Str(data,"p");
+        if(string.IsNullOrWhiteSpace(password))return null;
+        return new Settings{Database=Json.Str(data,"d"),Target=Json.Str(data,"t"),ApiKey=Json.Str(data,"k"),
+            Email=Json.Str(data,"e"),App=string.IsNullOrWhiteSpace(Json.Str(data,"a"))?"Desktop":Json.Str(data,"a"),sessionPassword=password};
+    }
+    internal static Settings LoadBootstrapOnly() {return ReadBootstrap()??new Settings();}
+    static void ApplyBootstrap(Settings value,Settings bootstrap) {
+        if(value==null||bootstrap==null||CompletenessScore(value)<12)return;
+        if(!string.IsNullOrWhiteSpace(value.Email)&&!value.Email.Equals(bootstrap.Email,StringComparison.OrdinalIgnoreCase))return;
+        if(string.IsNullOrWhiteSpace(value.Database))value.Database=bootstrap.Database;
+        if(string.IsNullOrWhiteSpace(value.Target))value.Target=bootstrap.Target;
+        if(string.IsNullOrWhiteSpace(value.ApiKey))value.ApiKey=bootstrap.ApiKey;
+        if(string.IsNullOrWhiteSpace(value.Email))value.Email=bootstrap.Email;
+        value.sessionPassword=bootstrap.sessionPassword;
+    }
+    static void WriteBootstrap(Settings value) {
+        string password=value.Password;if(string.IsNullOrWhiteSpace(password))return;
+        CredentialVault.Write(BootstrapTarget,Json.Encode(new Dictionary<string,string>{{"d",value.Database},{"t",value.Target},
+            {"k",value.ApiKey},{"e",value.Email},{"p",password},{"a",value.App}}));
+    }
     static void SaveDurableRecovery(Settings value) {
-        RecoveryStore.Write(Json.Encode(value));
+        WriteBootstrap(value);
         string password=value.Password;if(!string.IsNullOrEmpty(password))CredentialVault.Write(VaultTarget("client",value.Email),password);
         string device=value.DevicePassword;if(!string.IsNullOrEmpty(device))CredentialVault.Write(VaultTarget("device",value.DeviceEmail),device);
         string wifi=value.WifiPassword;if(!string.IsNullOrEmpty(wifi))CredentialVault.Write(VaultTarget("wifi",value.WifiSsid),wifi);
+        RecoveryStore.Write(Json.Encode(value));
     }
     public static Settings Load() {
         LastRecoveryStatus="";
@@ -228,14 +264,18 @@ public class Settings {
         var paths=new[]{primary,primary+".bak",rescue,profileRoaming,profileRoaming+".bak",Path.Combine(Folder,"settings.json"),
             Path.Combine(profile,"AppData","Local","TorreRemota","settings.json"),recovery};
         Settings durable=null;try {var saved=RecoveryStore.Read();if(!string.IsNullOrWhiteSpace(saved))durable=Json.ReadSettings(saved);} catch {}
-        return LoadFromPaths(primary,recovery,paths,durable,true);
+        Settings bootstrap=null;try {bootstrap=ReadBootstrap();} catch {}
+        return LoadFromPaths(primary,recovery,paths,durable,true,bootstrap);
     }
-    internal static Settings LoadFromPaths(string primary,string recovery,IEnumerable<string> paths,Settings durable=null,bool persistDurable=false) {
+    internal static Settings LoadFromPaths(string primary,string recovery,IEnumerable<string> paths,Settings durable=null,bool persistDurable=false,Settings bootstrap=null) {
         Exception lastError=null;
         Settings incomplete=null;string incompletePath="";int incompleteScore=-1;
+        var trace=new List<string>();
         Settings Finish(Settings value,string p) {
             LastLoadSource=p;
             bool valid=CredentialsReadable(value);
+            trace.Add(Path.GetFileName(p)+": score "+CompletenessScore(value)+", secret "+(valid?"ready":"locked"));
+            LastLoadDiagnostics=string.Join(" | ",trace);
             bool refreshed=valid&&!UserProtectionReadable(value)&&TryRefreshProtection(value);
             if(valid&&(!p.Equals(primary,StringComparison.OrdinalIgnoreCase)||refreshed)) {
                 try {
@@ -254,21 +294,26 @@ public class Settings {
                 if(!File.Exists(p))continue;
                 var value=Json.ReadSettings(File.ReadAllText(p));
                 if(value==null)throw new InvalidDataException("Configuración vacía.");
+                ApplyBootstrap(value,bootstrap);
                 if(CredentialsReadable(value)) {
                     return Finish(value,p);
                 }
                 int score=CompletenessScore(value);
+                trace.Add(Path.GetFileName(p)+": score "+score+", secret locked");
                 if(score>incompleteScore){incomplete=value;incompletePath=p;incompleteScore=score;}
-            } catch(Exception e){lastError=e;}
+            } catch(Exception e){lastError=e;trace.Add(Path.GetFileName(p)+": "+e.GetType().Name);}
         }
         if(durable!=null) {
+            ApplyBootstrap(durable,bootstrap);
             if(CredentialsReadable(durable))return Finish(durable,"Windows Credential Manager recovery");
             int score=CompletenessScore(durable);
+            trace.Add("user recovery: score "+score+", secret locked");
             if(score>incompleteScore){incomplete=durable;incompletePath="Windows user recovery";incompleteScore=score;}
         }
+        if(bootstrap!=null&&CredentialsReadable(bootstrap)){LastLoadSource="Windows Credential Manager bootstrap";LastRecoveryStatus="ready";trace.Add("credential bootstrap: ready");LastLoadDiagnostics=string.Join(" | ",trace);return bootstrap;}
         if(incomplete!=null)return Finish(incomplete,incompletePath);
         if(lastError!=null)throw new IOException("No se pudo leer la configuración guardada: "+lastError.Message,lastError);
-        LastLoadSource="";
+        LastLoadSource="";LastLoadDiagnostics=string.Join(" | ",trace);
         return new Settings();
     }
     public void Save() {var primary=Path.Combine(ConfigFolder,"settings.json");SaveTo(primary);if(CredentialsReadable(this)){SaveRescueTo(Path.Combine(ConfigFolder,"settings.rescue.json"));SaveDurableRecovery(this);}}

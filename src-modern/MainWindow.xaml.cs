@@ -61,9 +61,10 @@ public partial class ModernWindow : Window {
                 " · credenciales "+(HasUsableCredentials(cfg)?"listas":"incompletas o ilegibles")+".");
             if(Settings.LastRecoveryStatus=="ready")Log("La recuperación de credenciales está preparada para esta cuenta de Windows.");
             else if(Settings.LastRecoveryStatus.StartsWith("error: ",StringComparison.Ordinal))Log("No se pudo actualizar la recuperación de credenciales: "+Settings.LastRecoveryStatus.Substring(7));
-            if(!HasUsableCredentials(cfg))Log(Settings.HasStoredConfiguration(cfg)?
+            if(!HasUsableCredentials(cfg))Log(Settings.HasStoredConfiguration(cfg)||Settings.HasStoredArtifacts()?
                 "Se encontró la configuración guardada, pero Windows aún no ha desbloqueado las credenciales. Se reintentará automáticamente.":
                 "Buscando ajustes en "+Settings.ConfigFolder+". Comprueba también la copia .bak antes de introducir datos nuevos.");
+            if(!HasUsableCredentials(cfg)&&!string.IsNullOrWhiteSpace(Settings.LastLoadDiagnostics))Log("Diagnóstico seguro de carga: "+Settings.LastLoadDiagnostics);
         }
         moonlightTimer.Tick+=delegate{try{PollMoonlight();}catch(Exception ex){if(!closing&&moonlightPhase!=MoonlightPhase.NoVideo){moonlightPhase=MoonlightPhase.NoVideo;MoonlightStatusText.Text="Moonlight · Estado local no disponible";MoonlightStatusText.Foreground=warn;Log("No se pudo consultar el estado local de Moonlight: "+ex.Message);}}};
         if(!demo)moonlightTimer.Start();
@@ -76,7 +77,7 @@ public partial class ModernWindow : Window {
     static bool HasUsableCredentials(Settings s){try{return !string.IsNullOrWhiteSpace(s.ApiKey)&&!string.IsNullOrWhiteSpace(s.Email)&&!string.IsNullOrWhiteSpace(s.Password);}catch{return false;}}
     async Task InitializeLive(){
         if(HasUsableCredentials(cfg)){await RunAction("diagnose",true);return;}
-        if(!Settings.HasStoredConfiguration(cfg)){
+        if(!Settings.HasStoredConfiguration(cfg)&&!Settings.HasStoredArtifacts()){
             SelectPage(SetupView,NavSetup);
             SetupAccountStatus.Text="Empieza por tu proyecto Firebase y los datos de la torre; todavía no se enviará ninguna orden.";
             return;

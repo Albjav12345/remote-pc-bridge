@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 
 namespace TorreRemota {
 public static class Tests {
+    public static async Task<int> DiagnoseBootstrap() {
+        string path=Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"diagnostico-bootstrap.txt");
+        try {var cfg=Settings.LoadBootstrapOnly();cfg.Validate();using(var f=new Firebase(cfg)){var s=await new Diagnostics(cfg,f).Read(CancellationToken.None);File.WriteAllLines(path,new[]{DateTime.Now.ToString("O"),"Fixed credential bootstrap: ready",s.CloudText,s.TailText,s.PortsText});return 0;}}
+        catch(Exception e){File.WriteAllText(path,e.GetType().Name+": "+e.Message);return 1;}
+    }
     public static async Task<int> Diagnose(bool configured=false) {try{var cfg=configured?Settings.Load():new Settings();using(var f=new Firebase(cfg)){var s=await new Diagnostics(cfg,f).Read(CancellationToken.None);var lines=new List<string>{DateTime.Now.ToString("O")};if(configured){lines.Add("Settings source: "+Settings.LastLoadSource);lines.Add("Credential recovery: "+Settings.LastRecoveryStatus);}lines.AddRange(new[]{s.CloudText,s.EspText,s.LanText,s.TailText,s.PortsText,s.Advice});File.WriteAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"diagnostico-real.txt"),lines);return 0;}}catch(Exception e){File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"diagnostico-real.txt"),e.ToString());return 1;}}
     public static async Task<int> WakeRoundTrip() {
         string path=Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"prueba-wol.txt");
@@ -102,6 +107,13 @@ public static class Tests {
                 File.WriteAllText(backup,"{}");
                 loaded=Settings.LoadFromPaths(primary,recovery,new[]{primary,backup},completeLocked);
                 Check(loaded.Database==completeLocked.Database&&Settings.HasStoredConfiguration(loaded)&&File.ReadAllText(primary)=="{}","La recuperación del usuario también conserva una configuración bloqueada sin sobrescribir el archivo");
+                var bootstrap=new Settings{Database=completeLocked.Database,Target=completeLocked.Target,ApiKey=completeLocked.ApiKey,Email=completeLocked.Email};bootstrap.Password="bootstrap-secret";
+                File.WriteAllText(primary,"{}");File.WriteAllText(backup,Json.Encode(completeLocked));
+                loaded=Settings.LoadFromPaths(primary,recovery,new[]{primary,backup},null,false,bootstrap);
+                Check(loaded.Password=="bootstrap-secret"&&Json.ReadSettings(File.ReadAllText(primary)).ApiKey==completeLocked.ApiKey,"El bootstrap fijo desbloquea y repara una copia completa");
+                File.WriteAllText(primary,"{}");File.WriteAllText(backup,"{}");
+                loaded=Settings.LoadFromPaths(primary,recovery,new[]{primary,backup},null,false,bootstrap);
+                Check(loaded.Password=="bootstrap-secret"&&File.ReadAllText(primary)=="{}","El bootstrap permite conectar sin sobrescribir archivos temporalmente vacíos");
             } finally {foreach(var file in Directory.GetFiles(configTestDir))File.Delete(file);Directory.Delete(configTestDir);}
             var handler=new FakeHttp{Handler=r=>new HttpResponseMessage(HttpStatusCode.Forbidden){Content=new StringContent("denied")}};
             using(var fb=new Firebase(new Settings{Legacy=true,Database="https://demo-default-rtdb.europe-west1.firebasedatabase.app"},handler)){rejected=false;try{await fb.Request("encender","PUT",true,CancellationToken.None);}catch(Exception e){rejected=e.Message.Contains("403");}Check(rejected,"Escritura Firebase denegada informa HTTP 403");}

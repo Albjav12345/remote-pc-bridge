@@ -340,3 +340,4 @@ Configuración guardada recuperada automáticamente.	Saved configuration recover
 Configuración guardada temporalmente bloqueada	Saved configuration temporarily locked
 Tus datos siguen guardados. Se volverá a intentar automáticamente cada 30 segundos; también puedes pulsar Diagnosticar para reintentar ahora.	Your data is still saved. The app will retry automatically every 30 seconds; you can also select Run diagnostics to retry now.
 Las credenciales siguen bloqueadas; se mantienen intactas y se reintentará en segundo plano.	The credentials are still locked; they remain intact and the app will retry in the background.
+Diagnóstico seguro de carga:\s	Safe load diagnostics:\s
